@@ -2,6 +2,7 @@ package asyncapi
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/swaggest/go-asyncapi/spec"
@@ -52,6 +53,10 @@ func (g Generator) AddTopic(info TopicInfo) error {
 
 	if g.Data.Components.Schemas == nil {
 		g.Data.Components.Schemas = make(map[string]map[string]interface{})
+	}
+
+	if g.Data.Components.Messages == nil {
+		g.Data.Components.Messages = make(map[string]spec.Message)
 	}
 
 	if info.Publish != nil {
@@ -128,6 +133,17 @@ func (g Generator) makeOperation(topicItem *spec.TopicItem, m *Message) (*spec.O
 				Schema:      schema,
 			})
 		}
+	}
+
+	if ref, ok := msg.Payload["$ref"].(string); ok && ref != "" {
+		messageName := strings.TrimPrefix(ref, "#/components/schemas/")
+		g.Data.Components.Messages[messageName] = msg
+
+		return &spec.Operation{
+			Message: &spec.Message{
+				Ref: "#/components/messages/" + messageName,
+			},
+		}, nil
 	}
 
 	return &spec.Operation{

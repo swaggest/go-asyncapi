@@ -13,27 +13,28 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"time"
 
 	"github.com/swaggest/go-asyncapi/spec"
 	"github.com/swaggest/go-asyncapi/swgen/asyncapi"
 )
 
-func ExampleGenerator_GenDocument() {
+func ExampleGenerator_AddTopic() {
 	type SubItem struct {
-		Key    string  `json:"key"`
-		Values []int64 `json:"values" uniqueItems:"true"`
+		Key    string  `json:"key" description:"Item key"`
+		Values []int64 `json:"values" uniqueItems:"true" description:"List of item values"`
 	}
 
 	type MyMessage struct {
-		Name      string    `path:"name"`
-		CreatedAt time.Time `json:"createdAt"`
-		Items     []SubItem `json:"items"`
+		Name      string    `path:"name" description:"Name"`
+		CreatedAt time.Time `json:"createdAt" description:"Creation time"`
+		Items     []SubItem `json:"items" description:"List of items"`
 	}
 
 	type MyAnotherMessage struct {
-		TraceID string  `header:"X-Trace-ID"`
-		Item    SubItem `json:"item"`
+		TraceID string  `header:"X-Trace-ID" description:"Tracing header"`
+		Item    SubItem `json:"item" description:"Some item"`
 	}
 
 	g := asyncapi.Generator{
@@ -82,9 +83,29 @@ func ExampleGenerator_GenDocument() {
 	must(err)
 
 	fmt.Println(string(yaml))
+	must(ioutil.WriteFile("sample.yaml", yaml, 0644))
 	// output:
 	// asyncapi: 1.2.0
 	// components:
+	//   messages:
+	//     MyAnotherMessage:
+	//       description: This is another sample schema
+	//       headers:
+	//         properties:
+	//           X-Trace-ID:
+	//             description: Tracing header
+	//             type: string
+	//         required:
+	//         - X-Trace-ID
+	//         type: object
+	//       payload:
+	//         $ref: '#/components/schemas/MyAnotherMessage'
+	//       summary: Sample consumer
+	//     MyMessage:
+	//       description: This is a sample schema
+	//       payload:
+	//         $ref: '#/components/schemas/MyMessage'
+	//       summary: Sample publisher
 	//   schemas:
 	//     MyAnotherMessage:
 	//       properties:
@@ -94,9 +115,11 @@ func ExampleGenerator_GenDocument() {
 	//     MyMessage:
 	//       properties:
 	//         createdAt:
+	//           description: Creation time
 	//           format: date-time
 	//           type: string
 	//         items:
+	//           description: List of items
 	//           items:
 	//             $ref: '#/components/schemas/SubItem'
 	//           type: array
@@ -104,8 +127,10 @@ func ExampleGenerator_GenDocument() {
 	//     SubItem:
 	//       properties:
 	//         key:
+	//           description: Item key
 	//           type: string
 	//         values:
+	//           description: List of item values
 	//           items:
 	//             format: int64
 	//             type: integer
@@ -121,26 +146,15 @@ func ExampleGenerator_GenDocument() {
 	// topics:
 	//   another.one:
 	//     subscribe:
-	//       description: This is another sample schema
-	//       headers:
-	//         properties:
-	//           X-Trace-ID:
-	//             type: string
-	//         required:
-	//         - X-Trace-ID
-	//         type: object
-	//       payload:
-	//         $ref: '#/components/schemas/MyAnotherMessage'
-	//       summary: Sample consumer
+	//       $ref: '#/components/messages/MyAnotherMessage'
 	//   one.{name}.two:
 	//     parameters:
-	//     - name: name
+	//     - description: Name
+	//       name: name
 	//       schema:
+	//         description: Name
 	//         type: string
 	//     publish:
-	//       description: This is a sample schema
-	//       payload:
-	//         $ref: '#/components/schemas/MyMessage'
-	//       summary: Sample publisher
+	//       $ref: '#/components/messages/MyMessage'
 }
 ```

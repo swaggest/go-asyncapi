@@ -1,5 +1,24 @@
 asyncapi: 1.2.0
 components:
+  messages:
+    MyAnotherMessage:
+      description: This is another sample schema
+      headers:
+        properties:
+          X-Trace-ID:
+            description: Tracing header
+            type: string
+        required:
+        - X-Trace-ID
+        type: object
+      payload:
+        $ref: '#/components/schemas/MyAnotherMessage'
+      summary: Sample consumer
+    MyMessage:
+      description: This is a sample schema
+      payload:
+        $ref: '#/components/schemas/MyMessage'
+      summary: Sample publisher
   schemas:
     MyAnotherMessage:
       properties:
@@ -9,9 +28,11 @@ components:
     MyMessage:
       properties:
         createdAt:
+          description: Creation time
           format: date-time
           type: string
         items:
+          description: List of items
           items:
             $ref: '#/components/schemas/SubItem'
           type: array
@@ -19,8 +40,10 @@ components:
     SubItem:
       properties:
         key:
+          description: Item key
           type: string
         values:
+          description: List of item values
           items:
             format: int64
             type: integer
@@ -36,24 +59,13 @@ servers:
 topics:
   another.one:
     subscribe:
-      description: This is another sample schema
-      headers:
-        properties:
-          X-Trace-ID:
-            type: string
-        required:
-        - X-Trace-ID
-        type: object
-      payload:
-        $ref: '#/components/schemas/MyAnotherMessage'
-      summary: Sample consumer
+      $ref: '#/components/messages/MyAnotherMessage'
   one.{name}.two:
     parameters:
-    - name: name
+    - description: Name
+      name: name
       schema:
+        description: Name
         type: string
     publish:
-      description: This is a sample schema
-      payload:
-        $ref: '#/components/schemas/MyMessage'
-      summary: Sample publisher
+      $ref: '#/components/messages/MyMessage'
