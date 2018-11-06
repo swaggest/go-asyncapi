@@ -1,5 +1,9 @@
 # AsyncAPI Generator for Go
 
+[![Build Status](https://travis-ci.org/swaggest/go-asyncapi.svg?branch=master)](https://travis-ci.org/swaggest/go-asyncapi)
+[![Coverage Status](https://codecov.io/gh/swaggest/go-asyncapi/branch/master/graph/badge.svg)](https://codecov.io/gh/swaggest/go-asyncapi)
+[![GoDoc](https://godoc.org/github.com/swaggest/go-asyncapi?status.svg)](https://godoc.org/github.com/swaggest/go-asyncapi)
+
 This library helps to create [AsyncAPI](https://www.asyncapi.com/) spec from your Go message structures.
 
 ## Example
