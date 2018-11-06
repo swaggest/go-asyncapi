@@ -2,9 +2,10 @@ package spec
 
 import (
 	"encoding/json"
-	"github.com/pkg/errors"
 	"regexp"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 // AsyncAPI structure is generated from #

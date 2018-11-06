@@ -1,5 +1,4 @@
 asyncapi: 1.2.0
-baseTopic: smartylighting.streetlights.1.0
 components:
   schemas:
     MyAnotherMessage:
@@ -30,15 +29,15 @@ components:
       type: object
 info:
   title: My Lovely Messaging API
+  version: 0.0.0
 servers:
 - scheme: amqp
-  url: api.streetlights.smartylighting.com:{port}
+  url: api.lovely.com:{port}
 topics:
   another.one:
     subscribe:
       description: This is another sample schema
       headers:
-        $schema: http://json-schema.org/draft-04/schema#
         properties:
           X-Trace-ID:
             type: string

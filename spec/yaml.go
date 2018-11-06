@@ -2,6 +2,7 @@ package spec
 
 import (
 	"encoding/json"
+
 	"github.com/icza/dyno" //todo remove when gopkg.in/yaml provide a solution to avoid `map[interface{}]interface{}`
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"

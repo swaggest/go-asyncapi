@@ -1,10 +1,11 @@
 package asyncapi
 
 import (
+	"net/http"
+
 	"github.com/pkg/errors"
 	"github.com/swaggest/go-asyncapi/spec"
 	"github.com/swaggest/swgen"
-	"net/http"
 )
 
 // Generator generates AsyncAPI definitions from provided message samples
@@ -107,6 +108,7 @@ func (g Generator) makeOperation(topicItem *spec.TopicItem, m *Message) (*spec.O
 		if err != nil {
 			return nil, err
 		}
+		delete(msg.Headers, "$schema")
 	}
 
 	if _, ok := groups[`body`]; ok {
