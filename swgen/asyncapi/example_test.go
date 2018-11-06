@@ -72,65 +72,63 @@ func ExampleGenerator_GenDocument() {
 
 	fmt.Println(string(yaml))
 	// output:
-	/*
-	asyncapi: 1.2.0
-	components:
-	  schemas:
-	    MyAnotherMessage:
-	      properties:
-	        item:
-	          $ref: '#/components/schemas/SubItem'
-	      type: object
-	    MyMessage:
-	      properties:
-	        createdAt:
-	          format: date-time
-	          type: string
-	        items:
-	          items:
-	            $ref: '#/components/schemas/SubItem'
-	          type: array
-	      type: object
-	    SubItem:
-	      properties:
-	        key:
-	          type: string
-	        values:
-	          items:
-	            format: int64
-	            type: integer
-	          type: array
-	          uniqueItems: true
-	      type: object
-	info:
-	  title: My Lovely Messaging API
-	  version: 0.0.0
-	servers:
-	- scheme: amqp
-	  url: api.lovely.com:{port}
-	topics:
-	  another.one:
-	    subscribe:
-	      description: This is another sample schema
-	      headers:
-	        properties:
-	          X-Trace-ID:
-	            type: string
-	        required:
-	        - X-Trace-ID
-	        type: object
-	      payload:
-	        $ref: '#/components/schemas/MyAnotherMessage'
-	      summary: Sample consumer
-	  one.{name}.two:
-	    parameters:
-	    - name: name
-	      schema:
-	        type: string
-	    publish:
-	      description: This is a sample schema
-	      payload:
-	        $ref: '#/components/schemas/MyMessage'
-	      summary: Sample publisher
-	*/
+	// asyncapi: 1.2.0
+	// components:
+	//   schemas:
+	//     MyAnotherMessage:
+	//       properties:
+	//         item:
+	//           $ref: '#/components/schemas/SubItem'
+	//       type: object
+	//     MyMessage:
+	//       properties:
+	//         createdAt:
+	//           format: date-time
+	//           type: string
+	//         items:
+	//           items:
+	//             $ref: '#/components/schemas/SubItem'
+	//           type: array
+	//       type: object
+	//     SubItem:
+	//       properties:
+	//         key:
+	//           type: string
+	//         values:
+	//           items:
+	//             format: int64
+	//             type: integer
+	//           type: array
+	//           uniqueItems: true
+	//       type: object
+	// info:
+	//   title: My Lovely Messaging API
+	//   version: 0.0.0
+	// servers:
+	// - scheme: amqp
+	//   url: api.lovely.com:{port}
+	// topics:
+	//   another.one:
+	//     subscribe:
+	//       description: This is another sample schema
+	//       headers:
+	//         properties:
+	//           X-Trace-ID:
+	//             type: string
+	//         required:
+	//         - X-Trace-ID
+	//         type: object
+	//       payload:
+	//         $ref: '#/components/schemas/MyAnotherMessage'
+	//       summary: Sample consumer
+	//   one.{name}.two:
+	//     parameters:
+	//     - name: name
+	//       schema:
+	//         type: string
+	//     publish:
+	//       description: This is a sample schema
+	//       payload:
+	//         $ref: '#/components/schemas/MyMessage'
+	//       summary: Sample publisher
 }
