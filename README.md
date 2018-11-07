@@ -20,7 +20,7 @@ import (
 	"github.com/swaggest/go-asyncapi/swgen/asyncapi"
 )
 
-func ExampleGenerator_AddTopic() {
+func main() {
 	type SubItem struct {
 		Key    string  `json:"key" description:"Item key"`
 		Values []int64 `json:"values" uniqueItems:"true" description:"List of item values"`
