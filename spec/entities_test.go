@@ -1,14 +1,15 @@
-package spec
+package spec_test
 
 import (
 	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/swaggest/go-asyncapi/spec"
 )
 
 func TestInfo_MarshalJSON(t *testing.T) {
-	i := Info{
+	i := spec.Info{
 		Version: "v1",
 		MapOfAnythingValues: map[string]interface{}{
 			"x-two": "two",
@@ -22,7 +23,7 @@ func TestInfo_MarshalJSON(t *testing.T) {
 }
 
 func TestInfo_MarshalJSON_Nil(t *testing.T) {
-	i := Info{
+	i := spec.Info{
 		Version: "v1",
 	}
 
@@ -32,7 +33,7 @@ func TestInfo_MarshalJSON_Nil(t *testing.T) {
 }
 
 func TestInfo_UnmarshalJSON(t *testing.T) {
-	i := Info{}
+	i := spec.Info{}
 
 	err := json.Unmarshal([]byte(`{"version":"v1","x-one":1,"x-two":"two"}`), &i)
 	assert.NoError(t, err)
@@ -164,7 +165,7 @@ components:
 
 `)
 
-	var a AsyncAPI
+	var a spec.AsyncAPI
 	err := a.UnmarshalYAML(data)
 	assert.NoError(t, err)
 

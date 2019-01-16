@@ -9,10 +9,8 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/sergi/go-diff v0.0.0-20140808132932-97b2266dfe4b/go.mod h1:0CfEIISq7TuYL3j771MWULgwwjU+GofnZX9QAmXWZgo=
 github.com/stretchr/testify v1.2.2 h1:bSDNvY7ZPG5RlJ8otE/7V6gMiyenm9RtJ7IUVIAoJ1w=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
-github.com/swaggest/swgen v0.4.0 h1:1Ix8j66y7Wq+KgqWjD4X0q+hXqdmhjXHWLP6KUZXLTQ=
-github.com/swaggest/swgen v0.4.0/go.mod h1:zKAwk9pJahcPFxPpZ9Gk+UW9/4ZXurJRTrSHR6VN1SM=
-github.com/swaggest/swgen v0.4.1 h1:kmC9/qCnfvzv4xgMXpCw3dOUli+2XoIzGhtKdP6+Fj0=
-github.com/swaggest/swgen v0.4.1/go.mod h1:zKAwk9pJahcPFxPpZ9Gk+UW9/4ZXurJRTrSHR6VN1SM=
+github.com/swaggest/swgen v0.6.1 h1:CwIRJa2tAcGOrWzq5csfPGEYM1yHYyxwfGWagrXZpgw=
+github.com/swaggest/swgen v0.6.1/go.mod h1:zKAwk9pJahcPFxPpZ9Gk+UW9/4ZXurJRTrSHR6VN1SM=
 github.com/yudai/gojsondiff v0.0.0-20170107030110-7b1b7adf999d/go.mod h1:AY32+k2cwILAkW1fbgxQ5mUmMiZFgLIV+FBNExI05xg=
 github.com/yudai/golcs v0.0.0-20150405163532-d1c525dea8ce/go.mod h1:lgjkn3NuSvDfVJdfcVVdX+jpBxNmX4rDAzaS45IcYoM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=

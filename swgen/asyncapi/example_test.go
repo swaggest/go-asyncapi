@@ -22,7 +22,7 @@ func ExampleGenerator_AddTopic() {
 	}
 
 	type MyAnotherMessage struct {
-		TraceID string  `header:"X-Trace-ID" description:"Tracing header"`
+		TraceID string  `header:"X-Trace-ID" description:"Tracing header" required:"true"`
 		Item    SubItem `json:"item" description:"Some item"`
 	}
 
