@@ -173,7 +173,7 @@ Name
 
 Sample publisher
 
-This is a sample schema
+This is a sample schema, AMQP VHost: some-vhost, AMQP Exchange: some-exchange, AMQP RoutingKey: some-key
 
 
 ##### Payload
@@ -231,7 +231,7 @@ This is a sample schema
 
 ```json
 {
-  "createdAt": "2019-01-16T12:21:15Z",
+  "createdAt": "2019-01-16T13:20:16Z",
   "items": [
     {
       "key": "string",
@@ -345,7 +345,7 @@ This is another sample schema
 ### MyMessage 
 Sample publisher
 
-This is a sample schema
+This is a sample schema, AMQP VHost: some-vhost, AMQP Exchange: some-exchange, AMQP RoutingKey: some-key
 
 
 
@@ -404,7 +404,7 @@ This is a sample schema
 
 ```json
 {
-  "createdAt": "2019-01-16T12:21:15Z",
+  "createdAt": "2019-01-16T13:20:16Z",
   "items": [
     {
       "key": "string",
@@ -525,7 +525,7 @@ This is a sample schema
 
 ```json
 {
-  "createdAt": "2019-01-16T12:21:15Z",
+  "createdAt": "2019-01-16T13:20:16Z",
   "items": [
     {
       "key": "string",

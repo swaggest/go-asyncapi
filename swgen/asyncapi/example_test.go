@@ -47,20 +47,20 @@ func ExampleGenerator_AddTopic() {
 			panic(err.Error())
 		}
 	}
-	must(g.AddTopic(amqp.TopicWithInfo(asyncapi.TopicInfo{
+	must(g.AddTopic(asyncapi.TopicInfo{
 		Topic: "one.{name}.two",
-		Publish: &asyncapi.Message{
+		Publish: amqp.MessageWithInfo(&asyncapi.Message{
 			Message: spec.Message{
 				Description: "This is a sample schema",
 				Summary:     "Sample publisher",
 			},
 			MessageSample: new(MyMessage),
-		},
-	}, amqp.Info{
-		Exchange:   "some-exchange",
-		VHost:      "some-vhost",
-		RoutingKey: "some-key",
-	})))
+		}, amqp.Info{
+			Exchange:   "some-exchange",
+			VHost:      "some-vhost",
+			RoutingKey: "some-key",
+		}),
+	}))
 
 	must(g.AddTopic(asyncapi.TopicInfo{
 		Topic: "another.one",
@@ -96,10 +96,14 @@ func ExampleGenerator_AddTopic() {
 	//         $ref: '#/components/schemas/MyAnotherMessage'
 	//       summary: Sample consumer
 	//     MyMessage:
-	//       description: This is a sample schema
+	//       description: 'This is a sample schema, AMQP VHost: some-vhost, AMQP Exchange:
+	//         some-exchange, AMQP RoutingKey: some-key'
 	//       payload:
 	//         $ref: '#/components/schemas/MyMessage'
 	//       summary: Sample publisher
+	//       x-amqp-exchange: some-exchange
+	//       x-amqp-routing-key: some-key
+	//       x-amqp-vhost: some-vhost
 	//   schemas:
 	//     MyAnotherMessage:
 	//       properties:
@@ -150,8 +154,5 @@ func ExampleGenerator_AddTopic() {
 	//         type: string
 	//     publish:
 	//       $ref: '#/components/messages/MyMessage'
-	//     x-amqp-exchange: some-exchange
-	//     x-amqp-routing-key: some-key
-	//     x-amqp-vhost: some-vhost
 
 }
