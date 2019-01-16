@@ -1,4 +1,4 @@
-# My Lovely Messaging API 0.0.0 documentation
+# My Lovely Messaging API 1.2.3 documentation
 
 
 
@@ -14,19 +14,19 @@
 <a name="servers"></a>
 ## Connection details
 
-<table class="table">
-  <thead class="table__head">
-    <tr class="table__head__row">
-      <th class="table__head__cell">URL</th>
-      <th class="table__head__cell">Scheme</th>
-      <th class="table__head__cell">Description</th>
+<table>
+  <thead>
+    <tr>
+      <th>URL</th>
+      <th>Scheme</th>
+      <th>Description</th>
     </tr>
   </thead>
-  <tbody class="table__body">
-    <tr class="table__body__row">
-      <td class="table__body__cell">api.lovely.com:{port}</td>
-      <td class="table__body__cell">amqp</td>
-      <td class="table__body__cell"></td>
+  <tbody>
+    <tr>
+      <td>api.lovely.com:{port}</td>
+      <td>amqp</td>
+      <td></td>
     </tr>
 
 
@@ -37,9 +37,8 @@
 ## Topics
 
 <a name="topic-another.one"></a>
-<h3><code>subscribe</code>
-another.one
-</h3>
+
+### `subscribe` another.one
 
 
 #### Message
@@ -138,11 +137,9 @@ This is another sample schema
 }
 ```
 
-</div>
 <a name="topic-one.{name}.two"></a>
-<h3><code>publish</code>
-one.{name}.two
-</h3>
+
+### `publish` one.{name}.two
 
 #### Topic Parameters
 
@@ -234,7 +231,7 @@ This is a sample schema
 
 ```json
 {
-  "createdAt": "2018-11-06T18:50:43Z",
+  "createdAt": "2019-01-16T12:21:15Z",
   "items": [
     {
       "key": "string",
@@ -246,13 +243,11 @@ This is a sample schema
 }
 ```
 
-</div>
+
 
 ## Messages
 
-<h3 class="message__header">
-  MyAnotherMessage
-</h3>
+### MyAnotherMessage 
 Sample consumer
 
 This is another sample schema
@@ -347,9 +342,7 @@ This is another sample schema
 }
 ```
 
-<h3 class="message__header">
-  MyMessage
-</h3>
+### MyMessage 
 Sample publisher
 
 This is a sample schema
@@ -411,7 +404,7 @@ This is a sample schema
 
 ```json
 {
-  "createdAt": "2018-11-06T18:50:43Z",
+  "createdAt": "2019-01-16T12:21:15Z",
   "items": [
     {
       "key": "string",
@@ -532,7 +525,7 @@ This is a sample schema
 
 ```json
 {
-  "createdAt": "2018-11-06T18:50:43Z",
+  "createdAt": "2019-01-16T12:21:15Z",
   "items": [
     {
       "key": "string",
