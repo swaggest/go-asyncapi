@@ -52,7 +52,7 @@ components:
       type: object
 info:
   title: My Lovely Messaging API
-  version: 0.0.0
+  version: 1.2.3
 servers:
 - scheme: amqp
   url: api.lovely.com:{port}
@@ -69,3 +69,6 @@ topics:
         type: string
     publish:
       $ref: '#/components/messages/MyMessage'
+    x-amqp-exchange: some-exchange
+    x-amqp-routing-key: some-key
+    x-amqp-vhost: some-vhost

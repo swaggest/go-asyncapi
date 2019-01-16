@@ -5,9 +5,10 @@ import (
 
 	"github.com/icza/dyno" //todo remove when gopkg.in/yaml provide a solution to avoid `map[interface{}]interface{}`
 	"github.com/pkg/errors"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
+// UnmarshalYAML reads from YAML bytes
 func (i *AsyncAPI) UnmarshalYAML(data []byte) error {
 	var v interface{}
 	err := yaml.Unmarshal(data, &v)
@@ -22,6 +23,7 @@ func (i *AsyncAPI) UnmarshalYAML(data []byte) error {
 	return i.UnmarshalJSON(data)
 }
 
+// MarshalYAML produces YAML bytes
 func (i *AsyncAPI) MarshalYAML() ([]byte, error) {
 	jsonData, err := i.MarshalJSON()
 	if err != nil {

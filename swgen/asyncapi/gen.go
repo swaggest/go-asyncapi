@@ -12,7 +12,9 @@ import (
 // Generator generates AsyncAPI definitions from provided message samples
 type Generator struct {
 	Swg  *swgen.Generator
-	Data *spec.AsyncAPI
+	Data spec.AsyncAPI
+
+	pathItems map[string]TopicInfo
 }
 
 // Message is a structure that keeps general info and message sample (optional)
@@ -26,25 +28,28 @@ type Message struct {
 
 // TopicInfo keeps user-defined information about topic
 type TopicInfo struct {
-	Topic      string // event.{streetlightId}.lighting.measured
-	Deprecated bool
-	Publish    *Message
-	Subscribe  *Message
+	Topic         string // event.{streetlightId}.lighting.measured
+	Publish       *Message
+	Subscribe     *Message
+	BaseTopicItem *spec.TopicItem // Optional, if set is used as a base to fill with Message data
 }
 
 // AddTopic adds user-defined topic to AsyncAPI definition
-func (g Generator) AddTopic(info TopicInfo) error {
-	var err error
-	topicItem := spec.TopicItem{
-		Deprecated: info.Deprecated,
+func (g *Generator) AddTopic(info TopicInfo) error {
+	if info.Topic == "" {
+		return errors.New("topic is required")
+	}
+
+	var (
+		topicItem = spec.TopicItem{}
+		err       error
+	)
+	if info.BaseTopicItem != nil {
+		topicItem = *info.BaseTopicItem
 	}
 
 	if g.Swg == nil {
 		g.Swg = swgen.NewGenerator()
-	}
-
-	if g.Data == nil {
-		g.Data = &spec.AsyncAPI{}
 	}
 
 	if g.Data.Components == nil {
@@ -60,14 +65,14 @@ func (g Generator) AddTopic(info TopicInfo) error {
 	}
 
 	if info.Publish != nil {
-		topicItem.Publish, err = g.makeOperation(&topicItem, info.Publish)
+		topicItem.Publish, err = g.makeOperation("publish", info, &topicItem, info.Publish)
 		if err != nil {
 			return errors.Wrapf(err, "failed process publish operation for topic %s", info.Topic)
 		}
 	}
 
 	if info.Subscribe != nil {
-		topicItem.Subscribe, err = g.makeOperation(&topicItem, info.Subscribe)
+		topicItem.Subscribe, err = g.makeOperation("subscribe", info, &topicItem, info.Subscribe)
 		if err != nil {
 			return errors.Wrapf(err, "failed process subscribe operation for topic %s", info.Topic)
 		}
@@ -84,16 +89,24 @@ func (g Generator) AddTopic(info TopicInfo) error {
 	return nil
 }
 
-func (g Generator) makeOperation(topicItem *spec.TopicItem, m *Message) (*spec.Operation, error) {
+func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec.TopicItem, m *Message) (*spec.Operation, error) {
 	if m.MessageSample == nil {
 		return &spec.Operation{
 			Message: &m.Message,
 		}, nil
 	}
 
+	if g.pathItems == nil {
+		g.pathItems = make(map[string]TopicInfo)
+	}
+	path := "/" + intent + "/" + info.Topic
+	g.pathItems[path] = info
+
 	fakeInfo := swgen.PathItemInfo{
-		Method:  http.MethodPost,
-		Request: m.MessageSample,
+		Path:     path,
+		Method:   http.MethodPost,
+		Request:  m.MessageSample,
+		Response: m.MessageSample,
 	}
 	obj := g.Swg.SetPathItem(fakeInfo)
 
@@ -149,4 +162,12 @@ func (g Generator) makeOperation(topicItem *spec.TopicItem, m *Message) (*spec.O
 	return &spec.Operation{
 		Message: &msg,
 	}, nil
+}
+
+// WalkJSONSchemas iterates thorough message payload schemas
+func (g *Generator) WalkJSONSchemas(w func(isPublishing bool, info TopicInfo, schema map[string]interface{})) error {
+	return g.Swg.WalkJSONSchemaResponses(func(path, _ string, _ int, schema map[string]interface{}) {
+		intent := strings.Split(path, "/")[1]
+		w(intent == "publish", g.pathItems[path], schema)
+	})
 }

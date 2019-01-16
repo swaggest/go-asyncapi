@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"time"
 
+	"github.com/swaggest/go-asyncapi/amqp"
 	"github.com/swaggest/go-asyncapi/spec"
 	"github.com/swaggest/go-asyncapi/swgen/asyncapi"
 )
@@ -27,7 +28,7 @@ func ExampleGenerator_AddTopic() {
 	}
 
 	g := asyncapi.Generator{
-		Data: &spec.AsyncAPI{
+		Data: spec.AsyncAPI{
 			Asyncapi: spec.Asyncapi120,
 			Servers: []spec.Server{
 				{
@@ -36,7 +37,7 @@ func ExampleGenerator_AddTopic() {
 				},
 			},
 			Info: &spec.Info{
-				Version: "0.0.0", //required
+				Version: "1.2.3", //required
 				Title:   "My Lovely Messaging API",
 			},
 		},
@@ -46,7 +47,7 @@ func ExampleGenerator_AddTopic() {
 			panic(err.Error())
 		}
 	}
-	must(g.AddTopic(asyncapi.TopicInfo{
+	must(g.AddTopic(amqp.TopicWithInfo(asyncapi.TopicInfo{
 		Topic: "one.{name}.two",
 		Publish: &asyncapi.Message{
 			Message: spec.Message{
@@ -55,7 +56,11 @@ func ExampleGenerator_AddTopic() {
 			},
 			MessageSample: new(MyMessage),
 		},
-	}))
+	}, amqp.Info{
+		Exchange:   "some-exchange",
+		VHost:      "some-vhost",
+		RoutingKey: "some-key",
+	})))
 
 	must(g.AddTopic(asyncapi.TopicInfo{
 		Topic: "another.one",
@@ -128,7 +133,7 @@ func ExampleGenerator_AddTopic() {
 	//       type: object
 	// info:
 	//   title: My Lovely Messaging API
-	//   version: 0.0.0
+	//   version: 1.2.3
 	// servers:
 	// - scheme: amqp
 	//   url: api.lovely.com:{port}
@@ -145,4 +150,8 @@ func ExampleGenerator_AddTopic() {
 	//         type: string
 	//     publish:
 	//       $ref: '#/components/messages/MyMessage'
+	//     x-amqp-exchange: some-exchange
+	//     x-amqp-routing-key: some-key
+	//     x-amqp-vhost: some-vhost
+
 }
