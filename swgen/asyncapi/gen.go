@@ -129,9 +129,12 @@ func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec
 		delete(msg.Headers, "$schema")
 	}
 
-	if _, ok := groups[`body`]; ok {
-		msg.Payload = groups[`body`].Properties[`body`]
+	body, err := g.Swg.GetJSONSchemaRequestBody(obj, cfg)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to make body schema")
 	}
+
+	msg.Payload = body
 
 	for _, param := range obj.Parameters {
 		if param.In == `path` {
