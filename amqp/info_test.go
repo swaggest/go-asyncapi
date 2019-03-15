@@ -9,13 +9,11 @@ import (
 
 func TestMessageWithInfo(t *testing.T) {
 	m := amqp.MessageWithInfo(nil, amqp.Info{
-		Exchange:   "some-exchange",
-		RoutingKey: "some-key",
-		VHost:      "some-vhost",
+		Exchanges: []string{"some-exchange", "another-exchange"},
+		VHost:     "some-vhost",
 	})
 
-	assert.Equal(t, "AMQP VHost: some-vhost, AMQP Exchange: some-exchange, AMQP RoutingKey: some-key", m.Description)
-	assert.Equal(t, "some-exchange", m.MapOfAnythingValues[amqp.Exchange])
-	assert.Equal(t, "some-key", m.MapOfAnythingValues[amqp.RoutingKey])
+	assert.Equal(t, "AMQP VHost: some-vhost, AMQP Exchanges: some-exchange, another-exchange", m.Description)
+	assert.Equal(t, []string{"some-exchange", "another-exchange"}, m.MapOfAnythingValues[amqp.Exchanges])
 	assert.Equal(t, "some-vhost", m.MapOfAnythingValues[amqp.VHost])
 }
