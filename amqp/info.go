@@ -18,23 +18,28 @@ const (
 	RoutingKey = "x-amqp-routing-key"
 	// RoutingKeys defines spec key
 	RoutingKeys = "x-amqp-routing-keys"
+	// Bindings defines spec key
+	Bindings = "x-amqp-bindings"
 )
 
 // Info keeps amqp topic information
 type Info struct {
-	VHost       string   `json:"vhost,omitempty"`
-	Exchange    string   `json:"exchange,omitempty"`
-	Exchanges   []string `json:"exchanges,omitempty"`
-	RoutingKey  string   `json:"routingKey,omitempty"`
-	RoutingKeys []string `json:"routingKeys,omitempty"`
+	VHost       string    `json:"vhost,omitempty"`
+	Exchange    string    `json:"exchange,omitempty"`
+	Exchanges   []string  `json:"exchanges,omitempty"`
+	RoutingKey  string    `json:"routingKey,omitempty"`
+	RoutingKeys []string  `json:"routingKeys,omitempty"`
+	Bindings    []Binding `json:"bindings,omitempty"`
+}
+
+// Binding is amqp binding
+type Binding struct {
+	Exchange   string `json:"exchange,omitempty" yaml:"exchange"`
+	RoutingKey string `json:"routingKey,omitempty" yaml:"routing-key"`
 }
 
 // MessageWithInfo injects amqp info into topic info
 func MessageWithInfo(msg *asyncapi.Message, amqpInfo Info) *asyncapi.Message {
-	if amqpInfo.VHost == "" && amqpInfo.Exchange == "" && amqpInfo.RoutingKey == "" {
-		return msg
-	}
-
 	if msg == nil {
 		msg = &asyncapi.Message{}
 	}
@@ -73,6 +78,14 @@ func MessageWithInfo(msg *asyncapi.Message, amqpInfo Info) *asyncapi.Message {
 	if amqpInfo.RoutingKey != "" {
 		msg.MapOfAnythingValues[RoutingKey] = amqpInfo.RoutingKey
 		msg.Description += ", AMQP RoutingKey: " + amqpInfo.RoutingKey
+	}
+
+	if len(amqpInfo.Bindings) > 0 {
+		msg.MapOfAnythingValues[Bindings] = amqpInfo.Bindings
+		msg.Description += ", AMQP bindings: \n"
+		for _, b := range amqpInfo.Bindings {
+			msg.Description += " * Exchange: " + b.Exchange + ", Routing Key: " + b.RoutingKey + "\n"
+		}
 	}
 
 	msg.Description = strings.TrimLeft(msg.Description, ", ")
