@@ -178,7 +178,49 @@ components:
 	assert.NoError(t, err)
 
 	expected := `asyncapi: 1.2.0
+info:
+  description: "The Smartylighting Streetlights API allows you to remotely manage
+    the city lights.\n\n### Check out its awesome features:\n\n* Turn a specific streetlight
+    on/off \U0001F303\n* Dim a specific streetlight \U0001F60E\n* Receive real-time
+    information about environmental lighting conditions \U0001F4C8\n"
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  title: Streetlights API
+  version: 1.0.0
 baseTopic: smartylighting.streetlights.1.0
+servers:
+- description: Test broker
+  scheme: mqtt
+  url: api.streetlights.smartylighting.com:{port}
+  variables:
+    port:
+      default: "1883"
+      description: Secure connection (TLS) is available through port 8883.
+      enum:
+      - "1883"
+      - "8883"
+topics:
+  action.{streetlightId}.dim:
+    parameters:
+    - $ref: '#/components/parameters/streetlightId'
+    subscribe:
+      $ref: '#/components/messages/dimLight'
+  action.{streetlightId}.turn.off:
+    parameters:
+    - $ref: '#/components/parameters/streetlightId'
+    subscribe:
+      $ref: '#/components/messages/turnOnOff'
+  action.{streetlightId}.turn.on:
+    parameters:
+    - $ref: '#/components/parameters/streetlightId'
+    subscribe:
+      $ref: '#/components/messages/turnOnOff'
+  event.{streetlightId}.lighting.measured:
+    parameters:
+    - $ref: '#/components/parameters/streetlightId'
+    publish:
+      $ref: '#/components/messages/lightMeasured'
 components:
   messages:
     dimLight:
@@ -239,50 +281,8 @@ components:
       description: Provide your API key as the user and leave the password empty.
       in: user
       type: apiKey
-info:
-  description: "The Smartylighting Streetlights API allows you to remotely manage
-    the city lights.\n\n### Check out its awesome features:\n\n* Turn a specific streetlight
-    on/off \U0001F303\n* Dim a specific streetlight \U0001F60E\n* Receive real-time
-    information about environmental lighting conditions \U0001F4C8\n"
-  license:
-    name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0
-  title: Streetlights API
-  version: 1.0.0
 security:
 - apiKey: []
-servers:
-- description: Test broker
-  scheme: mqtt
-  url: api.streetlights.smartylighting.com:{port}
-  variables:
-    port:
-      default: "1883"
-      description: Secure connection (TLS) is available through port 8883.
-      enum:
-      - "1883"
-      - "8883"
-topics:
-  action.{streetlightId}.dim:
-    parameters:
-    - $ref: '#/components/parameters/streetlightId'
-    subscribe:
-      $ref: '#/components/messages/dimLight'
-  action.{streetlightId}.turn.off:
-    parameters:
-    - $ref: '#/components/parameters/streetlightId'
-    subscribe:
-      $ref: '#/components/messages/turnOnOff'
-  action.{streetlightId}.turn.on:
-    parameters:
-    - $ref: '#/components/parameters/streetlightId'
-    subscribe:
-      $ref: '#/components/messages/turnOnOff'
-  event.{streetlightId}.lighting.measured:
-    parameters:
-    - $ref: '#/components/parameters/streetlightId'
-    publish:
-      $ref: '#/components/messages/lightMeasured'
 `
 
 	assert.Equal(t, expected, string(data))

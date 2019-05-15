@@ -80,6 +80,25 @@ func ExampleGenerator_AddTopic() {
 	must(ioutil.WriteFile("sample.yaml", yaml, 0644))
 	// output:
 	// asyncapi: 1.2.0
+	// info:
+	//   title: My Lovely Messaging API
+	//   version: 1.2.3
+	// servers:
+	// - scheme: amqp
+	//   url: api.lovely.com:{port}
+	// topics:
+	//   another.one:
+	//     subscribe:
+	//       $ref: '#/components/messages/MyAnotherMessage'
+	//   one.{name}.two:
+	//     parameters:
+	//     - description: Name
+	//       name: name
+	//       schema:
+	//         description: Name
+	//         type: string
+	//     publish:
+	//       $ref: '#/components/messages/MyMessage'
 	// components:
 	//   messages:
 	//     MyAnotherMessage:
@@ -135,24 +154,5 @@ func ExampleGenerator_AddTopic() {
 	//           type: array
 	//           uniqueItems: true
 	//       type: object
-	// info:
-	//   title: My Lovely Messaging API
-	//   version: 1.2.3
-	// servers:
-	// - scheme: amqp
-	//   url: api.lovely.com:{port}
-	// topics:
-	//   another.one:
-	//     subscribe:
-	//       $ref: '#/components/messages/MyAnotherMessage'
-	//   one.{name}.two:
-	//     parameters:
-	//     - description: Name
-	//       name: name
-	//       schema:
-	//         description: Name
-	//         type: string
-	//     publish:
-	//       $ref: '#/components/messages/MyMessage'
 
 }
