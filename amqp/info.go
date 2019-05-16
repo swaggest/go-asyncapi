@@ -38,7 +38,7 @@ func MessageWithInfo(msg *asyncapi.Message, amqpInfo Info) *asyncapi.Message {
 
 	if amqpInfo.VHost != "" {
 		msg.MapOfAnythingValues[VHost] = amqpInfo.VHost
-		msg.Description += "\nAMQP VHost: " + amqpInfo.VHost + "."
+		msg.Description += "\n\nAMQP VHost: " + amqpInfo.VHost + "."
 	}
 	if len(amqpInfo.Exchanges) > 0 {
 		if amqpInfo.Exchange != "" {
@@ -47,16 +47,16 @@ func MessageWithInfo(msg *asyncapi.Message, amqpInfo Info) *asyncapi.Message {
 		}
 
 		msg.MapOfAnythingValues[Exchanges] = amqpInfo.Exchanges
-		msg.Description += "\nAMQP Exchanges: " + strings.Join(amqpInfo.Exchanges, ", ") + "."
+		msg.Description += "\n\nAMQP Exchanges: " + strings.Join(amqpInfo.Exchanges, ", ") + "."
 	}
 	if amqpInfo.Exchange != "" {
 		msg.MapOfAnythingValues[Exchange] = amqpInfo.Exchange
-		msg.Description += "\nAMQP Exchange: " + amqpInfo.Exchange + "."
+		msg.Description += "\n\nAMQP Exchange: " + amqpInfo.Exchange + "."
 	}
 
 	if amqpInfo.Queue != "" {
 		msg.MapOfAnythingValues[Queue] = amqpInfo.Queue
-		msg.Description += "\nAMQP Queue: " + amqpInfo.Queue + "."
+		msg.Description += "\n\nAMQP Queue: " + amqpInfo.Queue + "."
 	}
 
 	msg.Description = strings.TrimLeft(msg.Description, "\n")

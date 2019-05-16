@@ -51,7 +51,7 @@ func ExampleGenerator_AddTopic() {
 		Topic: "one.{name}.two",
 		Publish: amqp.MessageWithInfo(&asyncapi.Message{
 			Message: spec.Message{
-				Description: "This is a sample schema",
+				Description: "This is a sample schema.",
 				Summary:     "Sample publisher",
 			},
 			MessageSample: new(MyMessage),
@@ -66,7 +66,7 @@ func ExampleGenerator_AddTopic() {
 		Topic: "another.one",
 		Subscribe: &asyncapi.Message{
 			Message: spec.Message{
-				Description: "This is another sample schema",
+				Description: "This is another sample schema.",
 				Summary:     "Sample consumer",
 			},
 			MessageSample: new(MyAnotherMessage),
@@ -102,7 +102,7 @@ func ExampleGenerator_AddTopic() {
 	// components:
 	//   messages:
 	//     MyAnotherMessage:
-	//       description: This is another sample schema
+	//       description: This is another sample schema.
 	//       headers:
 	//         properties:
 	//           X-Trace-ID:
@@ -116,9 +116,12 @@ func ExampleGenerator_AddTopic() {
 	//       summary: Sample consumer
 	//     MyMessage:
 	//       description: |-
-	//         This is a sample schema
+	//         This is a sample schema.
+	//
 	//         AMQP VHost: some-vhost.
+	//
 	//         AMQP Exchange: some-exchange.
+	//
 	//         AMQP Queue: some-queue.
 	//       payload:
 	//         $ref: '#/components/schemas/MyMessage'

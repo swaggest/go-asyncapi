@@ -21,7 +21,7 @@ topics:
 components:
   messages:
     MyAnotherMessage:
-      description: This is another sample schema
+      description: This is another sample schema.
       headers:
         properties:
           X-Trace-ID:
@@ -35,9 +35,12 @@ components:
       summary: Sample consumer
     MyMessage:
       description: |-
-        This is a sample schema
+        This is a sample schema.
+
         AMQP VHost: some-vhost.
+
         AMQP Exchange: some-exchange.
+
         AMQP Queue: some-queue.
       payload:
         $ref: '#/components/schemas/MyMessage'
