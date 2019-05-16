@@ -69,9 +69,9 @@ func TestGenerator_WalkJSONSchemas(t *testing.T) {
 		assert.NoError(t, err)
 		switch info.Topic {
 		case "one.{name}.two":
-			assert.Equal(t, `{"$ref":"#/definitions/MyMessage","$schema":"http://json-schema.org/draft-04/schema#","definitions":{"MyMessage":{"properties":{"createdAt":{"description":"Creation time","format":"date-time","type":"string"},"items":{"description":"List of items","items":{"$ref":"#/definitions/SubItem"},"type":"array"}},"type":"object"},"SubItem":{"properties":{"key":{"description":"Item key","type":"string"},"values":{"description":"List of item values","items":{"format":"int64","type":"integer"},"type":"array","uniqueItems":true}},"type":"object"}}}`, string(js))
+			assert.Equal(t, `{"$schema":"http://json-schema.org/draft-04/schema#","definitions":{"SubItem":{"properties":{"key":{"description":"Item key","type":"string"},"values":{"description":"List of item values","items":{"format":"int64","type":"integer"},"type":"array","uniqueItems":true}},"type":"object"}},"properties":{"createdAt":{"description":"Creation time","format":"date-time","type":"string"},"items":{"description":"List of items","items":{"$ref":"#/definitions/SubItem"},"type":"array"}},"type":"object"}`, string(js))
 		case "another.one":
-			assert.Equal(t, `{"$ref":"#/definitions/MyAnotherMessage","$schema":"http://json-schema.org/draft-04/schema#","definitions":{"MyAnotherMessage":{"properties":{"item":{"$ref":"#/definitions/SubItem"}},"type":"object"},"SubItem":{"properties":{"key":{"description":"Item key","type":"string"},"values":{"description":"List of item values","items":{"format":"int64","type":"integer"},"type":"array","uniqueItems":true}},"type":"object"}}}`, string(js))
+			assert.Equal(t, `{"$schema":"http://json-schema.org/draft-04/schema#","definitions":{"SubItem":{"properties":{"key":{"description":"Item key","type":"string"},"values":{"description":"List of item values","items":{"format":"int64","type":"integer"},"type":"array","uniqueItems":true}},"type":"object"}},"properties":{"item":{"$ref":"#/definitions/SubItem"}},"type":"object"}`, string(js))
 		default:
 			t.Fatal("should not get here")
 		}

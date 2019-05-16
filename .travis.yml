@@ -1,14 +1,14 @@
 language: go
 
 go:
-- tip
+  - 1.12.x
 
 install:
-- GO111MODULE=on go mod vendor
-- wget -O - -q https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s v1.11.3
+  - wget -O - -q https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s v1.11.3
 
 script:
-- go test -v -cover -race -coverprofile=coverage.txt -covermode=atomic ./...
+  - GO111MODULE=on go test -v -cover -race -coverprofile=coverage.txt -covermode=atomic ./...
+  - golangci-lint run ./...
 
 after_success:
-- bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
