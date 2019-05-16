@@ -37,7 +37,7 @@ func ExampleGenerator_AddTopic() {
 				},
 			},
 			Info: &spec.Info{
-				Version: "1.2.3", //required
+				Version: "1.2.3", // required
 				Title:   "My Lovely Messaging API",
 			},
 		},
@@ -56,9 +56,9 @@ func ExampleGenerator_AddTopic() {
 			},
 			MessageSample: new(MyMessage),
 		}, amqp.Info{
-			Exchange:   "some-exchange",
-			VHost:      "some-vhost",
-			RoutingKey: "some-key",
+			Exchange: "some-exchange",
+			VHost:    "some-vhost",
+			Queue:    "some-queue",
 		}),
 	}))
 
@@ -115,13 +115,16 @@ func ExampleGenerator_AddTopic() {
 	//         $ref: '#/components/schemas/MyAnotherMessage'
 	//       summary: Sample consumer
 	//     MyMessage:
-	//       description: 'This is a sample schema, AMQP VHost: some-vhost, AMQP Exchange:
-	//         some-exchange, AMQP RoutingKey: some-key'
+	//       description: |-
+	//         This is a sample schema
+	//         AMQP VHost: some-vhost.
+	//         AMQP Exchange: some-exchange.
+	//         AMQP Queue: some-queue.
 	//       payload:
 	//         $ref: '#/components/schemas/MyMessage'
 	//       summary: Sample publisher
 	//       x-amqp-exchange: some-exchange
-	//       x-amqp-routing-key: some-key
+	//       x-amqp-queue: some-queue
 	//       x-amqp-vhost: some-vhost
 	//   schemas:
 	//     MyAnotherMessage:
