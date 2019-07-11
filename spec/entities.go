@@ -349,7 +349,7 @@ func (i TopicItem) MarshalJSON() ([]byte, error) {
 type Parameter struct {
 	Description         string                 `json:"description,omitempty"` // A brief description of the parameter. This could contain examples of use.  GitHub Flavored Markdown is allowed.
 	Name                string                 `json:"name,omitempty"`        // The name of the parameter.
-	Schema              *Schema                `json:"schema,omitempty"`      // A deterministic version of a JSON Schema object.
+	Schema              map[string]interface{} `json:"schema,omitempty"`      // A deterministic version of a JSON Schema object.
 	Ref                 string                 `json:"$ref,omitempty"`
 	MapOfAnythingValues map[string]interface{} `json:"-"` // Key must match pattern: ^x-
 }
@@ -385,267 +385,11 @@ func (i Parameter) MarshalJSON() ([]byte, error) {
 	return marshalUnion(marshalParameter(i), i.MapOfAnythingValues)
 }
 
-// Schema structure is generated from "#/definitions/schema".
-//
-// A deterministic version of a JSON Schema object.
-type Schema struct {
-	Ref                  string                                                            `json:"$ref,omitempty"`
-	Format               string                                                            `json:"format,omitempty"`
-	Title                string                                                            `json:"title,omitempty"`
-	Description          string                                                            `json:"description,omitempty"`
-	Default              interface{}                                                       `json:"default,omitempty"`
-	MultipleOf           float64                                                           `json:"multipleOf,omitempty"`
-	Maximum              float64                                                           `json:"maximum,omitempty"`
-	ExclusiveMaximum     bool                                                              `json:"exclusiveMaximum,omitempty"`
-	Minimum              float64                                                           `json:"minimum,omitempty"`
-	ExclusiveMinimum     bool                                                              `json:"exclusiveMinimum,omitempty"`
-	MaxLength            int64                                                             `json:"maxLength,omitempty"`
-	MinLength            *HTTPJSONSchemaOrgDraft04SchemaDefinitionsPositiveIntegerDefault0 `json:"minLength,omitempty"`
-	Pattern              string                                                            `json:"pattern,omitempty"`
-	MaxItems             int64                                                             `json:"maxItems,omitempty"`
-	MinItems             *HTTPJSONSchemaOrgDraft04SchemaDefinitionsPositiveIntegerDefault0 `json:"minItems,omitempty"`
-	UniqueItems          bool                                                              `json:"uniqueItems,omitempty"`
-	MaxProperties        int64                                                             `json:"maxProperties,omitempty"`
-	MinProperties        *HTTPJSONSchemaOrgDraft04SchemaDefinitionsPositiveIntegerDefault0 `json:"minProperties,omitempty"`
-	Required             []string                                                          `json:"required,omitempty"`
-	Enum                 []interface{}                                                     `json:"enum,omitempty"`
-	MapOfAnythingValues  map[string]interface{}                                            `json:"-"` // Key must match pattern: ^x-
-	AdditionalProperties *SchemaAdditionalProperties                                       `json:"additionalProperties,omitempty"`
-	Type                 *HTTPJSONSchemaOrgDraft04SchemaPropertiesType                     `json:"type,omitempty"`
-	Items                *SchemaItems                                                      `json:"items,omitempty"`
-	AllOf                []Schema                                                          `json:"allOf,omitempty"`
-	OneOf                []Schema                                                          `json:"oneOf,omitempty"`
-	AnyOf                []Schema                                                          `json:"anyOf,omitempty"`
-	Not                  *Schema                                                           `json:"not,omitempty"` // A deterministic version of a JSON Schema object.
-	Properties           map[string]Schema                                                 `json:"properties,omitempty"`
-	Discriminator        string                                                            `json:"discriminator,omitempty"`
-	ReadOnly             bool                                                              `json:"readOnly,omitempty"`
-	XML                  *XML                                                              `json:"xml,omitempty"`
-	ExternalDocs         *ExternalDocs                                                     `json:"externalDocs,omitempty"` // information about external documentation
-	Example              interface{}                                                       `json:"example,omitempty"`
-}
-
-type marshalSchema Schema
-
-// UnmarshalJSON decodes JSON.
-func (i *Schema) UnmarshalJSON(data []byte) error {
-	ii := marshalSchema(*i)
-
-	err := unionMap{
-		mustUnmarshal: []interface{}{&ii},
-		ignoreKeys: []string{
-			"$ref",
-			"format",
-			"title",
-			"description",
-			"default",
-			"multipleOf",
-			"maximum",
-			"exclusiveMaximum",
-			"minimum",
-			"exclusiveMinimum",
-			"maxLength",
-			"minLength",
-			"pattern",
-			"maxItems",
-			"minItems",
-			"uniqueItems",
-			"maxProperties",
-			"minProperties",
-			"required",
-			"enum",
-			"additionalProperties",
-			"type",
-			"items",
-			"allOf",
-			"oneOf",
-			"anyOf",
-			"not",
-			"properties",
-			"discriminator",
-			"readOnly",
-			"xml",
-			"externalDocs",
-			"example",
-		},
-		patternProperties: map[*regexp.Regexp]interface{}{
-			regexX: &ii.MapOfAnythingValues, // ^x-
-		},
-		jsonData: data,
-	}.unmarshal()
-	if err != nil {
-		return err
-	}
-	*i = Schema(ii)
-	return err
-}
-
-// MarshalJSON encodes JSON.
-func (i Schema) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalSchema(i), i.MapOfAnythingValues)
-}
-
-// HTTPJSONSchemaOrgDraft04SchemaDefinitionsPositiveIntegerDefault0 structure is generated from "http://json-schema.org/draft-04/schema#/definitions/positiveIntegerDefault0".
-type HTTPJSONSchemaOrgDraft04SchemaDefinitionsPositiveIntegerDefault0 struct {
-	Int64 *int64 `json:"-"`
-}
-
-type marshalHTTPJSONSchemaOrgDraft04SchemaDefinitionsPositiveIntegerDefault0 HTTPJSONSchemaOrgDraft04SchemaDefinitionsPositiveIntegerDefault0
-
-// UnmarshalJSON decodes JSON.
-func (i *HTTPJSONSchemaOrgDraft04SchemaDefinitionsPositiveIntegerDefault0) UnmarshalJSON(data []byte) error {
-
-	err := unionMap{
-		mustUnmarshal: []interface{}{&i.Int64},
-		jsonData:      data,
-	}.unmarshal()
-
-	return err
-}
-
-// MarshalJSON encodes JSON.
-func (i HTTPJSONSchemaOrgDraft04SchemaDefinitionsPositiveIntegerDefault0) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPJSONSchemaOrgDraft04SchemaDefinitionsPositiveIntegerDefault0(i), i.Int64)
-}
-
-// SchemaAdditionalProperties structure is generated from "#/definitions/schema->additionalProperties".
-type SchemaAdditionalProperties struct {
-	Schema *Schema `json:"-"`
-	Bool   *bool   `json:"-"`
-}
-
-type marshalSchemaAdditionalProperties SchemaAdditionalProperties
-
-// UnmarshalJSON decodes JSON.
-func (i *SchemaAdditionalProperties) UnmarshalJSON(data []byte) error {
-	mayUnmarshal := []interface{}{&i.Schema, &i.Bool}
-	err := unionMap{
-		mayUnmarshal: mayUnmarshal,
-		jsonData:     data,
-	}.unmarshal()
-	if mayUnmarshal[0] == nil {
-		i.Schema = nil
-	}
-	if mayUnmarshal[1] == nil {
-		i.Bool = nil
-	}
-
-	return err
-}
-
-// MarshalJSON encodes JSON.
-func (i SchemaAdditionalProperties) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalSchemaAdditionalProperties(i), i.Schema, i.Bool)
-}
-
-// HTTPJSONSchemaOrgDraft04SchemaPropertiesType structure is generated from "http://json-schema.org/draft-04/schema#/properties/type".
-type HTTPJSONSchemaOrgDraft04SchemaPropertiesType struct {
-	AnyOf1 []interface{} `json:"-"`
-}
-
-type marshalHTTPJSONSchemaOrgDraft04SchemaPropertiesType HTTPJSONSchemaOrgDraft04SchemaPropertiesType
-
-// UnmarshalJSON decodes JSON.
-func (i *HTTPJSONSchemaOrgDraft04SchemaPropertiesType) UnmarshalJSON(data []byte) error {
-	mayUnmarshal := []interface{}{&i.AnyOf1}
-	err := unionMap{
-		mayUnmarshal: mayUnmarshal,
-		jsonData:     data,
-	}.unmarshal()
-	if mayUnmarshal[0] == nil {
-		i.AnyOf1 = nil
-	}
-
-	return err
-}
-
-// MarshalJSON encodes JSON.
-func (i HTTPJSONSchemaOrgDraft04SchemaPropertiesType) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPJSONSchemaOrgDraft04SchemaPropertiesType(i), i.AnyOf1)
-}
-
-// SchemaItems structure is generated from "#/definitions/schema->items".
-type SchemaItems struct {
-	Schema *Schema  `json:"-"`
-	AnyOf1 []Schema `json:"-"`
-}
-
-type marshalSchemaItems SchemaItems
-
-// UnmarshalJSON decodes JSON.
-func (i *SchemaItems) UnmarshalJSON(data []byte) error {
-	mayUnmarshal := []interface{}{&i.Schema, &i.AnyOf1}
-	err := unionMap{
-		mayUnmarshal: mayUnmarshal,
-		jsonData:     data,
-	}.unmarshal()
-	if mayUnmarshal[0] == nil {
-		i.Schema = nil
-	}
-	if mayUnmarshal[1] == nil {
-		i.AnyOf1 = nil
-	}
-
-	return err
-}
-
-// MarshalJSON encodes JSON.
-func (i SchemaItems) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalSchemaItems(i), i.Schema, i.AnyOf1)
-}
-
-// XML structure is generated from "#/definitions/xml".
-type XML struct {
-	Name      string `json:"name,omitempty"`
-	Namespace string `json:"namespace,omitempty"`
-	Prefix    string `json:"prefix,omitempty"`
-	Attribute bool   `json:"attribute,omitempty"`
-	Wrapped   bool   `json:"wrapped,omitempty"`
-}
-
-// ExternalDocs structure is generated from "#/definitions/externalDocs".
-//
-// information about external documentation.
-type ExternalDocs struct {
-	Description         string                 `json:"description,omitempty"`
-	URL                 string                 `json:"url,omitempty"`
-	MapOfAnythingValues map[string]interface{} `json:"-"` // Key must match pattern: ^x-
-}
-
-type marshalExternalDocs ExternalDocs
-
-// UnmarshalJSON decodes JSON.
-func (i *ExternalDocs) UnmarshalJSON(data []byte) error {
-	ii := marshalExternalDocs(*i)
-
-	err := unionMap{
-		mustUnmarshal: []interface{}{&ii},
-		ignoreKeys: []string{
-			"description",
-			"url",
-		},
-		patternProperties: map[*regexp.Regexp]interface{}{
-			regexX: &ii.MapOfAnythingValues, // ^x-
-		},
-		jsonData: data,
-	}.unmarshal()
-	if err != nil {
-		return err
-	}
-	*i = ExternalDocs(ii)
-	return err
-}
-
-// MarshalJSON encodes JSON.
-func (i ExternalDocs) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalExternalDocs(i), i.MapOfAnythingValues)
-}
-
 // Message structure is generated from "#/definitions/message".
 type Message struct {
 	Ref                 string                 `json:"$ref,omitempty"`
-	Headers             *Schema                `json:"headers,omitempty"` // A deterministic version of a JSON Schema object.
-	Payload             *Schema                `json:"payload,omitempty"` // A deterministic version of a JSON Schema object.
+	Headers             map[string]interface{} `json:"headers,omitempty"` // A deterministic version of a JSON Schema object.
+	Payload             map[string]interface{} `json:"payload,omitempty"` // A deterministic version of a JSON Schema object.
 	Tags                []Tag                  `json:"tags,omitempty"`
 	Summary             string                 `json:"summary,omitempty"`      // A brief summary of the message.
 	Description         string                 `json:"description,omitempty"`  // A longer description of the message. CommonMark is allowed.
@@ -727,6 +471,44 @@ func (i *Tag) UnmarshalJSON(data []byte) error {
 // MarshalJSON encodes JSON.
 func (i Tag) MarshalJSON() ([]byte, error) {
 	return marshalUnion(marshalTag(i), i.MapOfAnythingValues)
+}
+
+// ExternalDocs structure is generated from "#/definitions/externalDocs".
+//
+// information about external documentation.
+type ExternalDocs struct {
+	Description         string                 `json:"description,omitempty"`
+	URL                 string                 `json:"url,omitempty"`
+	MapOfAnythingValues map[string]interface{} `json:"-"` // Key must match pattern: ^x-
+}
+
+type marshalExternalDocs ExternalDocs
+
+// UnmarshalJSON decodes JSON.
+func (i *ExternalDocs) UnmarshalJSON(data []byte) error {
+	ii := marshalExternalDocs(*i)
+
+	err := unionMap{
+		mustUnmarshal: []interface{}{&ii},
+		ignoreKeys: []string{
+			"description",
+			"url",
+		},
+		patternProperties: map[*regexp.Regexp]interface{}{
+			regexX: &ii.MapOfAnythingValues, // ^x-
+		},
+		jsonData: data,
+	}.unmarshal()
+	if err != nil {
+		return err
+	}
+	*i = ExternalDocs(ii)
+	return err
+}
+
+// MarshalJSON encodes JSON.
+func (i ExternalDocs) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalExternalDocs(i), i.MapOfAnythingValues)
 }
 
 // Operation structure is generated from "#/definitions/operation".
@@ -982,10 +764,10 @@ func (i Events) MarshalJSON() ([]byte, error) {
 //
 // An object to hold a set of reusable objects for different aspects of the AsyncAPI Specification.
 type Components struct {
-	Schemas         map[string]Schema          `json:"schemas,omitempty"`  // JSON objects describing schemas the API uses.
-	Messages        map[string]Message         `json:"messages,omitempty"` // JSON objects describing the messages being consumed and produced by the API.
-	SecuritySchemes *ComponentsSecuritySchemes `json:"securitySchemes,omitempty"`
-	Parameters      map[string]Parameter       `json:"parameters,omitempty"` // JSON objects describing re-usable topic parameters.
+	Schemas         map[string]map[string]interface{} `json:"schemas,omitempty"`  // JSON objects describing schemas the API uses.
+	Messages        map[string]Message                `json:"messages,omitempty"` // JSON objects describing the messages being consumed and produced by the API.
+	SecuritySchemes *ComponentsSecuritySchemes        `json:"securitySchemes,omitempty"`
+	Parameters      map[string]Parameter              `json:"parameters,omitempty"` // JSON objects describing re-usable topic parameters.
 }
 
 // Reference structure is generated from "#/definitions/Reference".

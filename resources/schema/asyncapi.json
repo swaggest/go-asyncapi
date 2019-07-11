@@ -330,6 +330,7 @@
       "description": "JSON objects describing re-usable topic parameters."
     },
     "schema": {
+      "x-go-type": "map[string]interface{}",
       "type": "object",
       "description": "A deterministic version of a JSON Schema object.",
       "patternProperties": {
