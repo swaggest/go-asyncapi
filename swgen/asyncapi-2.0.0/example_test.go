@@ -1,17 +1,4 @@
-# AsyncAPI Generator for Go
-
-[![Build Status](https://travis-ci.org/swaggest/go-asyncapi.svg?branch=master)](https://travis-ci.org/swaggest/go-asyncapi)
-[![Coverage Status](https://codecov.io/gh/swaggest/go-asyncapi/branch/master/graph/badge.svg)](https://codecov.io/gh/swaggest/go-asyncapi)
-[![GoDoc](https://godoc.org/github.com/swaggest/go-asyncapi?status.svg)](https://godoc.org/github.com/swaggest/go-asyncapi)
-![Code lines](https://sloc.xyz/github/swaggest/go-asyncapi/?category=code)
-![Comments](https://sloc.xyz/github/swaggest/go-asyncapi/?category=comments)
-
-This library helps to create [AsyncAPI](https://www.asyncapi.com/) spec from your Go message structures.
-
-## Example
-
-```go
-package main
+package asyncapi_test
 
 import (
 	"fmt"
@@ -22,7 +9,7 @@ import (
 	"github.com/swaggest/go-asyncapi/swgen/asyncapi-2.0.0"
 )
 
-func main() {
+func ExampleGenerator_AddTopic() {
 	type SubItem struct {
 		Key    string  `json:"key" description:"Item key"`
 		Values []int64 `json:"values" uniqueItems:"true" description:"List of item values"`
@@ -176,4 +163,3 @@ func main() {
 	//       summary: Sample publisher
 	//       description: This is a sample schema.
 }
-```

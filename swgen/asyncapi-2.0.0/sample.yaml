@@ -1,0 +1,79 @@
+asyncapi: 2.0.0
+info:
+  title: My Lovely Messaging API
+  version: 1.2.3
+servers:
+  production:
+    url: api.lovely.com:{port}
+    protocol: amqp
+channels:
+  another.one:
+    subscribe:
+      message:
+        $ref: '#/components/messages/MyAnotherMessage'
+  one.{name}.two:
+    parameters:
+      name:
+        description: Name
+        schema:
+          description: Name
+          type: string
+    publish:
+      message:
+        $ref: '#/components/messages/MyMessage'
+    bindings:
+      amqp:
+        is: routingKey
+        exchange:
+          name: some-exchange
+components:
+  schemas:
+    MyAnotherMessage:
+      properties:
+        item:
+          $ref: '#/components/schemas/SubItem'
+      type: object
+    MyMessage:
+      properties:
+        createdAt:
+          description: Creation time
+          format: date-time
+          type: string
+        items:
+          description: List of items
+          items:
+            $ref: '#/components/schemas/SubItem'
+          type: array
+      type: object
+    SubItem:
+      properties:
+        key:
+          description: Item key
+          type: string
+        values:
+          description: List of item values
+          items:
+            format: int64
+            type: integer
+          type: array
+          uniqueItems: true
+      type: object
+  messages:
+    MyAnotherMessage:
+      headers:
+        properties:
+          X-Trace-ID:
+            description: Tracing header
+            type: string
+        required:
+        - X-Trace-ID
+        type: object
+      payload:
+        $ref: '#/components/schemas/MyAnotherMessage'
+      summary: Sample consumer
+      description: This is another sample schema.
+    MyMessage:
+      payload:
+        $ref: '#/components/schemas/MyMessage'
+      summary: Sample publisher
+      description: This is a sample schema.
