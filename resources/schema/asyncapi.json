@@ -297,8 +297,12 @@
           "patternProperties": {
             "^[a-zA-Z0-9\\.\\-_]+$": {
               "oneOf": [
-                { "$ref": "#/definitions/Reference" },
-                { "$ref": "#/definitions/SecurityScheme" }
+                {
+                  "$ref": "#/definitions/Reference"
+                },
+                {
+                  "$ref": "#/definitions/SecurityScheme"
+                }
               ]
             }
           }
@@ -330,6 +334,7 @@
       "description": "JSON objects describing re-usable topic parameters."
     },
     "schema": {
+      "x-go-type": "map[string]interface{}",
       "type": "object",
       "description": "A deterministic version of a JSON Schema object.",
       "patternProperties": {
@@ -573,16 +578,20 @@
           "$ref": "#/definitions/schema"
         },
         "$ref": {
-	  "type": "string"
-	}
+          "type": "string"
+        }
       }
     },
     "operation": {
       "oneOf": [
-        { "$ref": "#/definitions/message" },
+        {
+          "$ref": "#/definitions/message"
+        },
         {
           "type": "object",
-          "required": [ "oneOf" ],
+          "required": [
+            "oneOf"
+          ],
           "additionalProperties": false,
           "patternProperties": {
             "^x-": {
@@ -797,12 +806,24 @@
     },
     "SecurityScheme": {
       "oneOf": [
-        { "$ref": "#/definitions/userPassword" },
-        { "$ref": "#/definitions/apiKey" },
-        { "$ref": "#/definitions/X509" },
-        { "$ref": "#/definitions/symmetricEncryption" },
-        { "$ref": "#/definitions/asymmetricEncryption" },
-        { "$ref": "#/definitions/HTTPSecurityScheme" }
+        {
+          "$ref": "#/definitions/userPassword"
+        },
+        {
+          "$ref": "#/definitions/apiKey"
+        },
+        {
+          "$ref": "#/definitions/X509"
+        },
+        {
+          "$ref": "#/definitions/symmetricEncryption"
+        },
+        {
+          "$ref": "#/definitions/asymmetricEncryption"
+        },
+        {
+          "$ref": "#/definitions/HTTPSecurityScheme"
+        }
       ]
     },
     "userPassword": {
@@ -920,9 +941,15 @@
     },
     "HTTPSecurityScheme": {
       "oneOf": [
-        { "$ref": "#/definitions/NonBearerHTTPSecurityScheme" },
-        { "$ref": "#/definitions/BearerHTTPSecurityScheme" },
-        { "$ref": "#/definitions/APIKeyHTTPSecurityScheme" }
+        {
+          "$ref": "#/definitions/NonBearerHTTPSecurityScheme"
+        },
+        {
+          "$ref": "#/definitions/BearerHTTPSecurityScheme"
+        },
+        {
+          "$ref": "#/definitions/APIKeyHTTPSecurityScheme"
+        }
       ]
     },
     "NonBearerHTTPSecurityScheme": {

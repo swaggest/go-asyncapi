@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "AMQP 0-9-1 Message Binding Object",
+  "description": "This object contains information about the message representation in AMQP.\nSee https://github.com/asyncapi/bindings/tree/master/amqp#message-binding-object.",
+  "type": "object",
+  "properties": {
+    "contentEncoding": {
+      "description": "A MIME encoding for the message content.",
+      "type": "string"
+    },
+    "messageType": {
+      "description": "Application-specific message type.",
+      "type": "string"
+    },
+    "bindingVersion": {
+      "description": "The version of this binding. If omitted, \"latest\" MUST be assumed.",
+      "type": "string",
+      "enum": [
+        "0.1.0",
+        "latest"
+      ]
+    }
+  },
+  "additionalProperties": false
+}
