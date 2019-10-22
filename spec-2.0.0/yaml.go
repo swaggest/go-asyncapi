@@ -60,6 +60,9 @@ func (om *orderedMap) UnmarshalJSON(data []byte) error {
 		if err == nil {
 			v := make(orderedMap, 0)
 			err = json.Unmarshal(jsonVal, &v)
+			if err != nil {
+				return err
+			}
 			val = yaml.MapSlice(v)
 		} else {
 			err = json.Unmarshal(jsonVal, &val)
