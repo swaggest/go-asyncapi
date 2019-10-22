@@ -42,8 +42,8 @@ func TestGenerator_WalkJSONSchemas(t *testing.T) {
 			},
 		},
 	}
-	assert.NoError(t, g.AddTopic(asyncapi.TopicInfo{
-		Topic: "one.{name}.two",
+	assert.NoError(t, g.AddChannel(asyncapi.ChannelInfo{
+		Name: "one.{name}.two",
 		Publish: &asyncapi.Message{
 			MessageEntity: spec.MessageEntity{
 				Description: "This is a sample schema",
@@ -53,8 +53,8 @@ func TestGenerator_WalkJSONSchemas(t *testing.T) {
 		},
 	}))
 
-	assert.NoError(t, g.AddTopic(asyncapi.TopicInfo{
-		Topic: "another.one",
+	assert.NoError(t, g.AddChannel(asyncapi.ChannelInfo{
+		Name: "another.one",
 		Subscribe: &asyncapi.Message{
 			MessageEntity: spec.MessageEntity{
 				Description: "This is another sample schema",
@@ -64,10 +64,10 @@ func TestGenerator_WalkJSONSchemas(t *testing.T) {
 		},
 	}))
 
-	assert.NoError(t, g.WalkJSONSchemas(func(isPublishing bool, info asyncapi.TopicInfo, schema map[string]interface{}) {
+	assert.NoError(t, g.WalkJSONSchemas(func(isPublishing bool, info asyncapi.ChannelInfo, schema map[string]interface{}) {
 		js, err := json.Marshal(schema)
 		assert.NoError(t, err)
-		switch info.Topic {
+		switch info.Name {
 		case "one.{name}.two":
 			assert.Equal(t, `{"$schema":"http://json-schema.org/draft-04/schema#","definitions":{"SubItem":{"properties":{"key":{"description":"Item key","type":"string"},"values":{"description":"List of item values","items":{"format":"int64","type":"integer"},"type":"array","uniqueItems":true}},"type":"object"}},"properties":{"createdAt":{"description":"Creation time","format":"date-time","type":"string"},"items":{"description":"List of items","items":{"$ref":"#/definitions/SubItem"},"type":"array"}},"type":"object"}`, string(js))
 		case "another.one":

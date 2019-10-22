@@ -58,9 +58,9 @@ func main() {
 			panic(err.Error())
 		}
 	}
-	must(g.AddTopic(asyncapi.TopicInfo{
-		Topic: "one.{name}.two",
-		BaseTopicItem: &spec.ChannelItem{
+	must(g.AddChannel(asyncapi.ChannelInfo{
+		Name: "one.{name}.two",
+		BaseChannelItem: &spec.ChannelItem{
 			Bindings: &spec.ChannelBindingsObject{
 				Amqp: &spec.AMQP091ChannelBindingObject{
 					Is: spec.AMQP091ChannelBindingObjectIsRoutingKey,
@@ -79,8 +79,8 @@ func main() {
 		},
 	}))
 
-	must(g.AddTopic(asyncapi.TopicInfo{
-		Topic: "another.one",
+	must(g.AddChannel(asyncapi.ChannelInfo{
+		Name: "another.one",
 		Subscribe: &asyncapi.Message{
 			MessageEntity: spec.MessageEntity{
 				Description: "This is another sample schema.",

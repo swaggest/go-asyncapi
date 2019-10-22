@@ -14,7 +14,7 @@ type Generator struct {
 	Swg  *swgen.Generator
 	Data spec.AsyncAPI
 
-	pathItems map[string]TopicInfo
+	channelInfos map[string]ChannelInfo
 }
 
 // Message is a structure that keeps general info and message sample (optional).
@@ -26,26 +26,26 @@ type Message struct {
 	MessageSample interface{}
 }
 
-// TopicInfo keeps user-defined information about topic.
-type TopicInfo struct {
-	Topic         string // event.{streetlightId}.lighting.measured
-	Publish       *Message
-	Subscribe     *Message
-	BaseTopicItem *spec.ChannelItem // Optional, if set is used as a base to fill with Message data
+// ChannelInfo keeps user-defined information about channel.
+type ChannelInfo struct {
+	Name            string // event.{streetlightId}.lighting.measured
+	Publish         *Message
+	Subscribe       *Message
+	BaseChannelItem *spec.ChannelItem // Optional, if set is used as a base to fill with Message data
 }
 
-// AddTopic adds user-defined topic to AsyncAPI definition.
-func (g *Generator) AddTopic(info TopicInfo) error {
-	if info.Topic == "" {
-		return errors.New("topic is required")
+// AddChannel adds user-defined channel to AsyncAPI definition.
+func (g *Generator) AddChannel(info ChannelInfo) error {
+	if info.Name == "" {
+		return errors.New("name is required")
 	}
 
 	var (
-		topicItem = spec.ChannelItem{}
-		err       error
+		channelItem = spec.ChannelItem{}
+		err         error
 	)
-	if info.BaseTopicItem != nil {
-		topicItem = *info.BaseTopicItem
+	if info.BaseChannelItem != nil {
+		channelItem = *info.BaseChannelItem
 	}
 
 	if g.Swg == nil {
@@ -65,16 +65,16 @@ func (g *Generator) AddTopic(info TopicInfo) error {
 	}
 
 	if info.Publish != nil {
-		topicItem.Publish, err = g.makeOperation("publish", info, &topicItem, info.Publish)
+		channelItem.Publish, err = g.makeOperation("publish", info, &channelItem, info.Publish)
 		if err != nil {
-			return errors.Wrapf(err, "failed process publish operation for topic %s", info.Topic)
+			return errors.Wrapf(err, "failed process publish operation for channel %s", info.Name)
 		}
 	}
 
 	if info.Subscribe != nil {
-		topicItem.Subscribe, err = g.makeOperation("subscribe", info, &topicItem, info.Subscribe)
+		channelItem.Subscribe, err = g.makeOperation("subscribe", info, &channelItem, info.Subscribe)
 		if err != nil {
-			return errors.Wrapf(err, "failed process subscribe operation for topic %s", info.Topic)
+			return errors.Wrapf(err, "failed process subscribe operation for channel %s", info.Name)
 		}
 	}
 
@@ -82,11 +82,11 @@ func (g *Generator) AddTopic(info TopicInfo) error {
 		g.Data.Channels = make(map[string]spec.ChannelItem)
 	}
 
-	g.Data.Channels[info.Topic] = topicItem
+	g.Data.Channels[info.Name] = channelItem
 	return nil
 }
 
-func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec.ChannelItem, m *Message) (*spec.Operation, error) {
+func (g *Generator) makeOperation(intent string, info ChannelInfo, channelItem *spec.ChannelItem, m *Message) (*spec.Operation, error) {
 	if m.MessageSample == nil {
 		return &spec.Operation{
 			Message: &spec.Message{
@@ -95,11 +95,11 @@ func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec
 		}, nil
 	}
 
-	if g.pathItems == nil {
-		g.pathItems = make(map[string]TopicInfo)
+	if g.channelInfos == nil {
+		g.channelInfos = make(map[string]ChannelInfo)
 	}
-	path := "/" + intent + "/" + info.Topic
-	g.pathItems[path] = info
+	path := "/" + intent + "/" + info.Name
+	g.channelInfos[path] = info
 
 	fakeInfo := swgen.PathItemInfo{
 		Path:     path,
@@ -142,11 +142,11 @@ func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec
 				return nil, errors.Wrapf(err, "failed to process param schema for %s", param.Name)
 			}
 
-			if topicItem.Parameters == nil {
-				topicItem.Parameters = map[string]spec.Parameter{}
+			if channelItem.Parameters == nil {
+				channelItem.Parameters = map[string]spec.Parameter{}
 			}
 
-			topicItem.Parameters[param.Name] = spec.Parameter{
+			channelItem.Parameters[param.Name] = spec.Parameter{
 				Description: param.Description,
 				Schema:      schema,
 			}
@@ -174,9 +174,9 @@ func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec
 }
 
 // WalkJSONSchemas iterates thorough message payload schemas
-func (g *Generator) WalkJSONSchemas(w func(isPublishing bool, info TopicInfo, schema map[string]interface{})) error {
+func (g *Generator) WalkJSONSchemas(w func(isPublishing bool, info ChannelInfo, schema map[string]interface{})) error {
 	return g.Swg.WalkJSONSchemaResponses(func(path, _ string, _ int, schema map[string]interface{}) {
 		intent := strings.Split(path, "/")[1]
-		w(intent == "publish", g.pathItems[path], schema)
+		w(intent == "publish", g.channelInfos[path], schema)
 	})
 }

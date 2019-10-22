@@ -9,7 +9,7 @@ import (
 	"github.com/swaggest/go-asyncapi/swgen/asyncapi-2.0.0"
 )
 
-func ExampleGenerator_AddTopic() {
+func ExampleGenerator_AddChannel() {
 	type SubItem struct {
 		Key    string  `json:"key" description:"Item key"`
 		Values []int64 `json:"values" uniqueItems:"true" description:"List of item values"`
@@ -45,9 +45,9 @@ func ExampleGenerator_AddTopic() {
 			panic(err.Error())
 		}
 	}
-	must(g.AddTopic(asyncapi.TopicInfo{
-		Topic: "one.{name}.two",
-		BaseTopicItem: &spec.ChannelItem{
+	must(g.AddChannel(asyncapi.ChannelInfo{
+		Name: "one.{name}.two",
+		BaseChannelItem: &spec.ChannelItem{
 			Bindings: &spec.ChannelBindingsObject{
 				Amqp: &spec.AMQP091ChannelBindingObject{
 					Is: spec.AMQP091ChannelBindingObjectIsRoutingKey,
@@ -66,8 +66,8 @@ func ExampleGenerator_AddTopic() {
 		},
 	}))
 
-	must(g.AddTopic(asyncapi.TopicInfo{
-		Topic: "another.one",
+	must(g.AddChannel(asyncapi.ChannelInfo{
+		Name: "another.one",
 		Subscribe: &asyncapi.Message{
 			MessageEntity: spec.MessageEntity{
 				Description: "This is another sample schema.",
