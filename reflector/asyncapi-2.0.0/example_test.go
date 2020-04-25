@@ -5,11 +5,11 @@ import (
 	"io/ioutil"
 	"time"
 
+	"github.com/swaggest/go-asyncapi/reflector/asyncapi-2.0.0"
 	"github.com/swaggest/go-asyncapi/spec-2.0.0"
-	"github.com/swaggest/go-asyncapi/swgen/asyncapi-2.0.0" // nolint:staticcheck // Deprecated package.
 )
 
-func ExampleGenerator_AddChannel() {
+func ExampleReflector_AddChannel() {
 	type SubItem struct {
 		Key    string  `json:"key" description:"Item key"`
 		Values []int64 `json:"values" uniqueItems:"true" description:"List of item values"`
@@ -26,12 +26,21 @@ func ExampleGenerator_AddChannel() {
 		Item    SubItem `json:"item" description:"Some item"`
 	}
 
-	g := asyncapi.Generator{
-		Data: spec.AsyncAPI{
+	reflector := asyncapi.Reflector{
+		Data: &spec.AsyncAPI{
 			Servers: map[string]spec.Server{
-				"production": {
-					URL:      "api.lovely.com:{port}",
-					Protocol: "amqp",
+				"live": {
+					URL:             "api.{country}.lovely.com:5672",
+					Description:     "Production instance.",
+					ProtocolVersion: "0.9.1",
+					Protocol:        "amqp",
+					Variables: map[string]spec.ServerVariable{
+						"country": {
+							Enum:        []string{"RU", "US", "DE", "FR"},
+							Default:     "US",
+							Description: "Country code.",
+						},
+					},
 				},
 			},
 			Info: spec.Info{
@@ -40,12 +49,13 @@ func ExampleGenerator_AddChannel() {
 			},
 		},
 	}
-	must := func(err error) {
+	mustNotFail := func(err error) {
 		if err != nil {
 			panic(err.Error())
 		}
 	}
-	must(g.AddChannel(asyncapi.ChannelInfo{
+
+	mustNotFail(reflector.AddChannel(asyncapi.ChannelInfo{
 		Name: "one.{name}.two",
 		BaseChannelItem: &spec.ChannelItem{
 			Bindings: &spec.ChannelBindingsObject{
@@ -57,7 +67,7 @@ func ExampleGenerator_AddChannel() {
 				},
 			},
 		},
-		Publish: &asyncapi.Message{
+		Publish: &asyncapi.MessageSample{
 			MessageEntity: spec.MessageEntity{
 				Description: "This is a sample schema.",
 				Summary:     "Sample publisher",
@@ -66,9 +76,9 @@ func ExampleGenerator_AddChannel() {
 		},
 	}))
 
-	must(g.AddChannel(asyncapi.ChannelInfo{
+	mustNotFail(reflector.AddChannel(asyncapi.ChannelInfo{
 		Name: "another.one",
-		Subscribe: &asyncapi.Message{
+		Subscribe: &asyncapi.MessageSample{
 			MessageEntity: spec.MessageEntity{
 				Description: "This is another sample schema.",
 				Summary:     "Sample consumer",
@@ -77,35 +87,45 @@ func ExampleGenerator_AddChannel() {
 		},
 	}))
 
-	yaml, err := g.Data.MarshalYAML()
-	must(err)
+	yaml, err := reflector.Data.MarshalYAML()
+	mustNotFail(err)
 
 	fmt.Println(string(yaml))
-	must(ioutil.WriteFile("sample.yaml", yaml, 0644))
+	mustNotFail(ioutil.WriteFile("sample.yaml", yaml, 0644))
 	// output:
 	// asyncapi: 2.0.0
 	// info:
 	//   title: My Lovely Messaging API
 	//   version: 1.2.3
 	// servers:
-	//   production:
-	//     url: api.lovely.com:{port}
+	//   live:
+	//     url: api.{country}.lovely.com:5672
+	//     description: Production instance.
 	//     protocol: amqp
+	//     protocolVersion: 0.9.1
+	//     variables:
+	//       country:
+	//         enum:
+	//         - RU
+	//         - US
+	//         - DE
+	//         - FR
+	//         default: US
+	//         description: Country code.
 	// channels:
 	//   another.one:
 	//     subscribe:
 	//       message:
-	//         $ref: '#/components/messages/MyAnotherMessage'
+	//         $ref: '#/components/messages/Asyncapi200TestMyAnotherMessage'
 	//   one.{name}.two:
 	//     parameters:
 	//       name:
-	//         description: Name
 	//         schema:
 	//           description: Name
 	//           type: string
 	//     publish:
 	//       message:
-	//         $ref: '#/components/messages/MyMessage'
+	//         $ref: '#/components/messages/Asyncapi200TestMyMessage'
 	//     bindings:
 	//       amqp:
 	//         is: routingKey
@@ -113,12 +133,13 @@ func ExampleGenerator_AddChannel() {
 	//           name: some-exchange
 	// components:
 	//   schemas:
-	//     MyAnotherMessage:
+	//     Asyncapi200TestMyAnotherMessage:
 	//       properties:
 	//         item:
-	//           $ref: '#/components/schemas/SubItem'
+	//           $ref: '#/components/schemas/Asyncapi200TestSubItem'
+	//           description: Some item
 	//       type: object
-	//     MyMessage:
+	//     Asyncapi200TestMyMessage:
 	//       properties:
 	//         createdAt:
 	//           description: Creation time
@@ -127,10 +148,10 @@ func ExampleGenerator_AddChannel() {
 	//         items:
 	//           description: List of items
 	//           items:
-	//             $ref: '#/components/schemas/SubItem'
+	//             $ref: '#/components/schemas/Asyncapi200TestSubItem'
 	//           type: array
 	//       type: object
-	//     SubItem:
+	//     Asyncapi200TestSubItem:
 	//       properties:
 	//         key:
 	//           description: Item key
@@ -139,12 +160,11 @@ func ExampleGenerator_AddChannel() {
 	//           description: List of item values
 	//           items:
 	//             type: integer
-	//             format: int64
 	//           uniqueItems: true
 	//           type: array
 	//       type: object
 	//   messages:
-	//     MyAnotherMessage:
+	//     Asyncapi200TestMyAnotherMessage:
 	//       headers:
 	//         required:
 	//         - X-Trace-ID
@@ -154,12 +174,12 @@ func ExampleGenerator_AddChannel() {
 	//             type: string
 	//         type: object
 	//       payload:
-	//         $ref: '#/components/schemas/MyAnotherMessage'
+	//         $ref: '#/components/schemas/Asyncapi200TestMyAnotherMessage'
 	//       summary: Sample consumer
 	//       description: This is another sample schema.
-	//     MyMessage:
+	//     Asyncapi200TestMyMessage:
 	//       payload:
-	//         $ref: '#/components/schemas/MyMessage'
+	//         $ref: '#/components/schemas/Asyncapi200TestMyMessage'
 	//       summary: Sample publisher
 	//       description: This is a sample schema.
 }

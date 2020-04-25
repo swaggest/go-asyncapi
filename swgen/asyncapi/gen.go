@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/swaggest/go-asyncapi/spec"
+	"github.com/swaggest/go-asyncapi/spec" // nolint:staticcheck // Deprecated package.
 	"github.com/swaggest/swgen"
 )
 
@@ -44,6 +44,7 @@ func (g *Generator) AddTopic(info TopicInfo) error {
 		topicItem = spec.TopicItem{}
 		err       error
 	)
+
 	if info.BaseTopicItem != nil {
 		topicItem = *info.BaseTopicItem
 	}
@@ -81,11 +82,13 @@ func (g *Generator) AddTopic(info TopicInfo) error {
 	if g.Data.Topics == nil {
 		g.Data.Topics = &spec.Topics{}
 	}
+
 	if g.Data.Topics.MapOfTopicItemValues == nil {
 		g.Data.Topics.MapOfTopicItemValues = make(map[string]spec.TopicItem)
 	}
 
 	g.Data.Topics.MapOfTopicItemValues[info.Topic] = topicItem
+
 	return nil
 }
 
@@ -99,6 +102,7 @@ func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec
 	if g.pathItems == nil {
 		g.pathItems = make(map[string]TopicInfo)
 	}
+
 	path := "/" + intent + "/" + info.Topic
 	g.pathItems[path] = info
 
@@ -115,6 +119,7 @@ func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec
 		StripDefinitions:   true,
 		CollectDefinitions: g.Data.Components.Schemas,
 	}
+
 	groups, err := g.Swg.GetJSONSchemaRequestGroups(obj, cfg)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to make schema")
@@ -126,6 +131,7 @@ func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec
 		if err != nil {
 			return nil, err
 		}
+
 		delete(msg.Headers, "$schema")
 	}
 
@@ -156,9 +162,7 @@ func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec
 		g.Data.Components.Messages[messageName] = msg
 
 		return &spec.Operation{
-			Message: &spec.Message{
-				Ref: "#/components/messages/" + messageName,
-			},
+			Message: (&spec.Message{}).WithRef("#/components/messages/" + messageName),
 		}, nil
 	}
 

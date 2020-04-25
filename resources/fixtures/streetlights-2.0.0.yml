@@ -95,8 +95,8 @@ components:
       type: object
     sentAt:
       description: Date and time when the message was sent.
-      format: date-time
       type: string
+      format: date-time
     turnOnOffPayload:
       properties:
         command:

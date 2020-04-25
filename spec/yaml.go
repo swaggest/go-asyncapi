@@ -12,30 +12,36 @@ import (
 // UnmarshalYAML reads from YAML bytes
 func (i *AsyncAPI) UnmarshalYAML(data []byte) error {
 	var v interface{}
+
 	err := yaml.Unmarshal(data, &v)
 	if err != nil {
 		return err
 	}
+
 	v = convertMapI2MapS(v)
+
 	data, err = json.Marshal(v)
 	if err != nil {
 		return err
 	}
+
 	return i.UnmarshalJSON(data)
 }
 
 // MarshalYAML produces YAML bytes
 func (i *AsyncAPI) MarshalYAML() ([]byte, error) {
-	//return ya.Marshal(i)
 	jsonData, err := i.MarshalJSON()
 	if err != nil {
 		return nil, err
 	}
+
 	var v orderedMap
+
 	err = json.Unmarshal(jsonData, &v)
 	if err != nil {
 		return nil, err
 	}
+
 	return yaml.Marshal(yaml.MapSlice(v))
 }
 
@@ -43,6 +49,7 @@ type orderedMap []yaml.MapItem
 
 func (om *orderedMap) UnmarshalJSON(data []byte) error {
 	var mapData map[string]interface{}
+
 	err := json.Unmarshal(data, &mapData)
 	if err != nil {
 		return err
@@ -65,49 +72,59 @@ func (om *orderedMap) UnmarshalJSON(data []byte) error {
 
 func objectKeys(b []byte) ([]string, error) {
 	d := json.NewDecoder(bytes.NewReader(b))
+
 	t, err := d.Token()
 	if err != nil {
 		return nil, err
 	}
+
 	if t != json.Delim('{') {
 		return nil, errors.New("expected start of object")
 	}
+
 	var keys []string
+
 	for {
 		t, err := d.Token()
 		if err != nil {
 			return nil, err
 		}
+
 		if t == json.Delim('}') {
 			return keys, nil
 		}
+
 		keys = append(keys, t.(string))
+
 		if err := skipValue(d); err != nil {
 			return nil, err
 		}
 	}
 }
 
-var end = errors.New("invalid end of array or object")
+var errInvalidEnd = errors.New("invalid errInvalidEnd of array or object")
 
 func skipValue(d *json.Decoder) error {
 	t, err := d.Token()
 	if err != nil {
 		return err
 	}
+
 	switch t {
 	case json.Delim('['), json.Delim('{'):
 		for {
 			if err := skipValue(d); err != nil {
-				if err == end {
+				if err == errInvalidEnd {
 					break
 				}
+
 				return err
 			}
 		}
 	case json.Delim(']'), json.Delim('}'):
-		return end
+		return errInvalidEnd
 	}
+
 	return nil
 }
 
@@ -129,6 +146,7 @@ func convertMapI2MapS(v interface{}) interface{} {
 	switch x := v.(type) {
 	case map[interface{}]interface{}:
 		m := map[string]interface{}{}
+
 		for k, v2 := range x {
 			switch k2 := k.(type) {
 			case string: // Fast check if it's already a string
@@ -137,6 +155,7 @@ func convertMapI2MapS(v interface{}) interface{} {
 				m[fmt.Sprint(k)] = convertMapI2MapS(v2)
 			}
 		}
+
 		v = m
 
 	case []interface{}:

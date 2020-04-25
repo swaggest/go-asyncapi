@@ -5,13 +5,14 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/swaggest/go-asyncapi/spec"
+	"github.com/swaggest/go-asyncapi/spec" // nolint:staticcheck // Deprecated package.
 )
 
 func TestInfo_MarshalJSON(t *testing.T) {
 	i := spec.Info{
+		Title:   "Acme",
 		Version: "v1",
-		MapOfAnythingValues: map[string]interface{}{
+		MapOfAnything: map[string]interface{}{
 			"x-two": "two",
 			"x-one": 1,
 		},
@@ -19,26 +20,29 @@ func TestInfo_MarshalJSON(t *testing.T) {
 
 	res, err := json.Marshal(i)
 	assert.NoError(t, err)
-	assert.Equal(t, `{"version":"v1","x-one":1,"x-two":"two"}`, string(res))
+	assert.Equal(t, `{"title":"Acme","version":"v1","x-one":1,"x-two":"two"}`, string(res))
 }
 
 func TestInfo_MarshalJSON_Nil(t *testing.T) {
 	i := spec.Info{
+		Title:   "Acme",
 		Version: "v1",
 	}
 
 	res, err := json.Marshal(i)
 	assert.NoError(t, err)
-	assert.Equal(t, `{"version":"v1"}`, string(res))
+	assert.Equal(t, `{"title":"Acme","version":"v1"}`, string(res))
 }
 
 func TestInfo_UnmarshalJSON(t *testing.T) {
 	i := spec.Info{}
 
-	err := json.Unmarshal([]byte(`{"version":"v1","x-one":1,"x-two":"two"}`), &i)
+	err := json.Unmarshal([]byte(`{"title":"Acme","version":"v1","x-one":1,"x-two":"two"}`), &i)
 	assert.NoError(t, err)
-	assert.Equal(t, 1.0, i.MapOfAnythingValues["x-one"].(float64))
-	assert.Equal(t, "two", i.MapOfAnythingValues["x-two"])
+	assert.Equal(t, "Acme", i.Title)
+	assert.Equal(t, "v1", i.Version)
+	assert.Equal(t, 1.0, i.MapOfAnything["x-one"])
+	assert.Equal(t, "two", i.MapOfAnything["x-two"])
 }
 
 func TestAPIKey_UnmarshalJSON(t *testing.T) {

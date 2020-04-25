@@ -14,6 +14,6 @@ func TestMessageWithInfo(t *testing.T) {
 	})
 
 	assert.Equal(t, "AMQP VHost: some-vhost.\n\nAMQP Exchanges: some-exchange, another-exchange.", m.Description)
-	assert.Equal(t, []string{"some-exchange", "another-exchange"}, m.MapOfAnythingValues[amqp.Exchanges])
-	assert.Equal(t, "some-vhost", m.MapOfAnythingValues[amqp.VHost])
+	assert.Equal(t, []string{"some-exchange", "another-exchange"}, m.MapOfAnything[amqp.Exchanges])
+	assert.Equal(t, "some-vhost", m.MapOfAnything[amqp.VHost])
 }

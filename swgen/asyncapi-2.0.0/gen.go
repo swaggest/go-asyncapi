@@ -1,15 +1,17 @@
 package asyncapi
 
 import (
+	"encoding/json"
 	"net/http"
 	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/swaggest/go-asyncapi/spec-2.0.0"
+	"github.com/swaggest/jsonschema-go"
 	"github.com/swaggest/swgen"
 )
 
-// Generator generates AsyncAPI definitions from provided message samples.
+// Reflector generates AsyncAPI definitions from provided message samples.
 type Generator struct {
 	Swg  *swgen.Generator
 	Data spec.AsyncAPI
@@ -44,6 +46,7 @@ func (g *Generator) AddChannel(info ChannelInfo) error {
 		channelItem = spec.ChannelItem{}
 		err         error
 	)
+
 	if info.BaseChannelItem != nil {
 		channelItem = *info.BaseChannelItem
 	}
@@ -57,7 +60,7 @@ func (g *Generator) AddChannel(info ChannelInfo) error {
 	}
 
 	if g.Data.Components.Schemas == nil {
-		g.Data.Components.Schemas = make(map[string]map[string]interface{})
+		g.Data.Components.Schemas = make(map[string]jsonschema.Schema)
 	}
 
 	if g.Data.Components.Messages == nil {
@@ -83,7 +86,24 @@ func (g *Generator) AddChannel(info ChannelInfo) error {
 	}
 
 	g.Data.Channels[info.Name] = channelItem
+
 	return nil
+}
+
+func mapToSchema(m map[string]interface{}) (jsonschema.Schema, error) {
+	j, err := json.Marshal(m)
+	if err != nil {
+		return jsonschema.Schema{}, err
+	}
+
+	var js jsonschema.Schema
+
+	err = json.Unmarshal(j, &js)
+	if err != nil {
+		return jsonschema.Schema{}, err
+	}
+
+	return js, nil
 }
 
 func (g *Generator) makeOperation(intent string, info ChannelInfo, channelItem *spec.ChannelItem, m *Message) (*spec.Operation, error) {
@@ -98,6 +118,7 @@ func (g *Generator) makeOperation(intent string, info ChannelInfo, channelItem *
 	if g.channelInfos == nil {
 		g.channelInfos = make(map[string]ChannelInfo)
 	}
+
 	path := "/" + intent + "/" + info.Name
 	g.channelInfos[path] = info
 
@@ -108,24 +129,38 @@ func (g *Generator) makeOperation(intent string, info ChannelInfo, channelItem *
 		Response: m.MessageSample,
 	}
 	obj := g.Swg.SetPathItem(fakeInfo)
-
+	collect := make(map[string]map[string]interface{}, 1)
 	cfg := swgen.JSONSchemaConfig{
 		DefinitionsPrefix:  "#/components/schemas/",
 		StripDefinitions:   true,
-		CollectDefinitions: g.Data.Components.Schemas,
+		CollectDefinitions: collect,
 	}
+
 	groups, err := g.Swg.GetJSONSchemaRequestGroups(obj, cfg)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to make schema")
 	}
 
+	if g.Data.ComponentsEns().Schemas == nil {
+		g.Data.ComponentsEns().Schemas = map[string]jsonschema.Schema{}
+	}
+
 	msg := m.MessageEntity
+
 	if headerSchema, ok := groups[`header`]; ok {
-		msg.Headers, err = headerSchema.ToMap()
+		hd, err := headerSchema.ToMap()
 		if err != nil {
 			return nil, err
 		}
-		delete(msg.Headers, "$schema")
+
+		hds, err := mapToSchema(hd)
+		if err != nil {
+			return nil, err
+		}
+
+		hds.Schema = nil
+
+		msg.Headers = &hds
 	}
 
 	body, err := g.Swg.GetJSONSchemaRequestBody(obj, cfg)
@@ -133,7 +168,12 @@ func (g *Generator) makeOperation(intent string, info ChannelInfo, channelItem *
 		return nil, errors.Wrap(err, "failed to make body schema")
 	}
 
-	msg.Payload = body
+	js, err := mapToSchema(body)
+	if err != nil {
+		return nil, err
+	}
+
+	msg.Payload = &js
 
 	for _, param := range obj.Parameters {
 		if param.In == `path` {
@@ -146,15 +186,29 @@ func (g *Generator) makeOperation(intent string, info ChannelInfo, channelItem *
 				channelItem.Parameters = map[string]spec.Parameter{}
 			}
 
+			js, err := mapToSchema(schema)
+			if err != nil {
+				return nil, err
+			}
+
 			channelItem.Parameters[param.Name] = spec.Parameter{
 				Description: param.Description,
-				Schema:      schema,
+				Schema:      &js,
 			}
 		}
 	}
 
-	if ref, ok := msg.Payload["$ref"].(string); ok && ref != "" {
-		messageName := strings.TrimPrefix(ref, "#/components/schemas/")
+	for name, schema := range collect {
+		js, err := mapToSchema(schema)
+		if err != nil {
+			return nil, err
+		}
+
+		g.Data.ComponentsEns().Schemas[name] = js
+	}
+
+	if msg.Payload.Ref != nil {
+		messageName := strings.TrimPrefix(*msg.Payload.Ref, "#/components/schemas/")
 		g.Data.Components.Messages[messageName] = spec.Message{
 			Entity: &msg,
 		}

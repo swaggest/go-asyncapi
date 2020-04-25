@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/swaggest/go-asyncapi/amqp"
-	"github.com/swaggest/go-asyncapi/spec"
-	"github.com/swaggest/go-asyncapi/swgen/asyncapi"
+	"github.com/swaggest/go-asyncapi/spec"           // nolint:staticcheck // Deprecated package.
+	"github.com/swaggest/go-asyncapi/swgen/asyncapi" // nolint:staticcheck // Deprecated package.
 )
 
 func ExampleGenerator_AddTopic() {
@@ -36,7 +36,7 @@ func ExampleGenerator_AddTopic() {
 					Scheme: spec.ServerSchemeAmqp,
 				},
 			},
-			Info: &spec.Info{
+			Info: spec.Info{
 				Version: "1.2.3", // required
 				Title:   "My Lovely Messaging API",
 			},
@@ -50,10 +50,9 @@ func ExampleGenerator_AddTopic() {
 	must(g.AddTopic(asyncapi.TopicInfo{
 		Topic: "one.{name}.two",
 		Publish: amqp.MessageWithInfo(&asyncapi.Message{
-			Message: spec.Message{
-				Description: "This is a sample schema.",
-				Summary:     "Sample publisher",
-			},
+			Message: *((&spec.Message{}).
+				WithDescription("This is a sample schema.").
+				WithSummary("Sample publisher")),
 			MessageSample: new(MyMessage),
 		}, amqp.Info{
 			Exchange: "some-exchange",
@@ -65,10 +64,9 @@ func ExampleGenerator_AddTopic() {
 	must(g.AddTopic(asyncapi.TopicInfo{
 		Topic: "another.one",
 		Subscribe: &asyncapi.Message{
-			Message: spec.Message{
-				Description: "This is another sample schema.",
-				Summary:     "Sample consumer",
-			},
+			Message: *(&spec.Message{}).
+				WithDescription("This is another sample schema.").
+				WithSummary("Sample consumer"),
 			MessageSample: new(MyAnotherMessage),
 		},
 	}))
@@ -160,5 +158,4 @@ func ExampleGenerator_AddTopic() {
 	//           type: array
 	//           uniqueItems: true
 	//       type: object
-
 }

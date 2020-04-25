@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/swaggest/go-asyncapi/spec-2.0.0"
-	"github.com/swaggest/go-asyncapi/swgen/asyncapi-2.0.0"
+	"github.com/swaggest/go-asyncapi/swgen/asyncapi-2.0.0" // nolint:staticcheck // Deprecated package.
 )
 
 func TestGenerator_WalkJSONSchemas(t *testing.T) {
@@ -36,7 +36,7 @@ func TestGenerator_WalkJSONSchemas(t *testing.T) {
 					ProtocolVersion: "AMQP 0.9.1",
 				},
 			},
-			Info: &spec.Info{
+			Info: spec.Info{
 				Version: "1.2.3", //required
 				Title:   "My Lovely Messaging API",
 			},

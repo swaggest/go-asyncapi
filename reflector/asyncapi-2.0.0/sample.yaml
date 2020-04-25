@@ -3,24 +3,34 @@ info:
   title: My Lovely Messaging API
   version: 1.2.3
 servers:
-  production:
-    url: api.lovely.com:{port}
+  live:
+    url: api.{country}.lovely.com:5672
+    description: Production instance.
     protocol: amqp
+    protocolVersion: 0.9.1
+    variables:
+      country:
+        enum:
+        - RU
+        - US
+        - DE
+        - FR
+        default: US
+        description: Country code.
 channels:
   another.one:
     subscribe:
       message:
-        $ref: '#/components/messages/MyAnotherMessage'
+        $ref: '#/components/messages/Asyncapi200TestMyAnotherMessage'
   one.{name}.two:
     parameters:
       name:
-        description: Name
         schema:
           description: Name
           type: string
     publish:
       message:
-        $ref: '#/components/messages/MyMessage'
+        $ref: '#/components/messages/Asyncapi200TestMyMessage'
     bindings:
       amqp:
         is: routingKey
@@ -28,12 +38,13 @@ channels:
           name: some-exchange
 components:
   schemas:
-    MyAnotherMessage:
+    Asyncapi200TestMyAnotherMessage:
       properties:
         item:
-          $ref: '#/components/schemas/SubItem'
+          $ref: '#/components/schemas/Asyncapi200TestSubItem'
+          description: Some item
       type: object
-    MyMessage:
+    Asyncapi200TestMyMessage:
       properties:
         createdAt:
           description: Creation time
@@ -42,10 +53,10 @@ components:
         items:
           description: List of items
           items:
-            $ref: '#/components/schemas/SubItem'
+            $ref: '#/components/schemas/Asyncapi200TestSubItem'
           type: array
       type: object
-    SubItem:
+    Asyncapi200TestSubItem:
       properties:
         key:
           description: Item key
@@ -54,12 +65,11 @@ components:
           description: List of item values
           items:
             type: integer
-            format: int64
           uniqueItems: true
           type: array
       type: object
   messages:
-    MyAnotherMessage:
+    Asyncapi200TestMyAnotherMessage:
       headers:
         required:
         - X-Trace-ID
@@ -69,11 +79,11 @@ components:
             type: string
         type: object
       payload:
-        $ref: '#/components/schemas/MyAnotherMessage'
+        $ref: '#/components/schemas/Asyncapi200TestMyAnotherMessage'
       summary: Sample consumer
       description: This is another sample schema.
-    MyMessage:
+    Asyncapi200TestMyMessage:
       payload:
-        $ref: '#/components/schemas/MyMessage'
+        $ref: '#/components/schemas/Asyncapi200TestMyMessage'
       summary: Sample publisher
       description: This is a sample schema.
