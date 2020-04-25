@@ -30,7 +30,7 @@ func TestReflector_AddChannel(t *testing.T) {
 	}
 
 	r := asyncapi.Reflector{
-		Data: &spec.AsyncAPI{
+		Schema: &spec.AsyncAPI{
 			Servers: map[string]spec.Server{
 				"production": {
 					URL:             "api.lovely.com:{port}",
@@ -66,7 +66,7 @@ func TestReflector_AddChannel(t *testing.T) {
 		},
 	}))
 
-	j, err := json.MarshalIndent(r.Data, "", " ")
+	j, err := json.MarshalIndent(r.Schema, "", " ")
 	require.NoError(t, err)
 
 	assertjson.Equal(t, []byte(`{

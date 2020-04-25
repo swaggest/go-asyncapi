@@ -12,16 +12,16 @@ import (
 // Reflector generates AsyncAPI definitions from provided message samples.
 type Reflector struct {
 	jsonschema.Reflector
-	Data *spec.AsyncAPI
+	Schema *spec.AsyncAPI
 }
 
-// DataEns ensures AsyncAPI Data.
+// DataEns ensures AsyncAPI Schema.
 func (r *Reflector) DataEns() *spec.AsyncAPI {
-	if r.Data == nil {
-		r.Data = &spec.AsyncAPI{}
+	if r.Schema == nil {
+		r.Schema = &spec.AsyncAPI{}
 	}
 
-	return r.Data
+	return r.Schema
 }
 
 // MessageSample is a structure that keeps general info and message sample (optional).
@@ -92,11 +92,11 @@ func schemaToMap(schema jsonschema.Schema) map[string]interface{} {
 }
 
 func (r *Reflector) collectDefinition(name string, schema jsonschema.Schema) {
-	if r.Data.ComponentsEns().Schemas == nil {
-		r.Data.ComponentsEns().Schemas = make(map[string]map[string]interface{}, 1)
+	if r.Schema.ComponentsEns().Schemas == nil {
+		r.Schema.ComponentsEns().Schemas = make(map[string]map[string]interface{}, 1)
 	}
 
-	r.Data.ComponentsEns().Schemas[name] = schemaToMap(schema)
+	r.Schema.ComponentsEns().Schemas[name] = schemaToMap(schema)
 }
 
 func (r *Reflector) makeOperation(channelItem *spec.ChannelItem, m *MessageSample) (*spec.Operation, error) {
@@ -164,7 +164,7 @@ func (r *Reflector) makeOperation(channelItem *spec.ChannelItem, m *MessageSampl
 
 	if payloadSchema.Ref != nil {
 		messageName := strings.TrimPrefix(*payloadSchema.Ref, "#/components/schemas/")
-		r.Data.ComponentsEns().WithMessagesItem(messageName, spec.Message{
+		r.Schema.ComponentsEns().WithMessagesItem(messageName, spec.Message{
 			Entity: &m.MessageEntity,
 		})
 

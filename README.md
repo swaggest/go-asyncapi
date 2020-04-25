@@ -40,7 +40,7 @@ func main() {
 	}
 
 	reflector := asyncapi.Reflector{
-		Data: &spec.AsyncAPI{
+		Schema: &spec.AsyncAPI{
 			Servers: map[string]spec.Server{
 				"live": {
 					URL:             "api.{country}.lovely.com:5672",
@@ -100,7 +100,7 @@ func main() {
 		},
 	}))
 
-	yaml, err := reflector.Data.MarshalYAML()
+	yaml, err := reflector.Schema.MarshalYAML()
 	mustNotFail(err)
 
 	fmt.Println(string(yaml))
