@@ -1,3 +1,4 @@
+// Package asyncapi provides schema reflector.
 package asyncapi
 
 import (

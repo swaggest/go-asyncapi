@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/swaggest/go-asyncapi/spec"
-	"github.com/swaggest/go-asyncapi/swgen/asyncapi"
+	"github.com/swaggest/go-asyncapi/spec"           // nolint:staticcheck // Deprecated.
+	"github.com/swaggest/go-asyncapi/swgen/asyncapi" // nolint:staticcheck // Deprecated.
 )
 
 func TestGenerator_WalkJSONSchemas(t *testing.T) {

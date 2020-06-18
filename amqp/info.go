@@ -4,7 +4,7 @@ package amqp
 import (
 	"strings"
 
-	"github.com/swaggest/go-asyncapi/swgen/asyncapi"
+	"github.com/swaggest/go-asyncapi/swgen/asyncapi" // nolint:staticcheck // Deprecated.
 )
 
 const (
@@ -18,7 +18,7 @@ const (
 	Queue = "x-amqp-queue"
 )
 
-// Info keeps amqp topic information
+// Info keeps amqp topic information.
 type Info struct {
 	VHost     string   `json:"vhost,omitempty"`
 	Exchange  string   `json:"exchange,omitempty"`
@@ -26,7 +26,7 @@ type Info struct {
 	Queue     string   `json:"queue,omitempty"`
 }
 
-// MessageWithInfo injects amqp info into topic info
+// MessageWithInfo injects amqp info into topic info.
 func MessageWithInfo(msg *asyncapi.Message, amqpInfo Info) *asyncapi.Message {
 	if msg == nil {
 		msg = &asyncapi.Message{}
@@ -40,6 +40,7 @@ func MessageWithInfo(msg *asyncapi.Message, amqpInfo Info) *asyncapi.Message {
 		msg.MapOfAnythingValues[VHost] = amqpInfo.VHost
 		msg.Description += "\n\nAMQP VHost: " + amqpInfo.VHost + "."
 	}
+
 	if len(amqpInfo.Exchanges) > 0 {
 		if amqpInfo.Exchange != "" {
 			amqpInfo.Exchanges = append(amqpInfo.Exchanges, amqpInfo.Exchange)
@@ -49,6 +50,7 @@ func MessageWithInfo(msg *asyncapi.Message, amqpInfo Info) *asyncapi.Message {
 		msg.MapOfAnythingValues[Exchanges] = amqpInfo.Exchanges
 		msg.Description += "\n\nAMQP Exchanges: " + strings.Join(amqpInfo.Exchanges, ", ") + "."
 	}
+
 	if amqpInfo.Exchange != "" {
 		msg.MapOfAnythingValues[Exchange] = amqpInfo.Exchange
 		msg.Description += "\n\nAMQP Exchange: " + amqpInfo.Exchange + "."

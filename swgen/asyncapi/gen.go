@@ -5,11 +5,11 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/swaggest/go-asyncapi/spec"
+	"github.com/swaggest/go-asyncapi/spec" // nolint:staticcheck // Deprecated.
 	"github.com/swaggest/swgen"
 )
 
-// Generator generates AsyncAPI definitions from provided message samples
+// Generator generates AsyncAPI definitions from provided message samples.
 type Generator struct {
 	Swg  *swgen.Generator
 	Data spec.AsyncAPI
@@ -17,24 +17,24 @@ type Generator struct {
 	pathItems map[string]TopicInfo
 }
 
-// Message is a structure that keeps general info and message sample (optional)
+// Message is a structure that keeps general info and message sample (optional).
 type Message struct {
-	// pkg.Message holds general message info
+	// Message holds general message info.
 	spec.Message
 
-	// MessageSample holds a sample of message to be converted to JSON Schema, e.g. `new(MyMessage)`
+	// MessageSample holds a sample of message to be converted to JSON Schema, e.g. `new(MyMessage)`.
 	MessageSample interface{}
 }
 
-// TopicInfo keeps user-defined information about topic
+// TopicInfo keeps user-defined information about topic.
 type TopicInfo struct {
 	Topic         string // event.{streetlightId}.lighting.measured
 	Publish       *Message
 	Subscribe     *Message
-	BaseTopicItem *spec.TopicItem // Optional, if set is used as a base to fill with Message data
+	BaseTopicItem *spec.TopicItem // Optional, if set is used as a base to fill with Message data.
 }
 
-// AddTopic adds user-defined topic to AsyncAPI definition
+// AddTopic adds user-defined topic to AsyncAPI definition.
 func (g *Generator) AddTopic(info TopicInfo) error {
 	if info.Topic == "" {
 		return errors.New("topic is required")
@@ -44,6 +44,7 @@ func (g *Generator) AddTopic(info TopicInfo) error {
 		topicItem = spec.TopicItem{}
 		err       error
 	)
+
 	if info.BaseTopicItem != nil {
 		topicItem = *info.BaseTopicItem
 	}
@@ -81,11 +82,13 @@ func (g *Generator) AddTopic(info TopicInfo) error {
 	if g.Data.Topics == nil {
 		g.Data.Topics = &spec.Topics{}
 	}
+
 	if g.Data.Topics.MapOfTopicItemValues == nil {
 		g.Data.Topics.MapOfTopicItemValues = make(map[string]spec.TopicItem)
 	}
 
 	g.Data.Topics.MapOfTopicItemValues[info.Topic] = topicItem
+
 	return nil
 }
 
@@ -99,6 +102,7 @@ func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec
 	if g.pathItems == nil {
 		g.pathItems = make(map[string]TopicInfo)
 	}
+
 	path := "/" + intent + "/" + info.Topic
 	g.pathItems[path] = info
 
@@ -115,6 +119,7 @@ func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec
 		StripDefinitions:   true,
 		CollectDefinitions: g.Data.Components.Schemas,
 	}
+
 	groups, err := g.Swg.GetJSONSchemaRequestGroups(obj, cfg)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to make schema")
@@ -126,6 +131,7 @@ func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec
 		if err != nil {
 			return nil, err
 		}
+
 		delete(msg.Headers, "$schema")
 	}
 
@@ -167,7 +173,7 @@ func (g *Generator) makeOperation(intent string, info TopicInfo, topicItem *spec
 	}, nil
 }
 
-// WalkJSONSchemas iterates thorough message payload schemas
+// WalkJSONSchemas iterates thorough message payload schemas.
 func (g *Generator) WalkJSONSchemas(w func(isPublishing bool, info TopicInfo, schema map[string]interface{})) error {
 	return g.Swg.WalkJSONSchemaResponses(func(path, _ string, _ int, schema map[string]interface{}) {
 		intent := strings.Split(path, "/")[1]

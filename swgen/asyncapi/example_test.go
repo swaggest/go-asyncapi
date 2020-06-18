@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/swaggest/go-asyncapi/amqp"
-	"github.com/swaggest/go-asyncapi/spec"
-	"github.com/swaggest/go-asyncapi/swgen/asyncapi"
+	"github.com/swaggest/go-asyncapi/spec"           // nolint:staticcheck // Deprecated.
+	"github.com/swaggest/go-asyncapi/swgen/asyncapi" // nolint:staticcheck // Deprecated.
 )
 
 func ExampleGenerator_AddTopic() {
@@ -77,7 +77,7 @@ func ExampleGenerator_AddTopic() {
 	must(err)
 
 	fmt.Println(string(yaml))
-	must(ioutil.WriteFile("sample.yaml", yaml, 0644))
+	must(ioutil.WriteFile("sample.yaml", yaml, 0600))
 	// output:
 	// asyncapi: 1.2.0
 	// info:
@@ -160,5 +160,4 @@ func ExampleGenerator_AddTopic() {
 	//           type: array
 	//           uniqueItems: true
 	//       type: object
-
 }

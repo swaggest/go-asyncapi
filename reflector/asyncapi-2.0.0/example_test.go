@@ -91,7 +91,7 @@ func ExampleReflector_AddChannel() {
 	mustNotFail(err)
 
 	fmt.Println(string(yaml))
-	mustNotFail(ioutil.WriteFile("sample.yaml", yaml, 0644))
+	mustNotFail(ioutil.WriteFile("sample.yaml", yaml, 0600))
 	// output:
 	// asyncapi: 2.0.0
 	// info:
@@ -149,7 +149,9 @@ func ExampleReflector_AddChannel() {
 	//           description: List of items
 	//           items:
 	//             $ref: '#/components/schemas/Asyncapi200TestSubItem'
-	//           type: array
+	//           type:
+	//           - array
+	//           - "null"
 	//       type: object
 	//     Asyncapi200TestSubItem:
 	//       properties:
@@ -160,7 +162,9 @@ func ExampleReflector_AddChannel() {
 	//           description: List of item values
 	//           items:
 	//             type: integer
-	//           type: array
+	//           type:
+	//           - array
+	//           - "null"
 	//           uniqueItems: true
 	//       type: object
 	//   messages:

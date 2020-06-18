@@ -1,3 +1,5 @@
+GOLANGCI_LINT_VERSION := "v1.27.0"
+
 gen-2.0.0:
 	cd resources/schema/ && json-cli gen-go asyncapi-2.0.0.json --output ../../spec-2.0.0/entities.go --fluent-setters --package-name spec --root-name AsyncAPI
 	gofmt -w ./spec-2.0.0/entities.go
@@ -8,4 +10,5 @@ gen-1.2.0:
 	gofmt -w ./spec/entities.go
 
 lint:
-	golangci-lint run --enable-all --disable gochecknoglobals,funlen,gomnd,gocognit,lll ./...
+	@test -s $(GOPATH)/bin/golangci-lint-$(GOLANGCI_LINT_VERSION) || (curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /tmp $(GOLANGCI_LINT_VERSION) && mv /tmp/golangci-lint $(GOPATH)/bin/golangci-lint-$(GOLANGCI_LINT_VERSION))
+	@$(GOPATH)/bin/golangci-lint-$(GOLANGCI_LINT_VERSION) run ./...
