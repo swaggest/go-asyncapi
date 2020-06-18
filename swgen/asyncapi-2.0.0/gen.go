@@ -44,6 +44,7 @@ func (g *Generator) AddChannel(info ChannelInfo) error {
 		channelItem = spec.ChannelItem{}
 		err         error
 	)
+
 	if info.BaseChannelItem != nil {
 		channelItem = *info.BaseChannelItem
 	}
@@ -83,6 +84,7 @@ func (g *Generator) AddChannel(info ChannelInfo) error {
 	}
 
 	g.Data.Channels[info.Name] = channelItem
+
 	return nil
 }
 
@@ -98,6 +100,7 @@ func (g *Generator) makeOperation(intent string, info ChannelInfo, channelItem *
 	if g.channelInfos == nil {
 		g.channelInfos = make(map[string]ChannelInfo)
 	}
+
 	path := "/" + intent + "/" + info.Name
 	g.channelInfos[path] = info
 
@@ -114,6 +117,7 @@ func (g *Generator) makeOperation(intent string, info ChannelInfo, channelItem *
 		StripDefinitions:   true,
 		CollectDefinitions: g.Data.Components.Schemas,
 	}
+
 	groups, err := g.Swg.GetJSONSchemaRequestGroups(obj, cfg)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to make schema")
@@ -125,6 +129,7 @@ func (g *Generator) makeOperation(intent string, info ChannelInfo, channelItem *
 		if err != nil {
 			return nil, err
 		}
+
 		delete(msg.Headers, "$schema")
 	}
 
@@ -173,7 +178,7 @@ func (g *Generator) makeOperation(intent string, info ChannelInfo, channelItem *
 	}, nil
 }
 
-// WalkJSONSchemas iterates thorough message payload schemas
+// WalkJSONSchemas iterates thorough message payload schemas.
 func (g *Generator) WalkJSONSchemas(w func(isPublishing bool, info ChannelInfo, schema map[string]interface{})) error {
 	return g.Swg.WalkJSONSchemaResponses(func(path, _ string, _ int, schema map[string]interface{}) {
 		intent := strings.Split(path, "/")[1]

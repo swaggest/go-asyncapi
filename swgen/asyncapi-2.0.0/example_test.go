@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/swaggest/go-asyncapi/spec-2.0.0"
-	"github.com/swaggest/go-asyncapi/swgen/asyncapi-2.0.0"
+	"github.com/swaggest/go-asyncapi/swgen/asyncapi-2.0.0" // nolint:staticcheck // Deprecated.
 )
 
 func ExampleGenerator_AddChannel() {
@@ -81,7 +81,7 @@ func ExampleGenerator_AddChannel() {
 	must(err)
 
 	fmt.Println(string(yaml))
-	must(ioutil.WriteFile("sample.yaml", yaml, 0644))
+	must(ioutil.WriteFile("sample.yaml", yaml, 0600))
 	// output:
 	// asyncapi: 2.0.0
 	// info:

@@ -121,15 +121,18 @@ func TestReflector_AddChannel(t *testing.T) {
 		"properties": {
 		 "createdAt": {
 		  "description": "Creation time",
-		  "type": "string",
-		  "format": "date-time"
+		  "format": "date-time",
+		  "type": "string"
 		 },
 		 "items": {
 		  "description": "List of items",
 		  "items": {
 		   "$ref": "#/components/schemas/Asyncapi200TestSubItem"
 		  },
-		  "type": "array"
+		  "type": [
+		   "array",
+		   "null"
+		  ]
 		 }
 		},
 		"type": "object"
@@ -145,8 +148,11 @@ func TestReflector_AddChannel(t *testing.T) {
 		  "items": {
 		   "type": "integer"
 		  },
-		  "uniqueItems": true,
-		  "type": "array"
+		  "type": [
+		   "array",
+		   "null"
+		  ],
+		  "uniqueItems": true
 		 }
 		},
 		"type": "object"
@@ -155,15 +161,15 @@ func TestReflector_AddChannel(t *testing.T) {
 	  "messages": {
 	   "Asyncapi200TestMyAnotherMessage": {
 		"headers": {
-		 "required": [
-		  "X-Trace-ID"
-		 ],
 		 "properties": {
 		  "X-Trace-ID": {
 		   "description": "Tracing header",
 		   "type": "string"
 		  }
 		 },
+		 "required": [
+		  "X-Trace-ID"
+		 ],
 		 "type": "object"
 		},
 		"payload": {
