@@ -17,7 +17,14 @@ type Reflector struct {
 }
 
 // DataEns ensures AsyncAPI Schema.
+//
+// Deprecated: use SchemaEns().
 func (r *Reflector) DataEns() *spec.AsyncAPI {
+	return r.SchemaEns()
+}
+
+// SchemaEns ensures AsyncAPI Schema.
+func (r *Reflector) SchemaEns() *spec.AsyncAPI {
 	if r.Schema == nil {
 		r.Schema = &spec.AsyncAPI{}
 	}
@@ -71,7 +78,7 @@ func (r *Reflector) AddChannel(info ChannelInfo) error {
 		}
 	}
 
-	r.DataEns().WithChannelsItem(info.Name, channelItem)
+	r.SchemaEns().WithChannelsItem(info.Name, channelItem)
 
 	return nil
 }
@@ -93,11 +100,11 @@ func schemaToMap(schema jsonschema.Schema) map[string]interface{} {
 }
 
 func (r *Reflector) collectDefinition(name string, schema jsonschema.Schema) {
-	if r.Schema.ComponentsEns().Schemas == nil {
-		r.Schema.ComponentsEns().Schemas = make(map[string]map[string]interface{}, 1)
+	if r.SchemaEns().ComponentsEns().Schemas == nil {
+		r.SchemaEns().ComponentsEns().Schemas = make(map[string]map[string]interface{}, 1)
 	}
 
-	r.Schema.ComponentsEns().Schemas[name] = schemaToMap(schema)
+	r.SchemaEns().ComponentsEns().Schemas[name] = schemaToMap(schema)
 }
 
 func (r *Reflector) makeOperation(channelItem *spec.ChannelItem, m *MessageSample) (*spec.Operation, error) {
@@ -165,7 +172,7 @@ func (r *Reflector) makeOperation(channelItem *spec.ChannelItem, m *MessageSampl
 
 	if payloadSchema.Ref != nil {
 		messageName := strings.TrimPrefix(*payloadSchema.Ref, "#/components/schemas/")
-		r.Schema.ComponentsEns().WithMessagesItem(messageName, spec.Message{
+		r.SchemaEns().ComponentsEns().WithMessagesItem(messageName, spec.Message{
 			Entity: &m.MessageEntity,
 		})
 
