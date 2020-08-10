@@ -90,6 +90,10 @@
         "autoDelete": {
           "description": "Whether the exchange should be deleted when the last queue is unbound from it.",
           "type": "boolean"
+        },
+        "vhost": {
+          "description": "The virtual host of the queue. Defaults to /.",
+          "type": "string"
         }
       }
     },
@@ -113,6 +117,10 @@
         "autoDelete": {
           "description": "Whether the queue should be deleted when the last consumer unsubscribes.",
           "type": "boolean"
+        },
+        "vhost": {
+          "description": "The virtual host of the queue. Defaults to /.",
+          "type": "string"
         }
       }
     }
