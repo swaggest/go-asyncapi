@@ -40,6 +40,13 @@ test: test-unit
 
 JSON_CLI_VERSION := v1.8.7
 
+## Generate bindings for v2.1.0 spec.
+gen-2.1.0:
+	@test -s $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION_210) || (curl -sSfL https://github.com/swaggest/json-cli/releases/download/$(JSON_CLI_VERSION_210)/json-cli -o $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION_210) && chmod +x $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION_210))
+	#cd resources/schema/ && $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION_210) gen-go asyncapi-2.1.0.json --output ../../spec-2.1.0/entities.go --fluent-setters --package-name spec --root-name AsyncAPI
+	cd resources/schema/ && json-cli gen-go asyncapi-2.1.0.json --output ../../spec-2.1.0/entities.go --fluent-setters --package-name spec --root-name AsyncAPI
+	make fix-lint
+
 ## Generate bindings for v2.0.0 spec.
 gen-2.0.0:
 	@test -s $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) || (curl -sSfL https://github.com/swaggest/json-cli/releases/download/$(JSON_CLI_VERSION)/json-cli -o $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) && chmod +x $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION))
