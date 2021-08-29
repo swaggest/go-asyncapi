@@ -46,7 +46,7 @@ gen-2.0.0:
 	cd resources/schema/ && $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) gen-go asyncapi-2.0.0.json --output ../../spec-2.0.0/entities.go --fluent-setters --package-name spec --root-name AsyncAPI
 	gofmt -w ./spec-2.0.0/entities.go
 
-## Generate bindings for v2.1.0 spec.
+## Generate bindings for v1.2.0 spec.
 gen-1.2.0:
 	json-cli gen-go resources/schema/asyncapi.json --output ./spec/entities.go --fluent-setters --package-name spec --root-name AsyncAPI \
 		--renames AsyncAPIAsyncapi100:Asyncapi100 AsyncAPIAsyncapi110:Asyncapi110 AsyncAPIAsyncapi120:Asyncapi120
