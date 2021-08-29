@@ -37,7 +37,7 @@ func TestGenerator_WalkJSONSchemas(t *testing.T) {
 				},
 			},
 			Info: &spec.Info{
-				Version: "1.2.3", //required
+				Version: "1.2.3", // required
 				Title:   "My Lovely Messaging API",
 			},
 		},

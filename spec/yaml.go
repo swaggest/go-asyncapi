@@ -30,7 +30,7 @@ func (i *AsyncAPI) UnmarshalYAML(data []byte) error {
 
 // MarshalYAML produces YAML bytes.
 func (i *AsyncAPI) MarshalYAML() ([]byte, error) {
-	//return ya.Marshal(i)
+	// return ya.Marshal(i)
 	jsonData, err := i.MarshalJSON()
 	if err != nil {
 		return nil, err
@@ -115,7 +115,7 @@ func skipValue(d *json.Decoder) error {
 	case json.Delim('['), json.Delim('{'):
 		for {
 			if err := skipValue(d); err != nil {
-				if err == errEnd {
+				if errors.Is(err, errEnd) {
 					break
 				}
 

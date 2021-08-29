@@ -179,7 +179,10 @@ components:
 
 	expected := `asyncapi: 1.2.0
 info:
-  description: "The Smartylighting Streetlights API allows you to remotely manage the city lights.\n\n### Check out its awesome features:\n\n* Turn a specific streetlight on/off \U0001F303\n* Dim a specific streetlight \U0001F60E\n* Receive real-time information about environmental lighting conditions \U0001F4C8\n"
+  description: "The Smartylighting Streetlights API allows you to remotely manage
+    the city lights.\n\n### Check out its awesome features:\n\n* Turn a specific streetlight
+    on/off \U0001F303\n* Dim a specific streetlight \U0001F60E\n* Receive real-time
+    information about environmental lighting conditions \U0001F4C8\n"
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0

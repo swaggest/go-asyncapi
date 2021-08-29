@@ -121,7 +121,6 @@ func (r *Reflector) makeOperation(channelItem *spec.ChannelItem, m *MessageSampl
 		jsonschema.DefinitionsPrefix("#/components/schemas/"),
 		jsonschema.CollectDefinitions(r.collectDefinition),
 	)
-
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +132,6 @@ func (r *Reflector) makeOperation(channelItem *spec.ChannelItem, m *MessageSampl
 		jsonschema.DefinitionsPrefix("#/components/schemas/"),
 		jsonschema.CollectDefinitions(r.collectDefinition),
 	)
-
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +145,6 @@ func (r *Reflector) makeOperation(channelItem *spec.ChannelItem, m *MessageSampl
 		jsonschema.DefinitionsPrefix("#/components/schemas/"),
 		jsonschema.CollectDefinitions(r.collectDefinition),
 	)
-
 	if err != nil {
 		return nil, err
 	}

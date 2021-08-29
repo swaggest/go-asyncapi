@@ -81,7 +81,7 @@ func ExampleGenerator_AddChannel() {
 	must(err)
 
 	fmt.Println(string(yaml))
-	must(ioutil.WriteFile("sample.yaml", yaml, 0600))
+	must(ioutil.WriteFile("sample.yaml", yaml, 0o600))
 	// output:
 	// asyncapi: 2.0.0
 	// info:
