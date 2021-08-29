@@ -91,7 +91,7 @@ func ExampleReflector_AddChannel() {
 	mustNotFail(err)
 
 	fmt.Println(string(yaml))
-	mustNotFail(ioutil.WriteFile("sample.yaml", yaml, 0600))
+	mustNotFail(ioutil.WriteFile("sample.yaml", yaml, 0o600))
 	// output:
 	// asyncapi: 2.0.0
 	// info:

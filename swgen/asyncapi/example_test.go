@@ -77,7 +77,7 @@ func ExampleGenerator_AddTopic() {
 	must(err)
 
 	fmt.Println(string(yaml))
-	must(ioutil.WriteFile("sample.yaml", yaml, 0600))
+	must(ioutil.WriteFile("sample.yaml", yaml, 0o600))
 	// output:
 	// asyncapi: 1.2.0
 	// info:

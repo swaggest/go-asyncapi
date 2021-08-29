@@ -8,13 +8,13 @@ import (
 )
 
 const (
-	// Exchange defines spec key
+	// Exchange defines spec key.
 	Exchange = "x-amqp-exchange"
-	// Exchanges defines spec key
+	// Exchanges defines spec key.
 	Exchanges = "x-amqp-exchanges"
-	// VHost defines spec key
+	// VHost defines spec key.
 	VHost = "x-amqp-vhost"
-	// Queue defines spec key
+	// Queue defines spec key.
 	Queue = "x-amqp-queue"
 )
 

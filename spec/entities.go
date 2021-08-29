@@ -286,7 +286,6 @@ type marshalTopics Topics
 
 // UnmarshalJSON decodes JSON.
 func (i *Topics) UnmarshalJSON(data []byte) error {
-
 	err := unionMap{
 		patternProperties: map[*regexp.Regexp]interface{}{
 			regexX: &i.MapOfAnythingValues,  // ^x-
@@ -642,10 +641,8 @@ func (i *StreamFramingOneOf0) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-var (
-	// constStreamFramingOneOf0 is unconditionally added to JSON.
-	constStreamFramingOneOf0 = json.RawMessage(`{"type":"chunked"}`)
-)
+// constStreamFramingOneOf0 is unconditionally added to JSON.
+var constStreamFramingOneOf0 = json.RawMessage(`{"type":"chunked"}`)
 
 // MarshalJSON encodes JSON.
 func (i StreamFramingOneOf0) MarshalJSON() ([]byte, error) {
@@ -676,10 +673,8 @@ func (i *StreamFramingOneOf1) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-var (
-	// constStreamFramingOneOf1 is unconditionally added to JSON.
-	constStreamFramingOneOf1 = json.RawMessage(`{"type":"sse","delimiter":"\\n\\n"}`)
-)
+// constStreamFramingOneOf1 is unconditionally added to JSON.
+var constStreamFramingOneOf1 = json.RawMessage(`{"type":"sse","delimiter":"\\n\\n"}`)
 
 // MarshalJSON encodes JSON.
 func (i StreamFramingOneOf1) MarshalJSON() ([]byte, error) {
@@ -809,10 +804,8 @@ func (i *UserPassword) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-var (
-	// constUserPassword is unconditionally added to JSON.
-	constUserPassword = json.RawMessage(`{"type":"userPassword"}`)
-)
+// constUserPassword is unconditionally added to JSON.
+var constUserPassword = json.RawMessage(`{"type":"userPassword"}`)
 
 // MarshalJSON encodes JSON.
 func (i UserPassword) MarshalJSON() ([]byte, error) {
@@ -855,10 +848,8 @@ func (i *APIKey) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-var (
-	// constAPIKey is unconditionally added to JSON.
-	constAPIKey = json.RawMessage(`{"type":"apiKey"}`)
-)
+// constAPIKey is unconditionally added to JSON.
+var constAPIKey = json.RawMessage(`{"type":"apiKey"}`)
 
 // MarshalJSON encodes JSON.
 func (i APIKey) MarshalJSON() ([]byte, error) {
@@ -899,10 +890,8 @@ func (i *X509) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-var (
-	// constX509 is unconditionally added to JSON.
-	constX509 = json.RawMessage(`{"type":"X509"}`)
-)
+// constX509 is unconditionally added to JSON.
+var constX509 = json.RawMessage(`{"type":"X509"}`)
 
 // MarshalJSON encodes JSON.
 func (i X509) MarshalJSON() ([]byte, error) {
@@ -943,10 +932,8 @@ func (i *SymmetricEncryption) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-var (
-	// constSymmetricEncryption is unconditionally added to JSON.
-	constSymmetricEncryption = json.RawMessage(`{"type":"symmetricEncryption"}`)
-)
+// constSymmetricEncryption is unconditionally added to JSON.
+var constSymmetricEncryption = json.RawMessage(`{"type":"symmetricEncryption"}`)
 
 // MarshalJSON encodes JSON.
 func (i SymmetricEncryption) MarshalJSON() ([]byte, error) {
@@ -987,10 +974,8 @@ func (i *AsymmetricEncryption) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-var (
-	// constAsymmetricEncryption is unconditionally added to JSON.
-	constAsymmetricEncryption = json.RawMessage(`{"type":"asymmetricEncryption"}`)
-)
+// constAsymmetricEncryption is unconditionally added to JSON.
+var constAsymmetricEncryption = json.RawMessage(`{"type":"asymmetricEncryption"}`)
 
 // MarshalJSON encodes JSON.
 func (i AsymmetricEncryption) MarshalJSON() ([]byte, error) {
@@ -1033,10 +1018,8 @@ func (i *NonBearerHTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-var (
-	// constNonBearerHTTPSecurityScheme is unconditionally added to JSON.
-	constNonBearerHTTPSecurityScheme = json.RawMessage(`{"type":"http"}`)
-)
+// constNonBearerHTTPSecurityScheme is unconditionally added to JSON.
+var constNonBearerHTTPSecurityScheme = json.RawMessage(`{"type":"http"}`)
 
 // MarshalJSON encodes JSON.
 func (i NonBearerHTTPSecurityScheme) MarshalJSON() ([]byte, error) {
@@ -1082,10 +1065,8 @@ func (i *BearerHTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-var (
-	// constBearerHTTPSecurityScheme is unconditionally added to JSON.
-	constBearerHTTPSecurityScheme = json.RawMessage(`{"scheme":"bearer","type":"http"}`)
-)
+// constBearerHTTPSecurityScheme is unconditionally added to JSON.
+var constBearerHTTPSecurityScheme = json.RawMessage(`{"scheme":"bearer","type":"http"}`)
 
 // MarshalJSON encodes JSON.
 func (i BearerHTTPSecurityScheme) MarshalJSON() ([]byte, error) {
@@ -1130,10 +1111,8 @@ func (i *APIKeyHTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-var (
-	// constAPIKeyHTTPSecurityScheme is unconditionally added to JSON.
-	constAPIKeyHTTPSecurityScheme = json.RawMessage(`{"type":"httpApiKey"}`)
-)
+// constAPIKeyHTTPSecurityScheme is unconditionally added to JSON.
+var constAPIKeyHTTPSecurityScheme = json.RawMessage(`{"type":"httpApiKey"}`)
 
 // MarshalJSON encodes JSON.
 func (i APIKeyHTTPSecurityScheme) MarshalJSON() ([]byte, error) {
@@ -1259,7 +1238,6 @@ type marshalComponentsSecuritySchemes ComponentsSecuritySchemes
 
 // UnmarshalJSON decodes JSON.
 func (i *ComponentsSecuritySchemes) UnmarshalJSON(data []byte) error {
-
 	err := unionMap{
 		patternProperties: map[*regexp.Regexp]interface{}{
 			regexAZAZ09: &i.MapOfComponentsSecuritySchemesAZAZ09Values, // ^[a-zA-Z0-9\.\-_]+$

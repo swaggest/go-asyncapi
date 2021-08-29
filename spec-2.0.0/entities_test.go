@@ -70,7 +70,6 @@ func TestAsyncAPI_UnmarshalYAML(t *testing.T) {
 
 	marshaledData, err := a.MarshalYAML()
 	require.NoError(t, err)
-	//require.NoError(t, ioutil.WriteFile("../resources/fixtures/streetlights-2.0.0-rt.yml", marshaledData, 0600))
 
 	assert.Equal(t, string(data), string(marshaledData))
 }

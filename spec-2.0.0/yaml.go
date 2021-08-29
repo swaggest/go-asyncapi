@@ -135,7 +135,7 @@ func skipValue(d *json.Decoder) error {
 	case json.Delim('['), json.Delim('{'):
 		for {
 			if err := skipValue(d); err != nil {
-				if err == errEnd {
+				if errors.Is(err, errEnd) {
 					break
 				}
 
