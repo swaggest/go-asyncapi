@@ -38,16 +38,16 @@ endif
 ## Run tests
 test: test-unit
 
-JSON_CLI_VERSION := "v1.6.7"
+JSON_CLI_VERSION := v1.8.7
 
 ## Generate bindings for v2.0.0 spec.
 gen-2.0.0:
 	@test -s $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) || (curl -sSfL https://github.com/swaggest/json-cli/releases/download/$(JSON_CLI_VERSION)/json-cli -o $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) && chmod +x $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION))
-	cd resources/schema/ && $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) gen-go asyncapi-2.0.0.json --output ../../spec-2.0.0/entities.go --fluent-setters --package-name spec --root-name AsyncAPI
-	gofmt -w ./spec-2.0.0/entities.go
+	cd resources/schema/ && $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) gen-go asyncapi-2.0.0.json --output ../../spec-2.0.0/entities.go --validate-required --fluent-setters --package-name spec --root-name AsyncAPI
+	make fix-lint
 
 ## Generate bindings for v1.2.0 spec.
 gen-1.2.0:
 	json-cli gen-go resources/schema/asyncapi.json --output ./spec/entities.go --fluent-setters --package-name spec --root-name AsyncAPI \
 		--renames AsyncAPIAsyncapi100:Asyncapi100 AsyncAPIAsyncapi110:Asyncapi110 AsyncAPIAsyncapi120:Asyncapi120
-	gofmt -w ./spec/entities.go
+	make fix-lint
