@@ -43,7 +43,7 @@ func ExampleReflector_AddChannel() {
 					},
 				},
 			},
-			Info: &spec.Info{
+			Info: spec.Info{
 				Version: "1.2.3", // required
 				Title:   "My Lovely Messaging API",
 			},

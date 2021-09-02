@@ -13,6 +13,7 @@ import (
 
 func TestInfo_MarshalJSON(t *testing.T) {
 	i := spec.Info{
+		Title:   "foo",
 		Version: "v1",
 		MapOfAnything: map[string]interface{}{
 			"x-two": "two",
@@ -22,23 +23,26 @@ func TestInfo_MarshalJSON(t *testing.T) {
 
 	res, err := json.Marshal(i)
 	assert.NoError(t, err)
-	assert.Equal(t, `{"version":"v1","x-one":1,"x-two":"two"}`, string(res))
+	assert.Equal(t, `{"title":"foo","version":"v1","x-one":1,"x-two":"two"}`, string(res))
 }
 
 func TestInfo_MarshalJSON_Nil(t *testing.T) {
 	i := spec.Info{
+		Title:   "foo",
 		Version: "v1",
 	}
 
 	res, err := json.Marshal(i)
 	assert.NoError(t, err)
-	assert.Equal(t, `{"version":"v1"}`, string(res))
+	assert.Equal(t, `{"title":"foo","version":"v1"}`, string(res))
 }
 
 func TestInfo_UnmarshalJSON(t *testing.T) {
-	i := spec.Info{}
+	i := spec.Info{
+		Title: "foo",
+	}
 
-	err := json.Unmarshal([]byte(`{"version":"v1","x-one":1,"x-two":"two"}`), &i)
+	err := json.Unmarshal([]byte(`{"title":"foo","version":"v1","x-one":1,"x-two":"two"}`), &i)
 	assert.NoError(t, err)
 	assert.Equal(t, 1.0, i.MapOfAnything["x-one"].(float64))
 	assert.Equal(t, "two", i.MapOfAnything["x-two"])

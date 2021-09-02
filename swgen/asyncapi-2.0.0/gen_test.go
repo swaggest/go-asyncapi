@@ -36,7 +36,7 @@ func TestGenerator_WalkJSONSchemas(t *testing.T) {
 					ProtocolVersion: "AMQP 0.9.1",
 				},
 			},
-			Info: &spec.Info{
+			Info: spec.Info{
 				Version: "1.2.3", // required
 				Title:   "My Lovely Messaging API",
 			},
