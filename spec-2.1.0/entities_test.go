@@ -40,8 +40,8 @@ func TestInfo_MarshalJSON_Nil(t *testing.T) {
 func TestInfo_UnmarshalJSON(t *testing.T) {
 	i := spec.Info{}
 
-	err := json.Unmarshal([]byte(`{"version":"v1","x-one":1,"x-two":"two"}`), &i)
-	assert.NoError(t, err)
+	err := json.Unmarshal([]byte(`{"title":"foo","version":"v1","x-one":1,"x-two":"two"}`), &i)
+	require.NoError(t, err)
 	assert.Equal(t, 1.0, i.MapOfAnything["x-one"].(float64))
 	assert.Equal(t, "two", i.MapOfAnything["x-two"])
 }
@@ -68,7 +68,13 @@ func TestAsyncAPI_UnmarshalYAML(t *testing.T) {
 	err = a.UnmarshalYAML(data)
 	require.NoError(t, err)
 
-	assert.Equal(t, "#/components/messages/lightMeasured", a.Channels["smartylighting/streetlights/1/0/event/{streetlightId}/lighting/measured"].Publish.Message.Reference.Ref)
+	assert.Equal(t,
+		"#/components/messages/lightMeasured",
+		a.Channels["smartylighting.streetlights.1.0.event.{streetlightId}.lighting.measured"].
+			Publish.
+			Message.
+			Reference.
+			Ref)
 
 	marshaledData, err := a.MarshalYAML()
 	require.NoError(t, err)

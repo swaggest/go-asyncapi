@@ -149,6 +149,12 @@ var knownKeysAsyncAPI = []string{
 	"asyncapi",
 }
 
+var requireKeysAsyncAPI = []string{
+	"asyncapi",
+	"info",
+	"channels",
+}
+
 // UnmarshalJSON decodes JSON.
 func (a *AsyncAPI) UnmarshalJSON(data []byte) error {
 	var err error
@@ -165,6 +171,12 @@ func (a *AsyncAPI) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysAsyncAPI {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["asyncapi"]; exists && string(v) != `"2.1.0"` {
@@ -326,6 +338,11 @@ var knownKeysInfo = []string{
 	"license",
 }
 
+var requireKeysInfo = []string{
+	"version",
+	"title",
+}
+
 // UnmarshalJSON decodes JSON.
 func (i *Info) UnmarshalJSON(data []byte) error {
 	var err error
@@ -342,6 +359,12 @@ func (i *Info) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysInfo {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	for _, key := range knownKeysInfo {
@@ -564,6 +587,10 @@ var knownKeysLicense = []string{
 	"url",
 }
 
+var requireKeysLicense = []string{
+	"name",
+}
+
 // UnmarshalJSON decodes JSON.
 func (l *License) UnmarshalJSON(data []byte) error {
 	var err error
@@ -580,6 +607,12 @@ func (l *License) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysLicense {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	for _, key := range knownKeysLicense {
@@ -738,6 +771,11 @@ var knownKeysServer = []string{
 	"bindings",
 }
 
+var requireKeysServer = []string{
+	"url",
+	"protocol",
+}
+
 // UnmarshalJSON decodes JSON.
 func (s *Server) UnmarshalJSON(data []byte) error {
 	var err error
@@ -754,6 +792,12 @@ func (s *Server) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysServer {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	for _, key := range knownKeysServer {
@@ -1411,8 +1455,8 @@ func (c ChannelItem) MarshalJSON() ([]byte, error) {
 
 // Parameter structure is generated from "#/definitions/parameter".
 type Parameter struct {
-	Description string  `json:"description,omitempty"` // A brief description of the parameter. This could contain examples of use. GitHub Flavored Markdown is allowed.
-	Schema      *Schema `json:"schema,omitempty"`
+	Description string                 `json:"description,omitempty"` // A brief description of the parameter. This could contain examples of use. GitHub Flavored Markdown is allowed.
+	Schema      map[string]interface{} `json:"schema,omitempty"`
 	// A runtime expression that specifies the location of the parameter value.
 	// Value must match pattern: `^\$message\.(header|payload)\#(\/(([^\/~])|(~[01]))*)*`.
 	Location      string                 `json:"location,omitempty"`
@@ -1427,18 +1471,20 @@ func (p *Parameter) WithDescription(val string) *Parameter {
 }
 
 // WithSchema sets Schema value.
-func (p *Parameter) WithSchema(val Schema) *Parameter {
-	p.Schema = &val
+func (p *Parameter) WithSchema(val map[string]interface{}) *Parameter {
+	p.Schema = val
 	return p
 }
 
-// SchemaEns ensures returned Schema is not nil.
-func (p *Parameter) SchemaEns() *Schema {
+// WithSchemaItem sets Schema item value.
+func (p *Parameter) WithSchemaItem(key string, val interface{}) *Parameter {
 	if p.Schema == nil {
-		p.Schema = new(Schema)
+		p.Schema = make(map[string]interface{}, 1)
 	}
 
-	return p.Schema
+	p.Schema[key] = val
+
+	return p
 }
 
 // WithLocation sets Location value.
@@ -1544,1401 +1590,6 @@ func (p *Parameter) UnmarshalJSON(data []byte) error {
 // MarshalJSON encodes JSON.
 func (p Parameter) MarshalJSON() ([]byte, error) {
 	return marshalUnion(marshalParameter(p), p.MapOfAnything)
-}
-
-// JSONSchema structure is generated from "jsonSchema".
-//
-// Core schema meta-schema.
-type JSONSchema struct {
-	ID                   string                                                `json:"id,omitempty"`      // Format: uri.
-	Schema               string                                                `json:"$schema,omitempty"` // Format: uri.
-	Title                string                                                `json:"title,omitempty"`
-	Description          string                                                `json:"description,omitempty"`
-	Default              *interface{}                                          `json:"default,omitempty"`
-	MultipleOf           float64                                               `json:"multipleOf,omitempty"`
-	Maximum              float64                                               `json:"maximum,omitempty"`
-	ExclusiveMaximum     *JSONSchemaExclusiveMaximum                           `json:"exclusiveMaximum,omitempty"`
-	Minimum              float64                                               `json:"minimum,omitempty"`
-	ExclusiveMinimum     *JSONSchemaExclusiveMinimum                           `json:"exclusiveMinimum,omitempty"`
-	MaxLength            int64                                                 `json:"maxLength,omitempty"`
-	MinLength            int64                                                 `json:"minLength,omitempty"`
-	Pattern              string                                                `json:"pattern,omitempty"` // Format: regex.
-	TypeObject           *JSONSchema                                           `json:"-"`
-	TypeBoolean          *bool                                                 `json:"-"`
-	AdditionalItems      *JSONSchemaAdditionalItems                            `json:"additionalItems,omitempty"`
-	Items                *JSONSchemaItems                                      `json:"items,omitempty"`
-	MaxItems             int64                                                 `json:"maxItems,omitempty"`
-	MinItems             int64                                                 `json:"minItems,omitempty"`
-	UniqueItems          bool                                                  `json:"uniqueItems,omitempty"`
-	MaxProperties        int64                                                 `json:"maxProperties,omitempty"`
-	MinProperties        int64                                                 `json:"minProperties,omitempty"`
-	Required             []string                                              `json:"required,omitempty"`
-	AdditionalProperties *JSONSchemaAdditionalProperties                       `json:"additionalProperties,omitempty"`
-	Definitions          map[string]interface{}                                `json:"definitions,omitempty"`
-	Properties           map[string]interface{}                                `json:"properties,omitempty"`
-	PatternProperties    map[string]interface{}                                `json:"patternProperties,omitempty"`
-	Dependencies         map[string]JSONSchemaDependenciesAdditionalProperties `json:"dependencies,omitempty"`
-	Enum                 []interface{}                                         `json:"enum,omitempty"`
-	Type                 *JSONSchemaType                                       `json:"type,omitempty"`
-	Format               string                                                `json:"format,omitempty"`
-	Ref                  string                                                `json:"$ref,omitempty"` // Format: uri-reference.
-	AllOf                []interface{}                                         `json:"allOf,omitempty"`
-	AnyOf                []interface{}                                         `json:"anyOf,omitempty"`
-	OneOf                []interface{}                                         `json:"oneOf,omitempty"`
-	Not                  *JSONSchema                                           `json:"not,omitempty"` // Core schema meta-schema.
-	Const                *interface{}                                          `json:"const,omitempty"`
-	Contains             *JSONSchema                                           `json:"contains,omitempty"`      // Core schema meta-schema.
-	PropertyNames        *JSONSchema                                           `json:"propertyNames,omitempty"` // Core schema meta-schema.
-	If                   *JSONSchema                                           `json:"if,omitempty"`            // Core schema meta-schema.
-	Then                 *JSONSchema                                           `json:"then,omitempty"`          // Core schema meta-schema.
-	Else                 *JSONSchema                                           `json:"else,omitempty"`          // Core schema meta-schema.
-	ContentEncoding      string                                                `json:"contentEncoding,omitempty"`
-	ContentMediaType     string                                                `json:"contentMediaType,omitempty"`
-}
-
-// WithID sets ID value.
-func (j *JSONSchema) WithID(val string) *JSONSchema {
-	j.ID = val
-	return j
-}
-
-// WithSchema sets Schema value.
-func (j *JSONSchema) WithSchema(val string) *JSONSchema {
-	j.Schema = val
-	return j
-}
-
-// WithTitle sets Title value.
-func (j *JSONSchema) WithTitle(val string) *JSONSchema {
-	j.Title = val
-	return j
-}
-
-// WithDescription sets Description value.
-func (j *JSONSchema) WithDescription(val string) *JSONSchema {
-	j.Description = val
-	return j
-}
-
-// WithDefault sets Default value.
-func (j *JSONSchema) WithDefault(val interface{}) *JSONSchema {
-	j.Default = &val
-	return j
-}
-
-// WithMultipleOf sets MultipleOf value.
-func (j *JSONSchema) WithMultipleOf(val float64) *JSONSchema {
-	j.MultipleOf = val
-	return j
-}
-
-// WithMaximum sets Maximum value.
-func (j *JSONSchema) WithMaximum(val float64) *JSONSchema {
-	j.Maximum = val
-	return j
-}
-
-// WithExclusiveMaximum sets ExclusiveMaximum value.
-func (j *JSONSchema) WithExclusiveMaximum(val JSONSchemaExclusiveMaximum) *JSONSchema {
-	j.ExclusiveMaximum = &val
-	return j
-}
-
-// ExclusiveMaximumEns ensures returned ExclusiveMaximum is not nil.
-func (j *JSONSchema) ExclusiveMaximumEns() *JSONSchemaExclusiveMaximum {
-	if j.ExclusiveMaximum == nil {
-		j.ExclusiveMaximum = new(JSONSchemaExclusiveMaximum)
-	}
-
-	return j.ExclusiveMaximum
-}
-
-// WithMinimum sets Minimum value.
-func (j *JSONSchema) WithMinimum(val float64) *JSONSchema {
-	j.Minimum = val
-	return j
-}
-
-// WithExclusiveMinimum sets ExclusiveMinimum value.
-func (j *JSONSchema) WithExclusiveMinimum(val JSONSchemaExclusiveMinimum) *JSONSchema {
-	j.ExclusiveMinimum = &val
-	return j
-}
-
-// ExclusiveMinimumEns ensures returned ExclusiveMinimum is not nil.
-func (j *JSONSchema) ExclusiveMinimumEns() *JSONSchemaExclusiveMinimum {
-	if j.ExclusiveMinimum == nil {
-		j.ExclusiveMinimum = new(JSONSchemaExclusiveMinimum)
-	}
-
-	return j.ExclusiveMinimum
-}
-
-// WithMaxLength sets MaxLength value.
-func (j *JSONSchema) WithMaxLength(val int64) *JSONSchema {
-	j.MaxLength = val
-	return j
-}
-
-// WithMinLength sets MinLength value.
-func (j *JSONSchema) WithMinLength(val int64) *JSONSchema {
-	j.MinLength = val
-	return j
-}
-
-// WithPattern sets Pattern value.
-func (j *JSONSchema) WithPattern(val string) *JSONSchema {
-	j.Pattern = val
-	return j
-}
-
-// WithTypeObject sets TypeObject value.
-func (j *JSONSchema) WithTypeObject(val JSONSchema) *JSONSchema {
-	j.TypeObject = &val
-	return j
-}
-
-// TypeObjectEns ensures returned TypeObject is not nil.
-func (j *JSONSchema) TypeObjectEns() *JSONSchema {
-	if j.TypeObject == nil {
-		j.TypeObject = new(JSONSchema)
-	}
-
-	return j.TypeObject
-}
-
-// WithTypeBoolean sets TypeBoolean value.
-func (j *JSONSchema) WithTypeBoolean(val bool) *JSONSchema {
-	j.TypeBoolean = &val
-	return j
-}
-
-// WithAdditionalItems sets AdditionalItems value.
-func (j *JSONSchema) WithAdditionalItems(val JSONSchemaAdditionalItems) *JSONSchema {
-	j.AdditionalItems = &val
-	return j
-}
-
-// AdditionalItemsEns ensures returned AdditionalItems is not nil.
-func (j *JSONSchema) AdditionalItemsEns() *JSONSchemaAdditionalItems {
-	if j.AdditionalItems == nil {
-		j.AdditionalItems = new(JSONSchemaAdditionalItems)
-	}
-
-	return j.AdditionalItems
-}
-
-// WithItems sets Items value.
-func (j *JSONSchema) WithItems(val JSONSchemaItems) *JSONSchema {
-	j.Items = &val
-	return j
-}
-
-// ItemsEns ensures returned Items is not nil.
-func (j *JSONSchema) ItemsEns() *JSONSchemaItems {
-	if j.Items == nil {
-		j.Items = new(JSONSchemaItems)
-	}
-
-	return j.Items
-}
-
-// WithMaxItems sets MaxItems value.
-func (j *JSONSchema) WithMaxItems(val int64) *JSONSchema {
-	j.MaxItems = val
-	return j
-}
-
-// WithMinItems sets MinItems value.
-func (j *JSONSchema) WithMinItems(val int64) *JSONSchema {
-	j.MinItems = val
-	return j
-}
-
-// WithUniqueItems sets UniqueItems value.
-func (j *JSONSchema) WithUniqueItems(val bool) *JSONSchema {
-	j.UniqueItems = val
-	return j
-}
-
-// WithMaxProperties sets MaxProperties value.
-func (j *JSONSchema) WithMaxProperties(val int64) *JSONSchema {
-	j.MaxProperties = val
-	return j
-}
-
-// WithMinProperties sets MinProperties value.
-func (j *JSONSchema) WithMinProperties(val int64) *JSONSchema {
-	j.MinProperties = val
-	return j
-}
-
-// WithRequired sets Required value.
-func (j *JSONSchema) WithRequired(val ...string) *JSONSchema {
-	j.Required = val
-	return j
-}
-
-// WithAdditionalProperties sets AdditionalProperties value.
-func (j *JSONSchema) WithAdditionalProperties(val JSONSchemaAdditionalProperties) *JSONSchema {
-	j.AdditionalProperties = &val
-	return j
-}
-
-// AdditionalPropertiesEns ensures returned AdditionalProperties is not nil.
-func (j *JSONSchema) AdditionalPropertiesEns() *JSONSchemaAdditionalProperties {
-	if j.AdditionalProperties == nil {
-		j.AdditionalProperties = new(JSONSchemaAdditionalProperties)
-	}
-
-	return j.AdditionalProperties
-}
-
-// WithDefinitions sets Definitions value.
-func (j *JSONSchema) WithDefinitions(val map[string]interface{}) *JSONSchema {
-	j.Definitions = val
-	return j
-}
-
-// WithDefinitionsItem sets Definitions item value.
-func (j *JSONSchema) WithDefinitionsItem(key string, val interface{}) *JSONSchema {
-	if j.Definitions == nil {
-		j.Definitions = make(map[string]interface{}, 1)
-	}
-
-	j.Definitions[key] = val
-
-	return j
-}
-
-// WithProperties sets Properties value.
-func (j *JSONSchema) WithProperties(val map[string]interface{}) *JSONSchema {
-	j.Properties = val
-	return j
-}
-
-// WithPropertiesItem sets Properties item value.
-func (j *JSONSchema) WithPropertiesItem(key string, val interface{}) *JSONSchema {
-	if j.Properties == nil {
-		j.Properties = make(map[string]interface{}, 1)
-	}
-
-	j.Properties[key] = val
-
-	return j
-}
-
-// WithPatternProperties sets PatternProperties value.
-func (j *JSONSchema) WithPatternProperties(val map[string]interface{}) *JSONSchema {
-	j.PatternProperties = val
-	return j
-}
-
-// WithPatternPropertiesItem sets PatternProperties item value.
-func (j *JSONSchema) WithPatternPropertiesItem(key string, val interface{}) *JSONSchema {
-	if j.PatternProperties == nil {
-		j.PatternProperties = make(map[string]interface{}, 1)
-	}
-
-	j.PatternProperties[key] = val
-
-	return j
-}
-
-// WithDependencies sets Dependencies value.
-func (j *JSONSchema) WithDependencies(val map[string]JSONSchemaDependenciesAdditionalProperties) *JSONSchema {
-	j.Dependencies = val
-	return j
-}
-
-// WithDependenciesItem sets Dependencies item value.
-func (j *JSONSchema) WithDependenciesItem(key string, val JSONSchemaDependenciesAdditionalProperties) *JSONSchema {
-	if j.Dependencies == nil {
-		j.Dependencies = make(map[string]JSONSchemaDependenciesAdditionalProperties, 1)
-	}
-
-	j.Dependencies[key] = val
-
-	return j
-}
-
-// WithEnum sets Enum value.
-func (j *JSONSchema) WithEnum(val ...interface{}) *JSONSchema {
-	j.Enum = val
-	return j
-}
-
-// WithType sets Type value.
-func (j *JSONSchema) WithType(val JSONSchemaType) *JSONSchema {
-	j.Type = &val
-	return j
-}
-
-// TypeEns ensures returned Type is not nil.
-func (j *JSONSchema) TypeEns() *JSONSchemaType {
-	if j.Type == nil {
-		j.Type = new(JSONSchemaType)
-	}
-
-	return j.Type
-}
-
-// WithFormat sets Format value.
-func (j *JSONSchema) WithFormat(val string) *JSONSchema {
-	j.Format = val
-	return j
-}
-
-// WithRef sets Ref value.
-func (j *JSONSchema) WithRef(val string) *JSONSchema {
-	j.Ref = val
-	return j
-}
-
-// WithAllOf sets AllOf value.
-func (j *JSONSchema) WithAllOf(val ...interface{}) *JSONSchema {
-	j.AllOf = val
-	return j
-}
-
-// WithAnyOf sets AnyOf value.
-func (j *JSONSchema) WithAnyOf(val ...interface{}) *JSONSchema {
-	j.AnyOf = val
-	return j
-}
-
-// WithOneOf sets OneOf value.
-func (j *JSONSchema) WithOneOf(val ...interface{}) *JSONSchema {
-	j.OneOf = val
-	return j
-}
-
-// WithNot sets Not value.
-func (j *JSONSchema) WithNot(val JSONSchema) *JSONSchema {
-	j.Not = &val
-	return j
-}
-
-// NotEns ensures returned Not is not nil.
-func (j *JSONSchema) NotEns() *JSONSchema {
-	if j.Not == nil {
-		j.Not = new(JSONSchema)
-	}
-
-	return j.Not
-}
-
-// WithConst sets Const value.
-func (j *JSONSchema) WithConst(val interface{}) *JSONSchema {
-	j.Const = &val
-	return j
-}
-
-// WithContains sets Contains value.
-func (j *JSONSchema) WithContains(val JSONSchema) *JSONSchema {
-	j.Contains = &val
-	return j
-}
-
-// ContainsEns ensures returned Contains is not nil.
-func (j *JSONSchema) ContainsEns() *JSONSchema {
-	if j.Contains == nil {
-		j.Contains = new(JSONSchema)
-	}
-
-	return j.Contains
-}
-
-// WithPropertyNames sets PropertyNames value.
-func (j *JSONSchema) WithPropertyNames(val JSONSchema) *JSONSchema {
-	j.PropertyNames = &val
-	return j
-}
-
-// PropertyNamesEns ensures returned PropertyNames is not nil.
-func (j *JSONSchema) PropertyNamesEns() *JSONSchema {
-	if j.PropertyNames == nil {
-		j.PropertyNames = new(JSONSchema)
-	}
-
-	return j.PropertyNames
-}
-
-// WithIf sets If value.
-func (j *JSONSchema) WithIf(val JSONSchema) *JSONSchema {
-	j.If = &val
-	return j
-}
-
-// IfEns ensures returned If is not nil.
-func (j *JSONSchema) IfEns() *JSONSchema {
-	if j.If == nil {
-		j.If = new(JSONSchema)
-	}
-
-	return j.If
-}
-
-// WithThen sets Then value.
-func (j *JSONSchema) WithThen(val JSONSchema) *JSONSchema {
-	j.Then = &val
-	return j
-}
-
-// ThenEns ensures returned Then is not nil.
-func (j *JSONSchema) ThenEns() *JSONSchema {
-	if j.Then == nil {
-		j.Then = new(JSONSchema)
-	}
-
-	return j.Then
-}
-
-// WithElse sets Else value.
-func (j *JSONSchema) WithElse(val JSONSchema) *JSONSchema {
-	j.Else = &val
-	return j
-}
-
-// ElseEns ensures returned Else is not nil.
-func (j *JSONSchema) ElseEns() *JSONSchema {
-	if j.Else == nil {
-		j.Else = new(JSONSchema)
-	}
-
-	return j.Else
-}
-
-// WithContentEncoding sets ContentEncoding value.
-func (j *JSONSchema) WithContentEncoding(val string) *JSONSchema {
-	j.ContentEncoding = val
-	return j
-}
-
-// WithContentMediaType sets ContentMediaType value.
-func (j *JSONSchema) WithContentMediaType(val string) *JSONSchema {
-	j.ContentMediaType = val
-	return j
-}
-
-type marshalJSONSchema JSONSchema
-
-// UnmarshalJSON decodes JSON.
-func (j *JSONSchema) UnmarshalJSON(data []byte) error {
-	var err error
-
-	mj := marshalJSONSchema(*j)
-
-	err = json.Unmarshal(data, &mj)
-	if err != nil {
-		return err
-	}
-
-	typeValid := false
-
-	if !typeValid {
-		err = json.Unmarshal(data, &mj.TypeObject)
-		if err != nil {
-			mj.TypeObject = nil
-		} else {
-			typeValid = true
-		}
-	}
-
-	if !typeValid {
-		err = json.Unmarshal(data, &mj.TypeBoolean)
-		if err != nil {
-			mj.TypeBoolean = nil
-		} else {
-			typeValid = true
-		}
-	}
-
-	if !typeValid {
-		return err
-	}
-
-	var rawMap map[string]json.RawMessage
-
-	err = json.Unmarshal(data, &rawMap)
-	if err != nil {
-		rawMap = nil
-	}
-
-	if mj.Default == nil {
-		if _, ok := rawMap["default"]; ok {
-			var v interface{}
-			mj.Default = &v
-		}
-	}
-
-	if mj.Const == nil {
-		if _, ok := rawMap["const"]; ok {
-			var v interface{}
-			mj.Const = &v
-		}
-	}
-
-	*j = JSONSchema(mj)
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (j JSONSchema) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalJSONSchema(j), j.TypeObject, j.TypeBoolean)
-}
-
-// JSONSchemaExclusiveMaximum structure is generated from "jsonSchema->exclusiveMaximum".
-type JSONSchemaExclusiveMaximum struct {
-	TypeBoolean *bool    `json:"-"`
-	TypeNumber  *float64 `json:"-"`
-}
-
-// WithTypeBoolean sets TypeBoolean value.
-func (j *JSONSchemaExclusiveMaximum) WithTypeBoolean(val bool) *JSONSchemaExclusiveMaximum {
-	j.TypeBoolean = &val
-	return j
-}
-
-// WithTypeNumber sets TypeNumber value.
-func (j *JSONSchemaExclusiveMaximum) WithTypeNumber(val float64) *JSONSchemaExclusiveMaximum {
-	j.TypeNumber = &val
-	return j
-}
-
-// UnmarshalJSON decodes JSON.
-func (j *JSONSchemaExclusiveMaximum) UnmarshalJSON(data []byte) error {
-	var err error
-
-	typeValid := false
-
-	if !typeValid {
-		err = json.Unmarshal(data, &j.TypeBoolean)
-		if err != nil {
-			j.TypeBoolean = nil
-		} else {
-			typeValid = true
-		}
-	}
-
-	if !typeValid {
-		err = json.Unmarshal(data, &j.TypeNumber)
-		if err != nil {
-			j.TypeNumber = nil
-		} else {
-			typeValid = true
-		}
-	}
-
-	if !typeValid {
-		return err
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (j JSONSchemaExclusiveMaximum) MarshalJSON() ([]byte, error) {
-	return marshalUnion(j.TypeBoolean, j.TypeNumber)
-}
-
-// JSONSchemaExclusiveMinimum structure is generated from "jsonSchema->exclusiveMinimum".
-type JSONSchemaExclusiveMinimum struct {
-	TypeBoolean *bool    `json:"-"`
-	TypeNumber  *float64 `json:"-"`
-}
-
-// WithTypeBoolean sets TypeBoolean value.
-func (j *JSONSchemaExclusiveMinimum) WithTypeBoolean(val bool) *JSONSchemaExclusiveMinimum {
-	j.TypeBoolean = &val
-	return j
-}
-
-// WithTypeNumber sets TypeNumber value.
-func (j *JSONSchemaExclusiveMinimum) WithTypeNumber(val float64) *JSONSchemaExclusiveMinimum {
-	j.TypeNumber = &val
-	return j
-}
-
-// UnmarshalJSON decodes JSON.
-func (j *JSONSchemaExclusiveMinimum) UnmarshalJSON(data []byte) error {
-	var err error
-
-	typeValid := false
-
-	if !typeValid {
-		err = json.Unmarshal(data, &j.TypeBoolean)
-		if err != nil {
-			j.TypeBoolean = nil
-		} else {
-			typeValid = true
-		}
-	}
-
-	if !typeValid {
-		err = json.Unmarshal(data, &j.TypeNumber)
-		if err != nil {
-			j.TypeNumber = nil
-		} else {
-			typeValid = true
-		}
-	}
-
-	if !typeValid {
-		return err
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (j JSONSchemaExclusiveMinimum) MarshalJSON() ([]byte, error) {
-	return marshalUnion(j.TypeBoolean, j.TypeNumber)
-}
-
-// JSONSchemaAdditionalItems structure is generated from "jsonSchema->additionalItems".
-type JSONSchemaAdditionalItems struct {
-	Bool *bool `json:"-"`
-}
-
-// WithBool sets Bool value.
-func (j *JSONSchemaAdditionalItems) WithBool(val bool) *JSONSchemaAdditionalItems {
-	j.Bool = &val
-	return j
-}
-
-// UnmarshalJSON decodes JSON.
-func (j *JSONSchemaAdditionalItems) UnmarshalJSON(data []byte) error {
-	var err error
-
-	anyOfErrors := make(map[string]error, 1)
-	anyOfValid := 0
-
-	err = json.Unmarshal(data, &j.Bool)
-	if err != nil {
-		anyOfErrors["Bool"] = err
-		j.Bool = nil
-	} else {
-		anyOfValid++
-	}
-
-	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for JSONSchemaAdditionalItems failed with %d valid results: %v", anyOfValid, anyOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (j JSONSchemaAdditionalItems) MarshalJSON() ([]byte, error) {
-	return marshalUnion(j.Bool)
-}
-
-// JSONSchemaItems structure is generated from "jsonSchema->items".
-type JSONSchemaItems struct {
-	SliceOfAnything []interface{} `json:"-"`
-}
-
-// WithSliceOfAnything sets SliceOfAnything value.
-func (j *JSONSchemaItems) WithSliceOfAnything(val ...interface{}) *JSONSchemaItems {
-	j.SliceOfAnything = val
-	return j
-}
-
-// UnmarshalJSON decodes JSON.
-func (j *JSONSchemaItems) UnmarshalJSON(data []byte) error {
-	var err error
-
-	anyOfErrors := make(map[string]error, 1)
-	anyOfValid := 0
-
-	err = json.Unmarshal(data, &j.SliceOfAnything)
-	if err != nil {
-		anyOfErrors["SliceOfAnything"] = err
-		j.SliceOfAnything = nil
-	} else {
-		anyOfValid++
-	}
-
-	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for JSONSchemaItems failed with %d valid results: %v", anyOfValid, anyOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (j JSONSchemaItems) MarshalJSON() ([]byte, error) {
-	return marshalUnion(j.SliceOfAnything)
-}
-
-// JSONSchemaAdditionalProperties structure is generated from "jsonSchema->additionalProperties".
-type JSONSchemaAdditionalProperties struct {
-	Bool *bool `json:"-"`
-}
-
-// WithBool sets Bool value.
-func (j *JSONSchemaAdditionalProperties) WithBool(val bool) *JSONSchemaAdditionalProperties {
-	j.Bool = &val
-	return j
-}
-
-// UnmarshalJSON decodes JSON.
-func (j *JSONSchemaAdditionalProperties) UnmarshalJSON(data []byte) error {
-	var err error
-
-	anyOfErrors := make(map[string]error, 1)
-	anyOfValid := 0
-
-	err = json.Unmarshal(data, &j.Bool)
-	if err != nil {
-		anyOfErrors["Bool"] = err
-		j.Bool = nil
-	} else {
-		anyOfValid++
-	}
-
-	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for JSONSchemaAdditionalProperties failed with %d valid results: %v", anyOfValid, anyOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (j JSONSchemaAdditionalProperties) MarshalJSON() ([]byte, error) {
-	return marshalUnion(j.Bool)
-}
-
-// JSONSchemaDependenciesAdditionalProperties structure is generated from "jsonSchema->dependencies->additionalProperties".
-type JSONSchemaDependenciesAdditionalProperties struct {
-	SliceOfStringValues []string `json:"-"`
-}
-
-// WithSliceOfStringValues sets SliceOfStringValues value.
-func (j *JSONSchemaDependenciesAdditionalProperties) WithSliceOfStringValues(val ...string) *JSONSchemaDependenciesAdditionalProperties {
-	j.SliceOfStringValues = val
-	return j
-}
-
-// UnmarshalJSON decodes JSON.
-func (j *JSONSchemaDependenciesAdditionalProperties) UnmarshalJSON(data []byte) error {
-	var err error
-
-	anyOfErrors := make(map[string]error, 1)
-	anyOfValid := 0
-
-	err = json.Unmarshal(data, &j.SliceOfStringValues)
-	if err != nil {
-		anyOfErrors["SliceOfStringValues"] = err
-		j.SliceOfStringValues = nil
-	} else {
-		anyOfValid++
-	}
-
-	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for JSONSchemaDependenciesAdditionalProperties failed with %d valid results: %v", anyOfValid, anyOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (j JSONSchemaDependenciesAdditionalProperties) MarshalJSON() ([]byte, error) {
-	return marshalUnion(j.SliceOfStringValues)
-}
-
-// JSONSchemaType structure is generated from "jsonSchema->type".
-type JSONSchemaType struct {
-	AnyOf0                                 *JSONSchemaTypeAnyOf0       `json:"-"`
-	SliceOfJSONSchemaTypeAnyOf1ItemsValues []JSONSchemaTypeAnyOf1Items `json:"-"`
-}
-
-// WithAnyOf0 sets AnyOf0 value.
-func (j *JSONSchemaType) WithAnyOf0(val JSONSchemaTypeAnyOf0) *JSONSchemaType {
-	j.AnyOf0 = &val
-	return j
-}
-
-// WithSliceOfJSONSchemaTypeAnyOf1ItemsValues sets SliceOfJSONSchemaTypeAnyOf1ItemsValues value.
-func (j *JSONSchemaType) WithSliceOfJSONSchemaTypeAnyOf1ItemsValues(val ...JSONSchemaTypeAnyOf1Items) *JSONSchemaType {
-	j.SliceOfJSONSchemaTypeAnyOf1ItemsValues = val
-	return j
-}
-
-// UnmarshalJSON decodes JSON.
-func (j *JSONSchemaType) UnmarshalJSON(data []byte) error {
-	var err error
-
-	anyOfErrors := make(map[string]error, 2)
-	anyOfValid := 0
-
-	err = json.Unmarshal(data, &j.AnyOf0)
-	if err != nil {
-		anyOfErrors["AnyOf0"] = err
-		j.AnyOf0 = nil
-	} else {
-		anyOfValid++
-	}
-
-	err = json.Unmarshal(data, &j.SliceOfJSONSchemaTypeAnyOf1ItemsValues)
-	if err != nil {
-		anyOfErrors["SliceOfJSONSchemaTypeAnyOf1ItemsValues"] = err
-		j.SliceOfJSONSchemaTypeAnyOf1ItemsValues = nil
-	} else {
-		anyOfValid++
-	}
-
-	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for JSONSchemaType failed with %d valid results: %v", anyOfValid, anyOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (j JSONSchemaType) MarshalJSON() ([]byte, error) {
-	return marshalUnion(j.AnyOf0, j.SliceOfJSONSchemaTypeAnyOf1ItemsValues)
-}
-
-// SchemaAllOf1 structure is generated from "#/definitions/schema/allOf/1".
-type SchemaAllOf1 struct {
-	AdditionalProperties *SchemaAllOf1AdditionalProperties `json:"additionalProperties,omitempty"`
-	Items                *SchemaAllOf1Items                `json:"items,omitempty"`
-	AllOf                []Schema                          `json:"allOf,omitempty"`
-	OneOf                []Schema                          `json:"oneOf,omitempty"`
-	AnyOf                []Schema                          `json:"anyOf,omitempty"`
-	Not                  *Schema                           `json:"not,omitempty"`
-	Properties           map[string]Schema                 `json:"properties,omitempty"`
-	PatternProperties    map[string]Schema                 `json:"patternProperties,omitempty"`
-	PropertyNames        *Schema                           `json:"propertyNames,omitempty"`
-	Contains             *Schema                           `json:"contains,omitempty"`
-	Discriminator        string                            `json:"discriminator,omitempty"`
-	ExternalDocs         *ExternalDocs                     `json:"externalDocs,omitempty"` // Information about external documentation.
-	Deprecated           bool                              `json:"deprecated,omitempty"`
-	MapOfAnything        map[string]interface{}            `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
-}
-
-// WithAdditionalProperties sets AdditionalProperties value.
-func (s *SchemaAllOf1) WithAdditionalProperties(val SchemaAllOf1AdditionalProperties) *SchemaAllOf1 {
-	s.AdditionalProperties = &val
-	return s
-}
-
-// AdditionalPropertiesEns ensures returned AdditionalProperties is not nil.
-func (s *SchemaAllOf1) AdditionalPropertiesEns() *SchemaAllOf1AdditionalProperties {
-	if s.AdditionalProperties == nil {
-		s.AdditionalProperties = new(SchemaAllOf1AdditionalProperties)
-	}
-
-	return s.AdditionalProperties
-}
-
-// WithItems sets Items value.
-func (s *SchemaAllOf1) WithItems(val SchemaAllOf1Items) *SchemaAllOf1 {
-	s.Items = &val
-	return s
-}
-
-// ItemsEns ensures returned Items is not nil.
-func (s *SchemaAllOf1) ItemsEns() *SchemaAllOf1Items {
-	if s.Items == nil {
-		s.Items = new(SchemaAllOf1Items)
-	}
-
-	return s.Items
-}
-
-// WithAllOf sets AllOf value.
-func (s *SchemaAllOf1) WithAllOf(val ...Schema) *SchemaAllOf1 {
-	s.AllOf = val
-	return s
-}
-
-// WithOneOf sets OneOf value.
-func (s *SchemaAllOf1) WithOneOf(val ...Schema) *SchemaAllOf1 {
-	s.OneOf = val
-	return s
-}
-
-// WithAnyOf sets AnyOf value.
-func (s *SchemaAllOf1) WithAnyOf(val ...Schema) *SchemaAllOf1 {
-	s.AnyOf = val
-	return s
-}
-
-// WithNot sets Not value.
-func (s *SchemaAllOf1) WithNot(val Schema) *SchemaAllOf1 {
-	s.Not = &val
-	return s
-}
-
-// NotEns ensures returned Not is not nil.
-func (s *SchemaAllOf1) NotEns() *Schema {
-	if s.Not == nil {
-		s.Not = new(Schema)
-	}
-
-	return s.Not
-}
-
-// WithProperties sets Properties value.
-func (s *SchemaAllOf1) WithProperties(val map[string]Schema) *SchemaAllOf1 {
-	s.Properties = val
-	return s
-}
-
-// WithPropertiesItem sets Properties item value.
-func (s *SchemaAllOf1) WithPropertiesItem(key string, val Schema) *SchemaAllOf1 {
-	if s.Properties == nil {
-		s.Properties = make(map[string]Schema, 1)
-	}
-
-	s.Properties[key] = val
-
-	return s
-}
-
-// WithPatternProperties sets PatternProperties value.
-func (s *SchemaAllOf1) WithPatternProperties(val map[string]Schema) *SchemaAllOf1 {
-	s.PatternProperties = val
-	return s
-}
-
-// WithPatternPropertiesItem sets PatternProperties item value.
-func (s *SchemaAllOf1) WithPatternPropertiesItem(key string, val Schema) *SchemaAllOf1 {
-	if s.PatternProperties == nil {
-		s.PatternProperties = make(map[string]Schema, 1)
-	}
-
-	s.PatternProperties[key] = val
-
-	return s
-}
-
-// WithPropertyNames sets PropertyNames value.
-func (s *SchemaAllOf1) WithPropertyNames(val Schema) *SchemaAllOf1 {
-	s.PropertyNames = &val
-	return s
-}
-
-// PropertyNamesEns ensures returned PropertyNames is not nil.
-func (s *SchemaAllOf1) PropertyNamesEns() *Schema {
-	if s.PropertyNames == nil {
-		s.PropertyNames = new(Schema)
-	}
-
-	return s.PropertyNames
-}
-
-// WithContains sets Contains value.
-func (s *SchemaAllOf1) WithContains(val Schema) *SchemaAllOf1 {
-	s.Contains = &val
-	return s
-}
-
-// ContainsEns ensures returned Contains is not nil.
-func (s *SchemaAllOf1) ContainsEns() *Schema {
-	if s.Contains == nil {
-		s.Contains = new(Schema)
-	}
-
-	return s.Contains
-}
-
-// WithDiscriminator sets Discriminator value.
-func (s *SchemaAllOf1) WithDiscriminator(val string) *SchemaAllOf1 {
-	s.Discriminator = val
-	return s
-}
-
-// WithExternalDocs sets ExternalDocs value.
-func (s *SchemaAllOf1) WithExternalDocs(val ExternalDocs) *SchemaAllOf1 {
-	s.ExternalDocs = &val
-	return s
-}
-
-// ExternalDocsEns ensures returned ExternalDocs is not nil.
-func (s *SchemaAllOf1) ExternalDocsEns() *ExternalDocs {
-	if s.ExternalDocs == nil {
-		s.ExternalDocs = new(ExternalDocs)
-	}
-
-	return s.ExternalDocs
-}
-
-// WithDeprecated sets Deprecated value.
-func (s *SchemaAllOf1) WithDeprecated(val bool) *SchemaAllOf1 {
-	s.Deprecated = val
-	return s
-}
-
-// WithMapOfAnything sets MapOfAnything value.
-func (s *SchemaAllOf1) WithMapOfAnything(val map[string]interface{}) *SchemaAllOf1 {
-	s.MapOfAnything = val
-	return s
-}
-
-// WithMapOfAnythingItem sets MapOfAnything item value.
-func (s *SchemaAllOf1) WithMapOfAnythingItem(key string, val interface{}) *SchemaAllOf1 {
-	if s.MapOfAnything == nil {
-		s.MapOfAnything = make(map[string]interface{}, 1)
-	}
-
-	s.MapOfAnything[key] = val
-
-	return s
-}
-
-type marshalSchemaAllOf1 SchemaAllOf1
-
-var knownKeysSchemaAllOf1 = []string{
-	"additionalProperties",
-	"items",
-	"allOf",
-	"oneOf",
-	"anyOf",
-	"not",
-	"properties",
-	"patternProperties",
-	"propertyNames",
-	"contains",
-	"discriminator",
-	"externalDocs",
-	"deprecated",
-}
-
-// UnmarshalJSON decodes JSON.
-func (s *SchemaAllOf1) UnmarshalJSON(data []byte) error {
-	var err error
-
-	ms := marshalSchemaAllOf1(*s)
-
-	err = json.Unmarshal(data, &ms)
-	if err != nil {
-		return err
-	}
-
-	var rawMap map[string]json.RawMessage
-
-	err = json.Unmarshal(data, &rawMap)
-	if err != nil {
-		rawMap = nil
-	}
-
-	for _, key := range knownKeysSchemaAllOf1 {
-		delete(rawMap, key)
-	}
-
-	for key, rawValue := range rawMap {
-		matched := false
-
-		if regexXWD.MatchString(key) {
-			matched = true
-
-			if ms.MapOfAnything == nil {
-				ms.MapOfAnything = make(map[string]interface{}, 1)
-			}
-
-			var val interface{}
-
-			err = json.Unmarshal(rawValue, &val)
-			if err != nil {
-				return err
-			}
-
-			ms.MapOfAnything[key] = val
-		}
-
-		if matched {
-			delete(rawMap, key)
-		}
-	}
-
-	*s = SchemaAllOf1(ms)
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (s SchemaAllOf1) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalSchemaAllOf1(s), s.MapOfAnything)
-}
-
-// Schema structure is generated from "#/definitions/schema".
-type Schema struct {
-	AllOf1 *SchemaAllOf1 `json:"-"`
-}
-
-// WithAllOf1 sets AllOf1 value.
-func (s *Schema) WithAllOf1(val SchemaAllOf1) *Schema {
-	s.AllOf1 = &val
-	return s
-}
-
-// AllOf1Ens ensures returned AllOf1 is not nil.
-func (s *Schema) AllOf1Ens() *SchemaAllOf1 {
-	if s.AllOf1 == nil {
-		s.AllOf1 = new(SchemaAllOf1)
-	}
-
-	return s.AllOf1
-}
-
-// UnmarshalJSON decodes JSON.
-func (s *Schema) UnmarshalJSON(data []byte) error {
-	var err error
-
-	err = json.Unmarshal(data, &s.AllOf1)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (s Schema) MarshalJSON() ([]byte, error) {
-	return marshalUnion(s.AllOf1)
-}
-
-// SchemaAllOf1AdditionalProperties structure is generated from "#/definitions/schema/allOf/1->additionalProperties".
-type SchemaAllOf1AdditionalProperties struct {
-	Schema *Schema `json:"-"`
-	Bool   *bool   `json:"-"`
-}
-
-// WithSchema sets Schema value.
-func (s *SchemaAllOf1AdditionalProperties) WithSchema(val Schema) *SchemaAllOf1AdditionalProperties {
-	s.Schema = &val
-	return s
-}
-
-// SchemaEns ensures returned Schema is not nil.
-func (s *SchemaAllOf1AdditionalProperties) SchemaEns() *Schema {
-	if s.Schema == nil {
-		s.Schema = new(Schema)
-	}
-
-	return s.Schema
-}
-
-// WithBool sets Bool value.
-func (s *SchemaAllOf1AdditionalProperties) WithBool(val bool) *SchemaAllOf1AdditionalProperties {
-	s.Bool = &val
-	return s
-}
-
-// UnmarshalJSON decodes JSON.
-func (s *SchemaAllOf1AdditionalProperties) UnmarshalJSON(data []byte) error {
-	var err error
-
-	anyOfErrors := make(map[string]error, 2)
-	anyOfValid := 0
-
-	err = json.Unmarshal(data, &s.Schema)
-	if err != nil {
-		anyOfErrors["Schema"] = err
-		s.Schema = nil
-	} else {
-		anyOfValid++
-	}
-
-	err = json.Unmarshal(data, &s.Bool)
-	if err != nil {
-		anyOfErrors["Bool"] = err
-		s.Bool = nil
-	} else {
-		anyOfValid++
-	}
-
-	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for SchemaAllOf1AdditionalProperties failed with %d valid results: %v", anyOfValid, anyOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (s SchemaAllOf1AdditionalProperties) MarshalJSON() ([]byte, error) {
-	return marshalUnion(s.Schema, s.Bool)
-}
-
-// SchemaAllOf1Items structure is generated from "#/definitions/schema/allOf/1->items".
-type SchemaAllOf1Items struct {
-	Schema              *Schema  `json:"-"`
-	SliceOfSchemaValues []Schema `json:"-"`
-}
-
-// WithSchema sets Schema value.
-func (s *SchemaAllOf1Items) WithSchema(val Schema) *SchemaAllOf1Items {
-	s.Schema = &val
-	return s
-}
-
-// SchemaEns ensures returned Schema is not nil.
-func (s *SchemaAllOf1Items) SchemaEns() *Schema {
-	if s.Schema == nil {
-		s.Schema = new(Schema)
-	}
-
-	return s.Schema
-}
-
-// WithSliceOfSchemaValues sets SliceOfSchemaValues value.
-func (s *SchemaAllOf1Items) WithSliceOfSchemaValues(val ...Schema) *SchemaAllOf1Items {
-	s.SliceOfSchemaValues = val
-	return s
-}
-
-// UnmarshalJSON decodes JSON.
-func (s *SchemaAllOf1Items) UnmarshalJSON(data []byte) error {
-	var err error
-
-	anyOfErrors := make(map[string]error, 2)
-	anyOfValid := 0
-
-	err = json.Unmarshal(data, &s.Schema)
-	if err != nil {
-		anyOfErrors["Schema"] = err
-		s.Schema = nil
-	} else {
-		anyOfValid++
-	}
-
-	err = json.Unmarshal(data, &s.SliceOfSchemaValues)
-	if err != nil {
-		anyOfErrors["SliceOfSchemaValues"] = err
-		s.SliceOfSchemaValues = nil
-	} else {
-		anyOfValid++
-	}
-
-	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for SchemaAllOf1Items failed with %d valid results: %v", anyOfValid, anyOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (s SchemaAllOf1Items) MarshalJSON() ([]byte, error) {
-	return marshalUnion(s.Schema, s.SliceOfSchemaValues)
-}
-
-// ExternalDocs structure is generated from "#/definitions/externalDocs".
-//
-// information about external documentation.
-type ExternalDocs struct {
-	Description string `json:"description,omitempty"`
-	// Format: uri.
-	// Required.
-	URL           string                 `json:"url"`
-	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
-}
-
-// WithDescription sets Description value.
-func (e *ExternalDocs) WithDescription(val string) *ExternalDocs {
-	e.Description = val
-	return e
-}
-
-// WithURL sets URL value.
-func (e *ExternalDocs) WithURL(val string) *ExternalDocs {
-	e.URL = val
-	return e
-}
-
-// WithMapOfAnything sets MapOfAnything value.
-func (e *ExternalDocs) WithMapOfAnything(val map[string]interface{}) *ExternalDocs {
-	e.MapOfAnything = val
-	return e
-}
-
-// WithMapOfAnythingItem sets MapOfAnything item value.
-func (e *ExternalDocs) WithMapOfAnythingItem(key string, val interface{}) *ExternalDocs {
-	if e.MapOfAnything == nil {
-		e.MapOfAnything = make(map[string]interface{}, 1)
-	}
-
-	e.MapOfAnything[key] = val
-
-	return e
-}
-
-type marshalExternalDocs ExternalDocs
-
-var knownKeysExternalDocs = []string{
-	"description",
-	"url",
-}
-
-// UnmarshalJSON decodes JSON.
-func (e *ExternalDocs) UnmarshalJSON(data []byte) error {
-	var err error
-
-	me := marshalExternalDocs(*e)
-
-	err = json.Unmarshal(data, &me)
-	if err != nil {
-		return err
-	}
-
-	var rawMap map[string]json.RawMessage
-
-	err = json.Unmarshal(data, &rawMap)
-	if err != nil {
-		rawMap = nil
-	}
-
-	for _, key := range knownKeysExternalDocs {
-		delete(rawMap, key)
-	}
-
-	for key, rawValue := range rawMap {
-		matched := false
-
-		if regexXWD.MatchString(key) {
-			matched = true
-
-			if me.MapOfAnything == nil {
-				me.MapOfAnything = make(map[string]interface{}, 1)
-			}
-
-			var val interface{}
-
-			err = json.Unmarshal(rawValue, &val)
-			if err != nil {
-				return err
-			}
-
-			me.MapOfAnything[key] = val
-		}
-
-		if matched {
-			delete(rawMap, key)
-		}
-	}
-
-	if len(rawMap) != 0 {
-		offendingKeys := make([]string, 0, len(rawMap))
-
-		for key := range rawMap {
-			offendingKeys = append(offendingKeys, key)
-		}
-
-		return fmt.Errorf("additional properties not allowed in ExternalDocs: %v", offendingKeys)
-	}
-
-	*e = ExternalDocs(me)
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (e ExternalDocs) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalExternalDocs(e), e.MapOfAnything)
 }
 
 // Operation structure is generated from "#/definitions/operation".
@@ -3137,6 +1788,41 @@ type Reference struct {
 func (r *Reference) WithRef(val string) *Reference {
 	r.Ref = val
 	return r
+}
+
+type marshalReference Reference
+
+var requireKeysReference = []string{
+	"$ref",
+}
+
+// UnmarshalJSON decodes JSON.
+func (r *Reference) UnmarshalJSON(data []byte) error {
+	var err error
+
+	mr := marshalReference(*r)
+
+	err = json.Unmarshal(data, &mr)
+	if err != nil {
+		return err
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	for _, key := range requireKeysReference {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
+	}
+
+	*r = Reference(mr)
+
+	return nil
 }
 
 // OperationTrait structure is generated from "#/definitions/operationTrait".
@@ -3359,6 +2045,10 @@ var knownKeysTag = []string{
 	"externalDocs",
 }
 
+var requireKeysTag = []string{
+	"name",
+}
+
 // UnmarshalJSON decodes JSON.
 func (t *Tag) UnmarshalJSON(data []byte) error {
 	var err error
@@ -3375,6 +2065,12 @@ func (t *Tag) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysTag {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	for _, key := range knownKeysTag {
@@ -3424,6 +2120,130 @@ func (t *Tag) UnmarshalJSON(data []byte) error {
 // MarshalJSON encodes JSON.
 func (t Tag) MarshalJSON() ([]byte, error) {
 	return marshalUnion(marshalTag(t), t.MapOfAnything)
+}
+
+// ExternalDocs structure is generated from "#/definitions/externalDocs".
+//
+// information about external documentation.
+type ExternalDocs struct {
+	Description string `json:"description,omitempty"`
+	// Format: uri.
+	// Required.
+	URL           string                 `json:"url"`
+	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+}
+
+// WithDescription sets Description value.
+func (e *ExternalDocs) WithDescription(val string) *ExternalDocs {
+	e.Description = val
+	return e
+}
+
+// WithURL sets URL value.
+func (e *ExternalDocs) WithURL(val string) *ExternalDocs {
+	e.URL = val
+	return e
+}
+
+// WithMapOfAnything sets MapOfAnything value.
+func (e *ExternalDocs) WithMapOfAnything(val map[string]interface{}) *ExternalDocs {
+	e.MapOfAnything = val
+	return e
+}
+
+// WithMapOfAnythingItem sets MapOfAnything item value.
+func (e *ExternalDocs) WithMapOfAnythingItem(key string, val interface{}) *ExternalDocs {
+	if e.MapOfAnything == nil {
+		e.MapOfAnything = make(map[string]interface{}, 1)
+	}
+
+	e.MapOfAnything[key] = val
+
+	return e
+}
+
+type marshalExternalDocs ExternalDocs
+
+var knownKeysExternalDocs = []string{
+	"description",
+	"url",
+}
+
+var requireKeysExternalDocs = []string{
+	"url",
+}
+
+// UnmarshalJSON decodes JSON.
+func (e *ExternalDocs) UnmarshalJSON(data []byte) error {
+	var err error
+
+	me := marshalExternalDocs(*e)
+
+	err = json.Unmarshal(data, &me)
+	if err != nil {
+		return err
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	for _, key := range requireKeysExternalDocs {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
+	}
+
+	for _, key := range knownKeysExternalDocs {
+		delete(rawMap, key)
+	}
+
+	for key, rawValue := range rawMap {
+		matched := false
+
+		if regexXWD.MatchString(key) {
+			matched = true
+
+			if me.MapOfAnything == nil {
+				me.MapOfAnything = make(map[string]interface{}, 1)
+			}
+
+			var val interface{}
+
+			err = json.Unmarshal(rawValue, &val)
+			if err != nil {
+				return err
+			}
+
+			me.MapOfAnything[key] = val
+		}
+
+		if matched {
+			delete(rawMap, key)
+		}
+	}
+
+	if len(rawMap) != 0 {
+		offendingKeys := make([]string, 0, len(rawMap))
+
+		for key := range rawMap {
+			offendingKeys = append(offendingKeys, key)
+		}
+
+		return fmt.Errorf("additional properties not allowed in ExternalDocs: %v", offendingKeys)
+	}
+
+	*e = ExternalDocs(me)
+
+	return nil
+}
+
+// MarshalJSON encodes JSON.
+func (e ExternalDocs) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalExternalDocs(e), e.MapOfAnything)
 }
 
 // OperationTraitsItems structure is generated from "#/definitions/operation->traits->items".
@@ -3529,6 +2349,10 @@ var knownKeysMessageOneOf1OneOf0 = []string{
 	"oneOf",
 }
 
+var requireKeysMessageOneOf1OneOf0 = []string{
+	"oneOf",
+}
+
 // UnmarshalJSON decodes JSON.
 func (m *MessageOneOf1OneOf0) UnmarshalJSON(data []byte) error {
 	var err error
@@ -3545,6 +2369,12 @@ func (m *MessageOneOf1OneOf0) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysMessageOneOf1OneOf0 {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	for _, key := range knownKeysMessageOneOf1OneOf0 {
@@ -3857,23 +2687,25 @@ func (m MessageOneOf1OneOf1HeadersAllOf1) MarshalJSON() ([]byte, error) {
 
 // MessageOneOf1OneOf1Headers structure is generated from "#/definitions/message/oneOf/1/oneOf/1->headers".
 type MessageOneOf1OneOf1Headers struct {
-	Schema *Schema                           `json:"-"`
+	Schema map[string]interface{}            `json:"-"`
 	AllOf1 *MessageOneOf1OneOf1HeadersAllOf1 `json:"-"`
 }
 
 // WithSchema sets Schema value.
-func (m *MessageOneOf1OneOf1Headers) WithSchema(val Schema) *MessageOneOf1OneOf1Headers {
-	m.Schema = &val
+func (m *MessageOneOf1OneOf1Headers) WithSchema(val map[string]interface{}) *MessageOneOf1OneOf1Headers {
+	m.Schema = val
 	return m
 }
 
-// SchemaEns ensures returned Schema is not nil.
-func (m *MessageOneOf1OneOf1Headers) SchemaEns() *Schema {
+// WithSchemaItem sets Schema item value.
+func (m *MessageOneOf1OneOf1Headers) WithSchemaItem(key string, val interface{}) *MessageOneOf1OneOf1Headers {
 	if m.Schema == nil {
-		m.Schema = new(Schema)
+		m.Schema = make(map[string]interface{}, 1)
 	}
 
-	return m.Schema
+	m.Schema[key] = val
+
+	return m
 }
 
 // WithAllOf1 sets AllOf1 value.
@@ -3959,6 +2791,10 @@ var knownKeysCorrelationID = []string{
 	"location",
 }
 
+var requireKeysCorrelationID = []string{
+	"location",
+}
+
 // UnmarshalJSON decodes JSON.
 func (c *CorrelationID) UnmarshalJSON(data []byte) error {
 	var err error
@@ -3975,6 +2811,12 @@ func (c *CorrelationID) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysCorrelationID {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	for _, key := range knownKeysCorrelationID {
@@ -4429,8 +3271,8 @@ func (m MessageTrait) MarshalJSON() ([]byte, error) {
 
 // MessageTraitHeaders structure is generated from "#/definitions/messageTrait->headers".
 type MessageTraitHeaders struct {
-	Reference *Reference `json:"-"`
-	Schema    *Schema    `json:"-"`
+	Reference *Reference             `json:"-"`
+	Schema    map[string]interface{} `json:"-"`
 }
 
 // WithReference sets Reference value.
@@ -4449,18 +3291,20 @@ func (m *MessageTraitHeaders) ReferenceEns() *Reference {
 }
 
 // WithSchema sets Schema value.
-func (m *MessageTraitHeaders) WithSchema(val Schema) *MessageTraitHeaders {
-	m.Schema = &val
+func (m *MessageTraitHeaders) WithSchema(val map[string]interface{}) *MessageTraitHeaders {
+	m.Schema = val
 	return m
 }
 
-// SchemaEns ensures returned Schema is not nil.
-func (m *MessageTraitHeaders) SchemaEns() *Schema {
+// WithSchemaItem sets Schema item value.
+func (m *MessageTraitHeaders) WithSchemaItem(key string, val interface{}) *MessageTraitHeaders {
 	if m.Schema == nil {
-		m.Schema = new(Schema)
+		m.Schema = make(map[string]interface{}, 1)
 	}
 
-	return m.Schema
+	m.Schema[key] = val
+
+	return m
 }
 
 // UnmarshalJSON decodes JSON.
@@ -4801,30 +3645,30 @@ func (m Message) MarshalJSON() ([]byte, error) {
 //
 // An object to hold a set of reusable objects for different aspects of the AsyncAPI Specification.
 type Components struct {
-	Schemas           map[string]Schema          `json:"schemas,omitempty"`  // JSON objects describing schemas the API uses.
-	Messages          map[string]Message         `json:"messages,omitempty"` // JSON objects describing the messages being consumed and produced by the API.
-	SecuritySchemes   *ComponentsSecuritySchemes `json:"securitySchemes,omitempty"`
-	Parameters        map[string]Parameter       `json:"parameters,omitempty"` // JSON objects describing re-usable channel parameters.
-	CorrelationIds    *ComponentsCorrelationIds  `json:"correlationIds,omitempty"`
-	OperationTraits   map[string]OperationTrait  `json:"operationTraits,omitempty"`
-	MessageTraits     map[string]MessageTrait    `json:"messageTraits,omitempty"`
-	ServerBindings    map[string]BindingsObject  `json:"serverBindings,omitempty"`
-	ChannelBindings   map[string]BindingsObject  `json:"channelBindings,omitempty"`
-	OperationBindings map[string]BindingsObject  `json:"operationBindings,omitempty"`
-	MessageBindings   map[string]BindingsObject  `json:"messageBindings,omitempty"`
-	MapOfAnything     map[string]interface{}     `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+	Schemas           map[string]map[string]interface{} `json:"schemas,omitempty"`  // JSON objects describing schemas the API uses.
+	Messages          map[string]Message                `json:"messages,omitempty"` // JSON objects describing the messages being consumed and produced by the API.
+	SecuritySchemes   *ComponentsSecuritySchemes        `json:"securitySchemes,omitempty"`
+	Parameters        map[string]Parameter              `json:"parameters,omitempty"` // JSON objects describing re-usable channel parameters.
+	CorrelationIds    *ComponentsCorrelationIds         `json:"correlationIds,omitempty"`
+	OperationTraits   map[string]OperationTrait         `json:"operationTraits,omitempty"`
+	MessageTraits     map[string]MessageTrait           `json:"messageTraits,omitempty"`
+	ServerBindings    map[string]BindingsObject         `json:"serverBindings,omitempty"`
+	ChannelBindings   map[string]BindingsObject         `json:"channelBindings,omitempty"`
+	OperationBindings map[string]BindingsObject         `json:"operationBindings,omitempty"`
+	MessageBindings   map[string]BindingsObject         `json:"messageBindings,omitempty"`
+	MapOfAnything     map[string]interface{}            `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithSchemas sets Schemas value.
-func (c *Components) WithSchemas(val map[string]Schema) *Components {
+func (c *Components) WithSchemas(val map[string]map[string]interface{}) *Components {
 	c.Schemas = val
 	return c
 }
 
 // WithSchemasItem sets Schemas item value.
-func (c *Components) WithSchemasItem(key string, val Schema) *Components {
+func (c *Components) WithSchemasItem(key string, val map[string]interface{}) *Components {
 	if c.Schemas == nil {
-		c.Schemas = make(map[string]Schema, 1)
+		c.Schemas = make(map[string]map[string]interface{}, 1)
 	}
 
 	c.Schemas[key] = val
@@ -5134,6 +3978,10 @@ var knownKeysUserPassword = []string{
 	"type",
 }
 
+var requireKeysUserPassword = []string{
+	"type",
+}
+
 // UnmarshalJSON decodes JSON.
 func (u *UserPassword) UnmarshalJSON(data []byte) error {
 	var err error
@@ -5150,6 +3998,12 @@ func (u *UserPassword) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysUserPassword {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["type"]; exists && string(v) != `"userPassword"` {
@@ -5254,6 +4108,11 @@ var knownKeysAPIKey = []string{
 	"type",
 }
 
+var requireKeysAPIKey = []string{
+	"type",
+	"in",
+}
+
 // UnmarshalJSON decodes JSON.
 func (a *APIKey) UnmarshalJSON(data []byte) error {
 	var err error
@@ -5270,6 +4129,12 @@ func (a *APIKey) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysAPIKey {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["type"]; exists && string(v) != `"apiKey"` {
@@ -5366,6 +4231,10 @@ var knownKeysX509 = []string{
 	"type",
 }
 
+var requireKeysX509 = []string{
+	"type",
+}
+
 // UnmarshalJSON decodes JSON.
 func (x *X509) UnmarshalJSON(data []byte) error {
 	var err error
@@ -5382,6 +4251,12 @@ func (x *X509) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysX509 {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["type"]; exists && string(v) != `"X509"` {
@@ -5478,6 +4353,10 @@ var knownKeysSymmetricEncryption = []string{
 	"type",
 }
 
+var requireKeysSymmetricEncryption = []string{
+	"type",
+}
+
 // UnmarshalJSON decodes JSON.
 func (s *SymmetricEncryption) UnmarshalJSON(data []byte) error {
 	var err error
@@ -5494,6 +4373,12 @@ func (s *SymmetricEncryption) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysSymmetricEncryption {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["type"]; exists && string(v) != `"symmetricEncryption"` {
@@ -5590,6 +4475,10 @@ var knownKeysAsymmetricEncryption = []string{
 	"type",
 }
 
+var requireKeysAsymmetricEncryption = []string{
+	"type",
+}
+
 // UnmarshalJSON decodes JSON.
 func (a *AsymmetricEncryption) UnmarshalJSON(data []byte) error {
 	var err error
@@ -5606,6 +4495,12 @@ func (a *AsymmetricEncryption) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysAsymmetricEncryption {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["type"]; exists && string(v) != `"asymmetricEncryption"` {
@@ -5710,6 +4605,11 @@ var knownKeysNonBearerHTTPSecurityScheme = []string{
 	"type",
 }
 
+var requireKeysNonBearerHTTPSecurityScheme = []string{
+	"scheme",
+	"type",
+}
+
 // UnmarshalJSON decodes JSON.
 func (n *NonBearerHTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
@@ -5732,6 +4632,12 @@ func (n *NonBearerHTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysNonBearerHTTPSecurityScheme {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["type"]; exists && string(v) != `"http"` {
@@ -5869,6 +4775,11 @@ var knownKeysBearerHTTPSecurityScheme = []string{
 	"type",
 }
 
+var requireKeysBearerHTTPSecurityScheme = []string{
+	"type",
+	"scheme",
+}
+
 // UnmarshalJSON decodes JSON.
 func (b *BearerHTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
@@ -5885,6 +4796,12 @@ func (b *BearerHTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysBearerHTTPSecurityScheme {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["scheme"]; exists && string(v) != `"bearer"` {
@@ -6003,6 +4920,12 @@ var knownKeysAPIKeyHTTPSecurityScheme = []string{
 	"type",
 }
 
+var requireKeysAPIKeyHTTPSecurityScheme = []string{
+	"type",
+	"name",
+	"in",
+}
+
 // UnmarshalJSON decodes JSON.
 func (a *APIKeyHTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
@@ -6019,6 +4942,12 @@ func (a *APIKeyHTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysAPIKeyHTTPSecurityScheme {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["type"]; exists && string(v) != `"httpApiKey"` {
@@ -6218,6 +5147,11 @@ var knownKeysOauth2Flows = []string{
 	"type",
 }
 
+var requireKeysOauth2Flows = []string{
+	"type",
+	"flows",
+}
+
 // UnmarshalJSON decodes JSON.
 func (o *Oauth2Flows) UnmarshalJSON(data []byte) error {
 	var err error
@@ -6234,6 +5168,12 @@ func (o *Oauth2Flows) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysOauth2Flows {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["type"]; exists && string(v) != `"oauth2"` {
@@ -6581,6 +5521,11 @@ var knownKeysOpenIDConnect = []string{
 	"type",
 }
 
+var requireKeysOpenIDConnect = []string{
+	"type",
+	"openIdConnectUrl",
+}
+
 // UnmarshalJSON decodes JSON.
 func (o *OpenIDConnect) UnmarshalJSON(data []byte) error {
 	var err error
@@ -6597,6 +5542,12 @@ func (o *OpenIDConnect) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysOpenIDConnect {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["type"]; exists && string(v) != `"openIdConnect"` {
@@ -6693,6 +5644,10 @@ var knownKeysSaslPlainSecurityScheme = []string{
 	"type",
 }
 
+var requireKeysSaslPlainSecurityScheme = []string{
+	"type",
+}
+
 // UnmarshalJSON decodes JSON.
 func (s *SaslPlainSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
@@ -6709,6 +5664,12 @@ func (s *SaslPlainSecurityScheme) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysSaslPlainSecurityScheme {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["type"]; exists && string(v) != `"plain"` {
@@ -6812,6 +5773,10 @@ var knownKeysSaslScramSecurityScheme = []string{
 	"description",
 }
 
+var requireKeysSaslScramSecurityScheme = []string{
+	"type",
+}
+
 // UnmarshalJSON decodes JSON.
 func (s *SaslScramSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
@@ -6828,6 +5793,12 @@ func (s *SaslScramSecurityScheme) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysSaslScramSecurityScheme {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	for _, key := range knownKeysSaslScramSecurityScheme {
@@ -6915,6 +5886,10 @@ var knownKeysSaslGssapiSecurityScheme = []string{
 	"type",
 }
 
+var requireKeysSaslGssapiSecurityScheme = []string{
+	"type",
+}
+
 // UnmarshalJSON decodes JSON.
 func (s *SaslGssapiSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
@@ -6931,6 +5906,12 @@ func (s *SaslGssapiSecurityScheme) UnmarshalJSON(data []byte) error {
 	err = json.Unmarshal(data, &rawMap)
 	if err != nil {
 		rawMap = nil
+	}
+
+	for _, key := range requireKeysSaslGssapiSecurityScheme {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
 	}
 
 	if v, exists := rawMap["type"]; exists && string(v) != `"gssapi"` {
@@ -7597,128 +6578,6 @@ func (c *ComponentsCorrelationIds) UnmarshalJSON(data []byte) error {
 // MarshalJSON encodes JSON.
 func (c ComponentsCorrelationIds) MarshalJSON() ([]byte, error) {
 	return marshalUnion(c.MapOfComponentsCorrelationIdsWDValues)
-}
-
-// JSONSchemaTypeAnyOf0 is an enum type.
-type JSONSchemaTypeAnyOf0 string
-
-// JSONSchemaTypeAnyOf0 values enumeration.
-const (
-	JSONSchemaTypeAnyOf0Array   = JSONSchemaTypeAnyOf0("array")
-	JSONSchemaTypeAnyOf0Boolean = JSONSchemaTypeAnyOf0("boolean")
-	JSONSchemaTypeAnyOf0Integer = JSONSchemaTypeAnyOf0("integer")
-	JSONSchemaTypeAnyOf0Null    = JSONSchemaTypeAnyOf0("null")
-	JSONSchemaTypeAnyOf0Number  = JSONSchemaTypeAnyOf0("number")
-	JSONSchemaTypeAnyOf0Object  = JSONSchemaTypeAnyOf0("object")
-	JSONSchemaTypeAnyOf0String  = JSONSchemaTypeAnyOf0("string")
-)
-
-// MarshalJSON encodes JSON.
-func (i JSONSchemaTypeAnyOf0) MarshalJSON() ([]byte, error) {
-	switch i {
-	case JSONSchemaTypeAnyOf0Array:
-	case JSONSchemaTypeAnyOf0Boolean:
-	case JSONSchemaTypeAnyOf0Integer:
-	case JSONSchemaTypeAnyOf0Null:
-	case JSONSchemaTypeAnyOf0Number:
-	case JSONSchemaTypeAnyOf0Object:
-	case JSONSchemaTypeAnyOf0String:
-
-	default:
-		return nil, fmt.Errorf("unexpected JSONSchemaTypeAnyOf0 value: %v", i)
-	}
-
-	return json.Marshal(string(i))
-}
-
-// UnmarshalJSON decodes JSON.
-func (i *JSONSchemaTypeAnyOf0) UnmarshalJSON(data []byte) error {
-	var ii string
-
-	err := json.Unmarshal(data, &ii)
-	if err != nil {
-		return err
-	}
-
-	v := JSONSchemaTypeAnyOf0(ii)
-
-	switch v {
-	case JSONSchemaTypeAnyOf0Array:
-	case JSONSchemaTypeAnyOf0Boolean:
-	case JSONSchemaTypeAnyOf0Integer:
-	case JSONSchemaTypeAnyOf0Null:
-	case JSONSchemaTypeAnyOf0Number:
-	case JSONSchemaTypeAnyOf0Object:
-	case JSONSchemaTypeAnyOf0String:
-
-	default:
-		return fmt.Errorf("unexpected JSONSchemaTypeAnyOf0 value: %v", v)
-	}
-
-	*i = v
-
-	return nil
-}
-
-// JSONSchemaTypeAnyOf1Items is an enum type.
-type JSONSchemaTypeAnyOf1Items string
-
-// JSONSchemaTypeAnyOf1Items values enumeration.
-const (
-	JSONSchemaTypeAnyOf1ItemsArray   = JSONSchemaTypeAnyOf1Items("array")
-	JSONSchemaTypeAnyOf1ItemsBoolean = JSONSchemaTypeAnyOf1Items("boolean")
-	JSONSchemaTypeAnyOf1ItemsInteger = JSONSchemaTypeAnyOf1Items("integer")
-	JSONSchemaTypeAnyOf1ItemsNull    = JSONSchemaTypeAnyOf1Items("null")
-	JSONSchemaTypeAnyOf1ItemsNumber  = JSONSchemaTypeAnyOf1Items("number")
-	JSONSchemaTypeAnyOf1ItemsObject  = JSONSchemaTypeAnyOf1Items("object")
-	JSONSchemaTypeAnyOf1ItemsString  = JSONSchemaTypeAnyOf1Items("string")
-)
-
-// MarshalJSON encodes JSON.
-func (i JSONSchemaTypeAnyOf1Items) MarshalJSON() ([]byte, error) {
-	switch i {
-	case JSONSchemaTypeAnyOf1ItemsArray:
-	case JSONSchemaTypeAnyOf1ItemsBoolean:
-	case JSONSchemaTypeAnyOf1ItemsInteger:
-	case JSONSchemaTypeAnyOf1ItemsNull:
-	case JSONSchemaTypeAnyOf1ItemsNumber:
-	case JSONSchemaTypeAnyOf1ItemsObject:
-	case JSONSchemaTypeAnyOf1ItemsString:
-
-	default:
-		return nil, fmt.Errorf("unexpected JSONSchemaTypeAnyOf1Items value: %v", i)
-	}
-
-	return json.Marshal(string(i))
-}
-
-// UnmarshalJSON decodes JSON.
-func (i *JSONSchemaTypeAnyOf1Items) UnmarshalJSON(data []byte) error {
-	var ii string
-
-	err := json.Unmarshal(data, &ii)
-	if err != nil {
-		return err
-	}
-
-	v := JSONSchemaTypeAnyOf1Items(ii)
-
-	switch v {
-	case JSONSchemaTypeAnyOf1ItemsArray:
-	case JSONSchemaTypeAnyOf1ItemsBoolean:
-	case JSONSchemaTypeAnyOf1ItemsInteger:
-	case JSONSchemaTypeAnyOf1ItemsNull:
-	case JSONSchemaTypeAnyOf1ItemsNumber:
-	case JSONSchemaTypeAnyOf1ItemsObject:
-	case JSONSchemaTypeAnyOf1ItemsString:
-
-	default:
-		return fmt.Errorf("unexpected JSONSchemaTypeAnyOf1Items value: %v", v)
-	}
-
-	*i = v
-
-	return nil
 }
 
 // APIKeyIn is an enum type.

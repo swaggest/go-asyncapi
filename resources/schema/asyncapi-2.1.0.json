@@ -357,6 +357,7 @@
       "description": "JSON objects describing re-usable channel parameters."
     },
     "schema": {
+      "x-go-type": "map[string]interface{}",
       "allOf": [
         {
           "$ref": "http://json-schema.org/draft-07/schema#"
