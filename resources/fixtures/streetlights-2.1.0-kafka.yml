@@ -1,0 +1,147 @@
+asyncapi: 2.1.0
+info:
+  title: Streetlights Kafka API
+  version: 1.0.0
+  description: "The Smartylighting Streetlights API allows you to remotely manage
+    the city lights.\n\n### Check out its awesome features:\n\n* Turn a specific streetlight
+    on/off \U0001F303\n* Dim a specific streetlight \U0001F60E\n* Receive real-time
+    information about environmental lighting conditions \U0001F4C8\n"
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  test:
+    url: test.mykafkacluster.org:8092
+    description: Test broker
+    protocol: kafka-secure
+    security:
+    - saslScram: []
+defaultContentType: application/json
+channels:
+  smartylighting.streetlights.1.0.action.{streetlightId}.dim:
+    parameters:
+      streetlightId:
+        $ref: '#/components/parameters/streetlightId'
+    subscribe:
+      traits:
+      - $ref: '#/components/operationTraits/kafka'
+      operationId: dimLight
+      message:
+        $ref: '#/components/messages/dimLight'
+  smartylighting.streetlights.1.0.action.{streetlightId}.turn.off:
+    parameters:
+      streetlightId:
+        $ref: '#/components/parameters/streetlightId'
+    subscribe:
+      traits:
+      - $ref: '#/components/operationTraits/kafka'
+      operationId: turnOff
+      message:
+        $ref: '#/components/messages/turnOnOff'
+  smartylighting.streetlights.1.0.action.{streetlightId}.turn.on:
+    parameters:
+      streetlightId:
+        $ref: '#/components/parameters/streetlightId'
+    subscribe:
+      traits:
+      - $ref: '#/components/operationTraits/kafka'
+      operationId: turnOn
+      message:
+        $ref: '#/components/messages/turnOnOff'
+  smartylighting.streetlights.1.0.event.{streetlightId}.lighting.measured:
+    parameters:
+      streetlightId:
+        $ref: '#/components/parameters/streetlightId'
+    description: The topic on which measured values may be produced and consumed.
+    publish:
+      traits:
+      - $ref: '#/components/operationTraits/kafka'
+      summary: Inform about environmental lighting conditions of a particular streetlight.
+      operationId: receiveLightMeasurement
+      message:
+        $ref: '#/components/messages/lightMeasured'
+components:
+  schemas:
+    dimLightPayload:
+      properties:
+        percentage:
+          description: Percentage to which the light should be dimmed to.
+          maximum: 100
+          minimum: 0
+          type: integer
+        sentAt:
+          $ref: '#/components/schemas/sentAt'
+      type: object
+    lightMeasuredPayload:
+      properties:
+        lumens:
+          description: Light intensity measured in lumens.
+          minimum: 0
+          type: integer
+        sentAt:
+          $ref: '#/components/schemas/sentAt'
+      type: object
+    sentAt:
+      description: Date and time when the message was sent.
+      format: date-time
+      type: string
+    turnOnOffPayload:
+      properties:
+        command:
+          description: Whether to turn on or off the light.
+          enum:
+          - true
+          - false
+          type: string
+        sentAt:
+          $ref: '#/components/schemas/sentAt'
+      type: object
+  messages:
+    dimLight:
+      payload:
+        $ref: '#/components/schemas/dimLightPayload'
+      summary: Command a particular streetlight to dim the lights.
+      name: dimLight
+      title: Dim light
+      traits:
+      - $ref: '#/components/messageTraits/commonHeaders'
+    lightMeasured:
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/lightMeasuredPayload'
+      summary: Inform about environmental lighting conditions of a particular streetlight.
+      name: lightMeasured
+      title: Light measured
+      traits:
+      - $ref: '#/components/messageTraits/commonHeaders'
+    turnOnOff:
+      payload:
+        $ref: '#/components/schemas/turnOnOffPayload'
+      summary: Command a particular streetlight to turn the lights on or off.
+      name: turnOnOff
+      title: Turn on/off
+      traits:
+      - $ref: '#/components/messageTraits/commonHeaders'
+  securitySchemes:
+    saslScram:
+      type: scramSha256
+      description: Provide your username and password for SASL/SCRAM authentication
+  parameters:
+    streetlightId:
+      description: The ID of the streetlight.
+      schema:
+        type: string
+  operationTraits:
+    kafka:
+      bindings:
+        kafka:
+          clientId: my-app-id
+  messageTraits:
+    commonHeaders:
+      headers:
+        properties:
+          my-app-header:
+            maximum: 100
+            minimum: 0
+            type: integer
+        type: object

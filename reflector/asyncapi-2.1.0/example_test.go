@@ -1,33 +1,15 @@
-# AsyncAPI Generator for Go
-
-[![Build Status](https://github.com/swaggest/go-asyncapi/workflows/test-unit/badge.svg)](https://github.com/swaggest/go-asyncapi/actions?query=branch%3Amaster+workflow%3Atest-unit)
-[![Coverage Status](https://codecov.io/gh/swaggest/go-asyncapi/branch/master/graph/badge.svg)](https://codecov.io/gh/swaggest/go-asyncapi)
-[![GoDoc](https://godoc.org/github.com/swaggest/go-asyncapi?status.svg)](https://godoc.org/github.com/swaggest/go-asyncapi)
-![Code lines](https://sloc.xyz/github/swaggest/go-asyncapi/?category=code)
-![Comments](https://sloc.xyz/github/swaggest/go-asyncapi/?category=comments)
-
-This library helps to create [AsyncAPI](https://www.asyncapi.com/) spec from your Go message structures.
-
-Supported AsyncAPI versions:
-* `v2.1.0` 
-* `v2.0.0` (recommended for support in other tools)
-* `v1.2.0`
-
-## Example
-
-```go
-package main
+package asyncapi_test
 
 import (
 	"fmt"
 	"io/ioutil"
 	"time"
 
-	"github.com/swaggest/go-asyncapi/reflector/asyncapi-2.0.0"
-	"github.com/swaggest/go-asyncapi/spec-2.0.0"
+	"github.com/swaggest/go-asyncapi/reflector/asyncapi-2.1.0"
+	"github.com/swaggest/go-asyncapi/spec-2.1.0"
 )
 
-func main() {
+func ExampleReflector_AddChannel() {
 	type SubItem struct {
 		Key    string  `json:"key" description:"Item key"`
 		Values []int64 `json:"values" uniqueItems:"true" description:"List of item values"`
@@ -61,7 +43,7 @@ func main() {
 					},
 				},
 			},
-			Info: &spec.Info{
+			Info: spec.Info{
 				Version: "1.2.3", // required
 				Title:   "My Lovely Messaging API",
 			},
@@ -109,9 +91,9 @@ func main() {
 	mustNotFail(err)
 
 	fmt.Println(string(yaml))
-	mustNotFail(ioutil.WriteFile("sample.yaml", yaml, 0644))
+	mustNotFail(ioutil.WriteFile("sample.yaml", yaml, 0o600))
 	// output:
-	// asyncapi: 2.0.0
+	// asyncapi: 2.1.0
 	// info:
 	//   title: My Lovely Messaging API
 	//   version: 1.2.3
@@ -134,7 +116,7 @@ func main() {
 	//   another.one:
 	//     subscribe:
 	//       message:
-	//         $ref: '#/components/messages/Asyncapi200TestMyAnotherMessage'
+	//         $ref: '#/components/messages/Asyncapi210TestMyAnotherMessage'
 	//   one.{name}.two:
 	//     parameters:
 	//       name:
@@ -143,7 +125,7 @@ func main() {
 	//           type: string
 	//     publish:
 	//       message:
-	//         $ref: '#/components/messages/Asyncapi200TestMyMessage'
+	//         $ref: '#/components/messages/Asyncapi210TestMyMessage'
 	//     bindings:
 	//       amqp:
 	//         is: routingKey
@@ -151,13 +133,13 @@ func main() {
 	//           name: some-exchange
 	// components:
 	//   schemas:
-	//     Asyncapi200TestMyAnotherMessage:
+	//     Asyncapi210TestMyAnotherMessage:
 	//       properties:
 	//         item:
-	//           $ref: '#/components/schemas/Asyncapi200TestSubItem'
+	//           $ref: '#/components/schemas/Asyncapi210TestSubItem'
 	//           description: Some item
 	//       type: object
-	//     Asyncapi200TestMyMessage:
+	//     Asyncapi210TestMyMessage:
 	//       properties:
 	//         createdAt:
 	//           description: Creation time
@@ -166,10 +148,12 @@ func main() {
 	//         items:
 	//           description: List of items
 	//           items:
-	//             $ref: '#/components/schemas/Asyncapi200TestSubItem'
-	//           type: array
+	//             $ref: '#/components/schemas/Asyncapi210TestSubItem'
+	//           type:
+	//           - array
+	//           - "null"
 	//       type: object
-	//     Asyncapi200TestSubItem:
+	//     Asyncapi210TestSubItem:
 	//       properties:
 	//         key:
 	//           description: Item key
@@ -178,11 +162,13 @@ func main() {
 	//           description: List of item values
 	//           items:
 	//             type: integer
-	//           type: array
+	//           type:
+	//           - array
+	//           - "null"
 	//           uniqueItems: true
 	//       type: object
 	//   messages:
-	//     Asyncapi200TestMyAnotherMessage:
+	//     Asyncapi210TestMyAnotherMessage:
 	//       headers:
 	//         properties:
 	//           X-Trace-ID:
@@ -192,13 +178,12 @@ func main() {
 	//         - X-Trace-ID
 	//         type: object
 	//       payload:
-	//         $ref: '#/components/schemas/Asyncapi200TestMyAnotherMessage'
+	//         $ref: '#/components/schemas/Asyncapi210TestMyAnotherMessage'
 	//       summary: Sample consumer
 	//       description: This is another sample schema.
-	//     Asyncapi200TestMyMessage:
+	//     Asyncapi210TestMyMessage:
 	//       payload:
-	//         $ref: '#/components/schemas/Asyncapi200TestMyMessage'
+	//         $ref: '#/components/schemas/Asyncapi210TestMyMessage'
 	//       summary: Sample publisher
 	//       description: This is a sample schema.
 }
-```
