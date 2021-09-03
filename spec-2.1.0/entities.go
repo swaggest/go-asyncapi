@@ -676,7 +676,7 @@ type Server struct {
 	ProtocolVersion string                    `json:"protocolVersion,omitempty"`
 	Variables       map[string]ServerVariable `json:"variables,omitempty"`
 	Security        []map[string][]string     `json:"security,omitempty"`
-	Bindings        *BindingsObject           `json:"bindings,omitempty"`
+	Bindings        *ServerBindingsObject     `json:"bindings,omitempty"`
 	MapOfAnything   map[string]interface{}    `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
@@ -728,15 +728,15 @@ func (s *Server) WithSecurity(val ...map[string][]string) *Server {
 }
 
 // WithBindings sets Bindings value.
-func (s *Server) WithBindings(val BindingsObject) *Server {
+func (s *Server) WithBindings(val ServerBindingsObject) *Server {
 	s.Bindings = &val
 	return s
 }
 
 // BindingsEns ensures returned Bindings is not nil.
-func (s *Server) BindingsEns() *BindingsObject {
+func (s *Server) BindingsEns() *ServerBindingsObject {
 	if s.Bindings == nil {
-		s.Bindings = new(BindingsObject)
+		s.Bindings = new(ServerBindingsObject)
 	}
 
 	return s.Bindings
@@ -977,8 +977,8 @@ func (s ServerVariable) MarshalJSON() ([]byte, error) {
 	return marshalUnion(marshalServerVariable(s), s.MapOfAnything)
 }
 
-// BindingsObject structure is generated from "#/definitions/bindingsObject".
-type BindingsObject struct {
+// ServerBindingsObject structure is generated from "#/definitions/serverBindingsObject".
+type ServerBindingsObject struct {
 	HTTP                 *interface{}           `json:"http,omitempty"`
 	Ws                   *interface{}           `json:"ws,omitempty"`
 	Amqp                 *interface{}           `json:"amqp,omitempty"`
@@ -997,109 +997,109 @@ type BindingsObject struct {
 }
 
 // WithHTTP sets HTTP value.
-func (b *BindingsObject) WithHTTP(val interface{}) *BindingsObject {
-	b.HTTP = &val
-	return b
+func (s *ServerBindingsObject) WithHTTP(val interface{}) *ServerBindingsObject {
+	s.HTTP = &val
+	return s
 }
 
 // WithWs sets Ws value.
-func (b *BindingsObject) WithWs(val interface{}) *BindingsObject {
-	b.Ws = &val
-	return b
+func (s *ServerBindingsObject) WithWs(val interface{}) *ServerBindingsObject {
+	s.Ws = &val
+	return s
 }
 
 // WithAmqp sets Amqp value.
-func (b *BindingsObject) WithAmqp(val interface{}) *BindingsObject {
-	b.Amqp = &val
-	return b
+func (s *ServerBindingsObject) WithAmqp(val interface{}) *ServerBindingsObject {
+	s.Amqp = &val
+	return s
 }
 
 // WithAmqp1 sets Amqp1 value.
-func (b *BindingsObject) WithAmqp1(val interface{}) *BindingsObject {
-	b.Amqp1 = &val
-	return b
+func (s *ServerBindingsObject) WithAmqp1(val interface{}) *ServerBindingsObject {
+	s.Amqp1 = &val
+	return s
 }
 
 // WithMqtt sets Mqtt value.
-func (b *BindingsObject) WithMqtt(val interface{}) *BindingsObject {
-	b.Mqtt = &val
-	return b
+func (s *ServerBindingsObject) WithMqtt(val interface{}) *ServerBindingsObject {
+	s.Mqtt = &val
+	return s
 }
 
 // WithMqtt5 sets Mqtt5 value.
-func (b *BindingsObject) WithMqtt5(val interface{}) *BindingsObject {
-	b.Mqtt5 = &val
-	return b
+func (s *ServerBindingsObject) WithMqtt5(val interface{}) *ServerBindingsObject {
+	s.Mqtt5 = &val
+	return s
 }
 
 // WithKafka sets Kafka value.
-func (b *BindingsObject) WithKafka(val interface{}) *BindingsObject {
-	b.Kafka = &val
-	return b
+func (s *ServerBindingsObject) WithKafka(val interface{}) *ServerBindingsObject {
+	s.Kafka = &val
+	return s
 }
 
 // WithNats sets Nats value.
-func (b *BindingsObject) WithNats(val interface{}) *BindingsObject {
-	b.Nats = &val
-	return b
+func (s *ServerBindingsObject) WithNats(val interface{}) *ServerBindingsObject {
+	s.Nats = &val
+	return s
 }
 
 // WithJms sets Jms value.
-func (b *BindingsObject) WithJms(val interface{}) *BindingsObject {
-	b.Jms = &val
-	return b
+func (s *ServerBindingsObject) WithJms(val interface{}) *ServerBindingsObject {
+	s.Jms = &val
+	return s
 }
 
 // WithSns sets Sns value.
-func (b *BindingsObject) WithSns(val interface{}) *BindingsObject {
-	b.Sns = &val
-	return b
+func (s *ServerBindingsObject) WithSns(val interface{}) *ServerBindingsObject {
+	s.Sns = &val
+	return s
 }
 
 // WithSqs sets Sqs value.
-func (b *BindingsObject) WithSqs(val interface{}) *BindingsObject {
-	b.Sqs = &val
-	return b
+func (s *ServerBindingsObject) WithSqs(val interface{}) *ServerBindingsObject {
+	s.Sqs = &val
+	return s
 }
 
 // WithStomp sets Stomp value.
-func (b *BindingsObject) WithStomp(val interface{}) *BindingsObject {
-	b.Stomp = &val
-	return b
+func (s *ServerBindingsObject) WithStomp(val interface{}) *ServerBindingsObject {
+	s.Stomp = &val
+	return s
 }
 
 // WithRedis sets Redis value.
-func (b *BindingsObject) WithRedis(val interface{}) *BindingsObject {
-	b.Redis = &val
-	return b
+func (s *ServerBindingsObject) WithRedis(val interface{}) *ServerBindingsObject {
+	s.Redis = &val
+	return s
 }
 
 // WithIbmmq sets Ibmmq value.
-func (b *BindingsObject) WithIbmmq(val interface{}) *BindingsObject {
-	b.Ibmmq = &val
-	return b
+func (s *ServerBindingsObject) WithIbmmq(val interface{}) *ServerBindingsObject {
+	s.Ibmmq = &val
+	return s
 }
 
 // WithAdditionalProperties sets AdditionalProperties value.
-func (b *BindingsObject) WithAdditionalProperties(val map[string]interface{}) *BindingsObject {
-	b.AdditionalProperties = val
-	return b
+func (s *ServerBindingsObject) WithAdditionalProperties(val map[string]interface{}) *ServerBindingsObject {
+	s.AdditionalProperties = val
+	return s
 }
 
 // WithAdditionalPropertiesItem sets AdditionalProperties item value.
-func (b *BindingsObject) WithAdditionalPropertiesItem(key string, val interface{}) *BindingsObject {
-	if b.AdditionalProperties == nil {
-		b.AdditionalProperties = make(map[string]interface{}, 1)
+func (s *ServerBindingsObject) WithAdditionalPropertiesItem(key string, val interface{}) *ServerBindingsObject {
+	if s.AdditionalProperties == nil {
+		s.AdditionalProperties = make(map[string]interface{}, 1)
 	}
 
-	b.AdditionalProperties[key] = val
+	s.AdditionalProperties[key] = val
 
-	return b
+	return s
 }
 
-type marshalBindingsObject BindingsObject
+type marshalServerBindingsObject ServerBindingsObject
 
-var knownKeysBindingsObject = []string{
+var knownKeysServerBindingsObject = []string{
 	"http",
 	"ws",
 	"amqp",
@@ -1117,12 +1117,12 @@ var knownKeysBindingsObject = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (b *BindingsObject) UnmarshalJSON(data []byte) error {
+func (s *ServerBindingsObject) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mb := marshalBindingsObject(*b)
+	ms := marshalServerBindingsObject(*s)
 
-	err = json.Unmarshal(data, &mb)
+	err = json.Unmarshal(data, &ms)
 	if err != nil {
 		return err
 	}
@@ -1134,111 +1134,111 @@ func (b *BindingsObject) UnmarshalJSON(data []byte) error {
 		rawMap = nil
 	}
 
-	if mb.HTTP == nil {
+	if ms.HTTP == nil {
 		if _, ok := rawMap["http"]; ok {
 			var v interface{}
-			mb.HTTP = &v
+			ms.HTTP = &v
 		}
 	}
 
-	if mb.Ws == nil {
+	if ms.Ws == nil {
 		if _, ok := rawMap["ws"]; ok {
 			var v interface{}
-			mb.Ws = &v
+			ms.Ws = &v
 		}
 	}
 
-	if mb.Amqp == nil {
+	if ms.Amqp == nil {
 		if _, ok := rawMap["amqp"]; ok {
 			var v interface{}
-			mb.Amqp = &v
+			ms.Amqp = &v
 		}
 	}
 
-	if mb.Amqp1 == nil {
+	if ms.Amqp1 == nil {
 		if _, ok := rawMap["amqp1"]; ok {
 			var v interface{}
-			mb.Amqp1 = &v
+			ms.Amqp1 = &v
 		}
 	}
 
-	if mb.Mqtt == nil {
+	if ms.Mqtt == nil {
 		if _, ok := rawMap["mqtt"]; ok {
 			var v interface{}
-			mb.Mqtt = &v
+			ms.Mqtt = &v
 		}
 	}
 
-	if mb.Mqtt5 == nil {
+	if ms.Mqtt5 == nil {
 		if _, ok := rawMap["mqtt5"]; ok {
 			var v interface{}
-			mb.Mqtt5 = &v
+			ms.Mqtt5 = &v
 		}
 	}
 
-	if mb.Kafka == nil {
+	if ms.Kafka == nil {
 		if _, ok := rawMap["kafka"]; ok {
 			var v interface{}
-			mb.Kafka = &v
+			ms.Kafka = &v
 		}
 	}
 
-	if mb.Nats == nil {
+	if ms.Nats == nil {
 		if _, ok := rawMap["nats"]; ok {
 			var v interface{}
-			mb.Nats = &v
+			ms.Nats = &v
 		}
 	}
 
-	if mb.Jms == nil {
+	if ms.Jms == nil {
 		if _, ok := rawMap["jms"]; ok {
 			var v interface{}
-			mb.Jms = &v
+			ms.Jms = &v
 		}
 	}
 
-	if mb.Sns == nil {
+	if ms.Sns == nil {
 		if _, ok := rawMap["sns"]; ok {
 			var v interface{}
-			mb.Sns = &v
+			ms.Sns = &v
 		}
 	}
 
-	if mb.Sqs == nil {
+	if ms.Sqs == nil {
 		if _, ok := rawMap["sqs"]; ok {
 			var v interface{}
-			mb.Sqs = &v
+			ms.Sqs = &v
 		}
 	}
 
-	if mb.Stomp == nil {
+	if ms.Stomp == nil {
 		if _, ok := rawMap["stomp"]; ok {
 			var v interface{}
-			mb.Stomp = &v
+			ms.Stomp = &v
 		}
 	}
 
-	if mb.Redis == nil {
+	if ms.Redis == nil {
 		if _, ok := rawMap["redis"]; ok {
 			var v interface{}
-			mb.Redis = &v
+			ms.Redis = &v
 		}
 	}
 
-	if mb.Ibmmq == nil {
+	if ms.Ibmmq == nil {
 		if _, ok := rawMap["ibmmq"]; ok {
 			var v interface{}
-			mb.Ibmmq = &v
+			ms.Ibmmq = &v
 		}
 	}
 
-	for _, key := range knownKeysBindingsObject {
+	for _, key := range knownKeysServerBindingsObject {
 		delete(rawMap, key)
 	}
 
 	for key, rawValue := range rawMap {
-		if mb.AdditionalProperties == nil {
-			mb.AdditionalProperties = make(map[string]interface{}, 1)
+		if ms.AdditionalProperties == nil {
+			ms.AdditionalProperties = make(map[string]interface{}, 1)
 		}
 
 		var val interface{}
@@ -1248,21 +1248,21 @@ func (b *BindingsObject) UnmarshalJSON(data []byte) error {
 			return err
 		}
 
-		mb.AdditionalProperties[key] = val
+		ms.AdditionalProperties[key] = val
 	}
 
-	*b = BindingsObject(mb)
+	*s = ServerBindingsObject(ms)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (b BindingsObject) MarshalJSON() ([]byte, error) {
-	if len(b.AdditionalProperties) == 0 {
-		return json.Marshal(marshalBindingsObject(b))
+func (s ServerBindingsObject) MarshalJSON() ([]byte, error) {
+	if len(s.AdditionalProperties) == 0 {
+		return json.Marshal(marshalServerBindingsObject(s))
 	}
 
-	return marshalUnion(marshalBindingsObject(b), b.AdditionalProperties)
+	return marshalUnion(marshalServerBindingsObject(s), s.AdditionalProperties)
 }
 
 // ChannelItem structure is generated from "#/definitions/channelItem".
@@ -1273,7 +1273,7 @@ type ChannelItem struct {
 	Publish       *Operation             `json:"publish,omitempty"`
 	Subscribe     *Operation             `json:"subscribe,omitempty"`
 	Deprecated    bool                   `json:"deprecated,omitempty"`
-	Bindings      *BindingsObject        `json:"bindings,omitempty"`
+	Bindings      *ChannelBindingsObject `json:"bindings,omitempty"`
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
@@ -1343,15 +1343,15 @@ func (c *ChannelItem) WithDeprecated(val bool) *ChannelItem {
 }
 
 // WithBindings sets Bindings value.
-func (c *ChannelItem) WithBindings(val BindingsObject) *ChannelItem {
+func (c *ChannelItem) WithBindings(val ChannelBindingsObject) *ChannelItem {
 	c.Bindings = &val
 	return c
 }
 
 // BindingsEns ensures returned Bindings is not nil.
-func (c *ChannelItem) BindingsEns() *BindingsObject {
+func (c *ChannelItem) BindingsEns() *ChannelBindingsObject {
 	if c.Bindings == nil {
-		c.Bindings = new(BindingsObject)
+		c.Bindings = new(ChannelBindingsObject)
 	}
 
 	return c.Bindings
@@ -1594,15 +1594,15 @@ func (p Parameter) MarshalJSON() ([]byte, error) {
 
 // Operation structure is generated from "#/definitions/operation".
 type Operation struct {
-	Traits        []OperationTraitsItems `json:"traits,omitempty"`
-	Summary       string                 `json:"summary,omitempty"`
-	Description   string                 `json:"description,omitempty"`
-	Tags          []Tag                  `json:"tags,omitempty"`
-	ExternalDocs  *ExternalDocs          `json:"externalDocs,omitempty"` // Information about external documentation.
-	ID            string                 `json:"operationId,omitempty"`
-	Bindings      *BindingsObject        `json:"bindings,omitempty"`
-	Message       *Message               `json:"message,omitempty"`
-	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+	Traits        []OperationTraitsItems   `json:"traits,omitempty"`
+	Summary       string                   `json:"summary,omitempty"`
+	Description   string                   `json:"description,omitempty"`
+	Tags          []Tag                    `json:"tags,omitempty"`
+	ExternalDocs  *ExternalDocs            `json:"externalDocs,omitempty"` // Information about external documentation.
+	ID            string                   `json:"operationId,omitempty"`
+	Bindings      *OperationBindingsObject `json:"bindings,omitempty"`
+	Message       *Message                 `json:"message,omitempty"`
+	MapOfAnything map[string]interface{}   `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithTraits sets Traits value.
@@ -1651,15 +1651,15 @@ func (o *Operation) WithID(val string) *Operation {
 }
 
 // WithBindings sets Bindings value.
-func (o *Operation) WithBindings(val BindingsObject) *Operation {
+func (o *Operation) WithBindings(val OperationBindingsObject) *Operation {
 	o.Bindings = &val
 	return o
 }
 
 // BindingsEns ensures returned Bindings is not nil.
-func (o *Operation) BindingsEns() *BindingsObject {
+func (o *Operation) BindingsEns() *OperationBindingsObject {
 	if o.Bindings == nil {
-		o.Bindings = new(BindingsObject)
+		o.Bindings = new(OperationBindingsObject)
 	}
 
 	return o.Bindings
@@ -1827,13 +1827,13 @@ func (r *Reference) UnmarshalJSON(data []byte) error {
 
 // OperationTrait structure is generated from "#/definitions/operationTrait".
 type OperationTrait struct {
-	Summary       string                 `json:"summary,omitempty"`
-	Description   string                 `json:"description,omitempty"`
-	Tags          []Tag                  `json:"tags,omitempty"`
-	ExternalDocs  *ExternalDocs          `json:"externalDocs,omitempty"` // Information about external documentation.
-	OperationID   string                 `json:"operationId,omitempty"`
-	Bindings      *BindingsObject        `json:"bindings,omitempty"`
-	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+	Summary       string                   `json:"summary,omitempty"`
+	Description   string                   `json:"description,omitempty"`
+	Tags          []Tag                    `json:"tags,omitempty"`
+	ExternalDocs  *ExternalDocs            `json:"externalDocs,omitempty"` // Information about external documentation.
+	OperationID   string                   `json:"operationId,omitempty"`
+	Bindings      *OperationBindingsObject `json:"bindings,omitempty"`
+	MapOfAnything map[string]interface{}   `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithSummary sets Summary value.
@@ -1876,15 +1876,15 @@ func (o *OperationTrait) WithOperationID(val string) *OperationTrait {
 }
 
 // WithBindings sets Bindings value.
-func (o *OperationTrait) WithBindings(val BindingsObject) *OperationTrait {
+func (o *OperationTrait) WithBindings(val OperationBindingsObject) *OperationTrait {
 	o.Bindings = &val
 	return o
 }
 
 // BindingsEns ensures returned Bindings is not nil.
-func (o *OperationTrait) BindingsEns() *BindingsObject {
+func (o *OperationTrait) BindingsEns() *OperationBindingsObject {
 	if o.Bindings == nil {
-		o.Bindings = new(BindingsObject)
+		o.Bindings = new(OperationBindingsObject)
 	}
 
 	return o.Bindings
@@ -2246,6 +2246,438 @@ func (e ExternalDocs) MarshalJSON() ([]byte, error) {
 	return marshalUnion(marshalExternalDocs(e), e.MapOfAnything)
 }
 
+// OperationBindingsObject structure is generated from "#/definitions/operationBindingsObject".
+type OperationBindingsObject struct {
+	HTTP *interface{} `json:"http,omitempty"`
+	Ws   *interface{} `json:"ws,omitempty"`
+	// AMQP 0-9-1 Operation Binding Object.
+	// This object contains information about the operation representation in AMQP.
+	// See https://github.com/asyncapi/bindings/tree/master/amqp#operation-binding-object.
+	Amqp                 *AMQP091OperationBindingObject `json:"amqp,omitempty"`
+	Amqp1                *interface{}                   `json:"amqp1,omitempty"`
+	Mqtt                 *interface{}                   `json:"mqtt,omitempty"`
+	Mqtt5                *interface{}                   `json:"mqtt5,omitempty"`
+	Kafka                *interface{}                   `json:"kafka,omitempty"`
+	Nats                 *interface{}                   `json:"nats,omitempty"`
+	Jms                  *interface{}                   `json:"jms,omitempty"`
+	Sns                  *interface{}                   `json:"sns,omitempty"`
+	Sqs                  *interface{}                   `json:"sqs,omitempty"`
+	Stomp                *interface{}                   `json:"stomp,omitempty"`
+	Redis                *interface{}                   `json:"redis,omitempty"`
+	Ibmmq                *interface{}                   `json:"ibmmq,omitempty"`
+	AdditionalProperties map[string]interface{}         `json:"-"` // All unmatched properties.
+}
+
+// WithHTTP sets HTTP value.
+func (o *OperationBindingsObject) WithHTTP(val interface{}) *OperationBindingsObject {
+	o.HTTP = &val
+	return o
+}
+
+// WithWs sets Ws value.
+func (o *OperationBindingsObject) WithWs(val interface{}) *OperationBindingsObject {
+	o.Ws = &val
+	return o
+}
+
+// WithAmqp sets Amqp value.
+func (o *OperationBindingsObject) WithAmqp(val AMQP091OperationBindingObject) *OperationBindingsObject {
+	o.Amqp = &val
+	return o
+}
+
+// AmqpEns ensures returned Amqp is not nil.
+func (o *OperationBindingsObject) AmqpEns() *AMQP091OperationBindingObject {
+	if o.Amqp == nil {
+		o.Amqp = new(AMQP091OperationBindingObject)
+	}
+
+	return o.Amqp
+}
+
+// WithAmqp1 sets Amqp1 value.
+func (o *OperationBindingsObject) WithAmqp1(val interface{}) *OperationBindingsObject {
+	o.Amqp1 = &val
+	return o
+}
+
+// WithMqtt sets Mqtt value.
+func (o *OperationBindingsObject) WithMqtt(val interface{}) *OperationBindingsObject {
+	o.Mqtt = &val
+	return o
+}
+
+// WithMqtt5 sets Mqtt5 value.
+func (o *OperationBindingsObject) WithMqtt5(val interface{}) *OperationBindingsObject {
+	o.Mqtt5 = &val
+	return o
+}
+
+// WithKafka sets Kafka value.
+func (o *OperationBindingsObject) WithKafka(val interface{}) *OperationBindingsObject {
+	o.Kafka = &val
+	return o
+}
+
+// WithNats sets Nats value.
+func (o *OperationBindingsObject) WithNats(val interface{}) *OperationBindingsObject {
+	o.Nats = &val
+	return o
+}
+
+// WithJms sets Jms value.
+func (o *OperationBindingsObject) WithJms(val interface{}) *OperationBindingsObject {
+	o.Jms = &val
+	return o
+}
+
+// WithSns sets Sns value.
+func (o *OperationBindingsObject) WithSns(val interface{}) *OperationBindingsObject {
+	o.Sns = &val
+	return o
+}
+
+// WithSqs sets Sqs value.
+func (o *OperationBindingsObject) WithSqs(val interface{}) *OperationBindingsObject {
+	o.Sqs = &val
+	return o
+}
+
+// WithStomp sets Stomp value.
+func (o *OperationBindingsObject) WithStomp(val interface{}) *OperationBindingsObject {
+	o.Stomp = &val
+	return o
+}
+
+// WithRedis sets Redis value.
+func (o *OperationBindingsObject) WithRedis(val interface{}) *OperationBindingsObject {
+	o.Redis = &val
+	return o
+}
+
+// WithIbmmq sets Ibmmq value.
+func (o *OperationBindingsObject) WithIbmmq(val interface{}) *OperationBindingsObject {
+	o.Ibmmq = &val
+	return o
+}
+
+// WithAdditionalProperties sets AdditionalProperties value.
+func (o *OperationBindingsObject) WithAdditionalProperties(val map[string]interface{}) *OperationBindingsObject {
+	o.AdditionalProperties = val
+	return o
+}
+
+// WithAdditionalPropertiesItem sets AdditionalProperties item value.
+func (o *OperationBindingsObject) WithAdditionalPropertiesItem(key string, val interface{}) *OperationBindingsObject {
+	if o.AdditionalProperties == nil {
+		o.AdditionalProperties = make(map[string]interface{}, 1)
+	}
+
+	o.AdditionalProperties[key] = val
+
+	return o
+}
+
+type marshalOperationBindingsObject OperationBindingsObject
+
+var knownKeysOperationBindingsObject = []string{
+	"http",
+	"ws",
+	"amqp",
+	"amqp1",
+	"mqtt",
+	"mqtt5",
+	"kafka",
+	"nats",
+	"jms",
+	"sns",
+	"sqs",
+	"stomp",
+	"redis",
+	"ibmmq",
+}
+
+// UnmarshalJSON decodes JSON.
+func (o *OperationBindingsObject) UnmarshalJSON(data []byte) error {
+	var err error
+
+	mo := marshalOperationBindingsObject(*o)
+
+	err = json.Unmarshal(data, &mo)
+	if err != nil {
+		return err
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	if mo.HTTP == nil {
+		if _, ok := rawMap["http"]; ok {
+			var v interface{}
+			mo.HTTP = &v
+		}
+	}
+
+	if mo.Ws == nil {
+		if _, ok := rawMap["ws"]; ok {
+			var v interface{}
+			mo.Ws = &v
+		}
+	}
+
+	if mo.Amqp1 == nil {
+		if _, ok := rawMap["amqp1"]; ok {
+			var v interface{}
+			mo.Amqp1 = &v
+		}
+	}
+
+	if mo.Mqtt == nil {
+		if _, ok := rawMap["mqtt"]; ok {
+			var v interface{}
+			mo.Mqtt = &v
+		}
+	}
+
+	if mo.Mqtt5 == nil {
+		if _, ok := rawMap["mqtt5"]; ok {
+			var v interface{}
+			mo.Mqtt5 = &v
+		}
+	}
+
+	if mo.Kafka == nil {
+		if _, ok := rawMap["kafka"]; ok {
+			var v interface{}
+			mo.Kafka = &v
+		}
+	}
+
+	if mo.Nats == nil {
+		if _, ok := rawMap["nats"]; ok {
+			var v interface{}
+			mo.Nats = &v
+		}
+	}
+
+	if mo.Jms == nil {
+		if _, ok := rawMap["jms"]; ok {
+			var v interface{}
+			mo.Jms = &v
+		}
+	}
+
+	if mo.Sns == nil {
+		if _, ok := rawMap["sns"]; ok {
+			var v interface{}
+			mo.Sns = &v
+		}
+	}
+
+	if mo.Sqs == nil {
+		if _, ok := rawMap["sqs"]; ok {
+			var v interface{}
+			mo.Sqs = &v
+		}
+	}
+
+	if mo.Stomp == nil {
+		if _, ok := rawMap["stomp"]; ok {
+			var v interface{}
+			mo.Stomp = &v
+		}
+	}
+
+	if mo.Redis == nil {
+		if _, ok := rawMap["redis"]; ok {
+			var v interface{}
+			mo.Redis = &v
+		}
+	}
+
+	if mo.Ibmmq == nil {
+		if _, ok := rawMap["ibmmq"]; ok {
+			var v interface{}
+			mo.Ibmmq = &v
+		}
+	}
+
+	for _, key := range knownKeysOperationBindingsObject {
+		delete(rawMap, key)
+	}
+
+	for key, rawValue := range rawMap {
+		if mo.AdditionalProperties == nil {
+			mo.AdditionalProperties = make(map[string]interface{}, 1)
+		}
+
+		var val interface{}
+
+		err = json.Unmarshal(rawValue, &val)
+		if err != nil {
+			return err
+		}
+
+		mo.AdditionalProperties[key] = val
+	}
+
+	*o = OperationBindingsObject(mo)
+
+	return nil
+}
+
+// MarshalJSON encodes JSON.
+func (o OperationBindingsObject) MarshalJSON() ([]byte, error) {
+	if len(o.AdditionalProperties) == 0 {
+		return json.Marshal(marshalOperationBindingsObject(o))
+	}
+
+	return marshalUnion(marshalOperationBindingsObject(o), o.AdditionalProperties)
+}
+
+// AMQP091OperationBindingObject structure is generated from "amqp-operation-binding-object-0.1.0.json".
+//
+// AMQP 0-9-1 Operation Binding Object.
+//
+// This object contains information about the operation representation in AMQP.
+// See https://github.com/asyncapi/bindings/tree/master/amqp#operation-binding-object.
+type AMQP091OperationBindingObject struct {
+	Expiration     int64                                       `json:"expiration,omitempty"`     // TTL (Time-To-Live) for the message. It MUST be greater than or equal to zero. Applies to Publish, Subscribe.
+	UserID         string                                      `json:"userId,omitempty"`         // Identifies the user who has sent the message. Applies to Publish, Subscribe.
+	Cc             []string                                    `json:"cc,omitempty"`             // The routing keys the message should be routed to at the time of publishing. Applies to Publish, Subscribe.
+	Priority       int64                                       `json:"priority,omitempty"`       // A priority for the message. Applies to Publish, Subscribe.
+	DeliveryMode   AMQP091OperationBindingObjectDeliveryMode   `json:"deliveryMode,omitempty"`   // Delivery mode of the message. Its value MUST be either 1 (transient) or 2 (persistent). Applies to Publish, Subscribe.
+	Mandatory      bool                                        `json:"mandatory,omitempty"`      // Whether the message is mandatory or not. Applies to Publish.
+	Bcc            []string                                    `json:"bcc,omitempty"`            // Like cc but consumers will not receive this information. Applies to Publish.
+	ReplyTo        string                                      `json:"replyTo,omitempty"`        // Name of the queue where the consumer should send the response. Applies to Publish, Subscribe.
+	Timestamp      bool                                        `json:"timestamp,omitempty"`      // Whether the message should include a timestamp or not. Applies to Publish, Subscribe.
+	Ack            bool                                        `json:"ack,omitempty"`            // Whether the consumer should ack the message or not. Applies to Subscribe.
+	BindingVersion AMQP091OperationBindingObjectBindingVersion `json:"bindingVersion,omitempty"` // The version of this binding. If omitted, "latest" MUST be assumed. Applies to Publish, Subscribe.
+}
+
+// WithExpiration sets Expiration value.
+func (a *AMQP091OperationBindingObject) WithExpiration(val int64) *AMQP091OperationBindingObject {
+	a.Expiration = val
+	return a
+}
+
+// WithUserID sets UserID value.
+func (a *AMQP091OperationBindingObject) WithUserID(val string) *AMQP091OperationBindingObject {
+	a.UserID = val
+	return a
+}
+
+// WithCc sets Cc value.
+func (a *AMQP091OperationBindingObject) WithCc(val ...string) *AMQP091OperationBindingObject {
+	a.Cc = val
+	return a
+}
+
+// WithPriority sets Priority value.
+func (a *AMQP091OperationBindingObject) WithPriority(val int64) *AMQP091OperationBindingObject {
+	a.Priority = val
+	return a
+}
+
+// WithDeliveryMode sets DeliveryMode value.
+func (a *AMQP091OperationBindingObject) WithDeliveryMode(val AMQP091OperationBindingObjectDeliveryMode) *AMQP091OperationBindingObject {
+	a.DeliveryMode = val
+	return a
+}
+
+// WithMandatory sets Mandatory value.
+func (a *AMQP091OperationBindingObject) WithMandatory(val bool) *AMQP091OperationBindingObject {
+	a.Mandatory = val
+	return a
+}
+
+// WithBcc sets Bcc value.
+func (a *AMQP091OperationBindingObject) WithBcc(val ...string) *AMQP091OperationBindingObject {
+	a.Bcc = val
+	return a
+}
+
+// WithReplyTo sets ReplyTo value.
+func (a *AMQP091OperationBindingObject) WithReplyTo(val string) *AMQP091OperationBindingObject {
+	a.ReplyTo = val
+	return a
+}
+
+// WithTimestamp sets Timestamp value.
+func (a *AMQP091OperationBindingObject) WithTimestamp(val bool) *AMQP091OperationBindingObject {
+	a.Timestamp = val
+	return a
+}
+
+// WithAck sets Ack value.
+func (a *AMQP091OperationBindingObject) WithAck(val bool) *AMQP091OperationBindingObject {
+	a.Ack = val
+	return a
+}
+
+// WithBindingVersion sets BindingVersion value.
+func (a *AMQP091OperationBindingObject) WithBindingVersion(val AMQP091OperationBindingObjectBindingVersion) *AMQP091OperationBindingObject {
+	a.BindingVersion = val
+	return a
+}
+
+type marshalAMQP091OperationBindingObject AMQP091OperationBindingObject
+
+var knownKeysAMQP091OperationBindingObject = []string{
+	"expiration",
+	"userId",
+	"cc",
+	"priority",
+	"deliveryMode",
+	"mandatory",
+	"bcc",
+	"replyTo",
+	"timestamp",
+	"ack",
+	"bindingVersion",
+}
+
+// UnmarshalJSON decodes JSON.
+func (a *AMQP091OperationBindingObject) UnmarshalJSON(data []byte) error {
+	var err error
+
+	ma := marshalAMQP091OperationBindingObject(*a)
+
+	err = json.Unmarshal(data, &ma)
+	if err != nil {
+		return err
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	for _, key := range knownKeysAMQP091OperationBindingObject {
+		delete(rawMap, key)
+	}
+
+	if len(rawMap) != 0 {
+		offendingKeys := make([]string, 0, len(rawMap))
+
+		for key := range rawMap {
+			offendingKeys = append(offendingKeys, key)
+		}
+
+		return fmt.Errorf("additional properties not allowed in AMQP091OperationBindingObject: %v", offendingKeys)
+	}
+
+	*a = AMQP091OperationBindingObject(ma)
+
+	return nil
+}
+
 // OperationTraitsItems structure is generated from "#/definitions/operation->traits->items".
 type OperationTraitsItems struct {
 	Reference       *Reference      `json:"-"`
@@ -2396,12 +2828,14 @@ func (m *MessageOneOf1OneOf0) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MessageOneOf1OneOf1 structure is generated from "#/definitions/message/oneOf/1/oneOf/1".
-type MessageOneOf1OneOf1 struct {
+// MessageEntity structure is generated from "#/definitions/message/oneOf/1/oneOf/1".
+//
+// Message entity.
+type MessageEntity struct {
 	SchemaFormat  string                             `json:"schemaFormat,omitempty"`
 	ContentType   string                             `json:"contentType,omitempty"`
 	Headers       *MessageOneOf1OneOf1Headers        `json:"headers,omitempty"`
-	Payload       *interface{}                       `json:"payload,omitempty"`
+	Payload       map[string]interface{}             `json:"payload,omitempty"`
 	CorrelationID *MessageOneOf1OneOf1CorrelationID  `json:"correlationId,omitempty"`
 	Tags          []Tag                              `json:"tags,omitempty"`
 	Summary       string                             `json:"summary,omitempty"`      // A brief summary of the message.
@@ -2411,31 +2845,31 @@ type MessageOneOf1OneOf1 struct {
 	ExternalDocs  *ExternalDocs                      `json:"externalDocs,omitempty"` // Information about external documentation.
 	Deprecated    bool                               `json:"deprecated,omitempty"`
 	Examples      []MessageOneOf1OneOf1ExamplesItems `json:"examples,omitempty"`
-	Bindings      *BindingsObject                    `json:"bindings,omitempty"`
+	Bindings      *MessageBindingsObject             `json:"bindings,omitempty"`
 	Traits        []MessageOneOf1OneOf1TraitsItems   `json:"traits,omitempty"`
 	MapOfAnything map[string]interface{}             `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithSchemaFormat sets SchemaFormat value.
-func (m *MessageOneOf1OneOf1) WithSchemaFormat(val string) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithSchemaFormat(val string) *MessageEntity {
 	m.SchemaFormat = val
 	return m
 }
 
 // WithContentType sets ContentType value.
-func (m *MessageOneOf1OneOf1) WithContentType(val string) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithContentType(val string) *MessageEntity {
 	m.ContentType = val
 	return m
 }
 
 // WithHeaders sets Headers value.
-func (m *MessageOneOf1OneOf1) WithHeaders(val MessageOneOf1OneOf1Headers) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithHeaders(val MessageOneOf1OneOf1Headers) *MessageEntity {
 	m.Headers = &val
 	return m
 }
 
 // HeadersEns ensures returned Headers is not nil.
-func (m *MessageOneOf1OneOf1) HeadersEns() *MessageOneOf1OneOf1Headers {
+func (m *MessageEntity) HeadersEns() *MessageOneOf1OneOf1Headers {
 	if m.Headers == nil {
 		m.Headers = new(MessageOneOf1OneOf1Headers)
 	}
@@ -2444,19 +2878,30 @@ func (m *MessageOneOf1OneOf1) HeadersEns() *MessageOneOf1OneOf1Headers {
 }
 
 // WithPayload sets Payload value.
-func (m *MessageOneOf1OneOf1) WithPayload(val interface{}) *MessageOneOf1OneOf1 {
-	m.Payload = &val
+func (m *MessageEntity) WithPayload(val map[string]interface{}) *MessageEntity {
+	m.Payload = val
+	return m
+}
+
+// WithPayloadItem sets Payload item value.
+func (m *MessageEntity) WithPayloadItem(key string, val interface{}) *MessageEntity {
+	if m.Payload == nil {
+		m.Payload = make(map[string]interface{}, 1)
+	}
+
+	m.Payload[key] = val
+
 	return m
 }
 
 // WithCorrelationID sets CorrelationID value.
-func (m *MessageOneOf1OneOf1) WithCorrelationID(val MessageOneOf1OneOf1CorrelationID) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithCorrelationID(val MessageOneOf1OneOf1CorrelationID) *MessageEntity {
 	m.CorrelationID = &val
 	return m
 }
 
 // CorrelationIDEns ensures returned CorrelationID is not nil.
-func (m *MessageOneOf1OneOf1) CorrelationIDEns() *MessageOneOf1OneOf1CorrelationID {
+func (m *MessageEntity) CorrelationIDEns() *MessageOneOf1OneOf1CorrelationID {
 	if m.CorrelationID == nil {
 		m.CorrelationID = new(MessageOneOf1OneOf1CorrelationID)
 	}
@@ -2465,43 +2910,43 @@ func (m *MessageOneOf1OneOf1) CorrelationIDEns() *MessageOneOf1OneOf1Correlation
 }
 
 // WithTags sets Tags value.
-func (m *MessageOneOf1OneOf1) WithTags(val ...Tag) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithTags(val ...Tag) *MessageEntity {
 	m.Tags = val
 	return m
 }
 
 // WithSummary sets Summary value.
-func (m *MessageOneOf1OneOf1) WithSummary(val string) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithSummary(val string) *MessageEntity {
 	m.Summary = val
 	return m
 }
 
 // WithName sets Name value.
-func (m *MessageOneOf1OneOf1) WithName(val string) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithName(val string) *MessageEntity {
 	m.Name = val
 	return m
 }
 
 // WithTitle sets Title value.
-func (m *MessageOneOf1OneOf1) WithTitle(val string) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithTitle(val string) *MessageEntity {
 	m.Title = val
 	return m
 }
 
 // WithDescription sets Description value.
-func (m *MessageOneOf1OneOf1) WithDescription(val string) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithDescription(val string) *MessageEntity {
 	m.Description = val
 	return m
 }
 
 // WithExternalDocs sets ExternalDocs value.
-func (m *MessageOneOf1OneOf1) WithExternalDocs(val ExternalDocs) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithExternalDocs(val ExternalDocs) *MessageEntity {
 	m.ExternalDocs = &val
 	return m
 }
 
 // ExternalDocsEns ensures returned ExternalDocs is not nil.
-func (m *MessageOneOf1OneOf1) ExternalDocsEns() *ExternalDocs {
+func (m *MessageEntity) ExternalDocsEns() *ExternalDocs {
 	if m.ExternalDocs == nil {
 		m.ExternalDocs = new(ExternalDocs)
 	}
@@ -2510,46 +2955,46 @@ func (m *MessageOneOf1OneOf1) ExternalDocsEns() *ExternalDocs {
 }
 
 // WithDeprecated sets Deprecated value.
-func (m *MessageOneOf1OneOf1) WithDeprecated(val bool) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithDeprecated(val bool) *MessageEntity {
 	m.Deprecated = val
 	return m
 }
 
 // WithExamples sets Examples value.
-func (m *MessageOneOf1OneOf1) WithExamples(val ...MessageOneOf1OneOf1ExamplesItems) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithExamples(val ...MessageOneOf1OneOf1ExamplesItems) *MessageEntity {
 	m.Examples = val
 	return m
 }
 
 // WithBindings sets Bindings value.
-func (m *MessageOneOf1OneOf1) WithBindings(val BindingsObject) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithBindings(val MessageBindingsObject) *MessageEntity {
 	m.Bindings = &val
 	return m
 }
 
 // BindingsEns ensures returned Bindings is not nil.
-func (m *MessageOneOf1OneOf1) BindingsEns() *BindingsObject {
+func (m *MessageEntity) BindingsEns() *MessageBindingsObject {
 	if m.Bindings == nil {
-		m.Bindings = new(BindingsObject)
+		m.Bindings = new(MessageBindingsObject)
 	}
 
 	return m.Bindings
 }
 
 // WithTraits sets Traits value.
-func (m *MessageOneOf1OneOf1) WithTraits(val ...MessageOneOf1OneOf1TraitsItems) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithTraits(val ...MessageOneOf1OneOf1TraitsItems) *MessageEntity {
 	m.Traits = val
 	return m
 }
 
 // WithMapOfAnything sets MapOfAnything value.
-func (m *MessageOneOf1OneOf1) WithMapOfAnything(val map[string]interface{}) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithMapOfAnything(val map[string]interface{}) *MessageEntity {
 	m.MapOfAnything = val
 	return m
 }
 
 // WithMapOfAnythingItem sets MapOfAnything item value.
-func (m *MessageOneOf1OneOf1) WithMapOfAnythingItem(key string, val interface{}) *MessageOneOf1OneOf1 {
+func (m *MessageEntity) WithMapOfAnythingItem(key string, val interface{}) *MessageEntity {
 	if m.MapOfAnything == nil {
 		m.MapOfAnything = make(map[string]interface{}, 1)
 	}
@@ -2559,9 +3004,9 @@ func (m *MessageOneOf1OneOf1) WithMapOfAnythingItem(key string, val interface{})
 	return m
 }
 
-type marshalMessageOneOf1OneOf1 MessageOneOf1OneOf1
+type marshalMessageEntity MessageEntity
 
-var knownKeysMessageOneOf1OneOf1 = []string{
+var knownKeysMessageEntity = []string{
 	"schemaFormat",
 	"contentType",
 	"headers",
@@ -2580,10 +3025,10 @@ var knownKeysMessageOneOf1OneOf1 = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (m *MessageOneOf1OneOf1) UnmarshalJSON(data []byte) error {
+func (m *MessageEntity) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mm := marshalMessageOneOf1OneOf1(*m)
+	mm := marshalMessageEntity(*m)
 
 	err = json.Unmarshal(data, &mm)
 	if err != nil {
@@ -2597,14 +3042,7 @@ func (m *MessageOneOf1OneOf1) UnmarshalJSON(data []byte) error {
 		rawMap = nil
 	}
 
-	if mm.Payload == nil {
-		if _, ok := rawMap["payload"]; ok {
-			var v interface{}
-			mm.Payload = &v
-		}
-	}
-
-	for _, key := range knownKeysMessageOneOf1OneOf1 {
+	for _, key := range knownKeysMessageEntity {
 		delete(rawMap, key)
 	}
 
@@ -2640,17 +3078,17 @@ func (m *MessageOneOf1OneOf1) UnmarshalJSON(data []byte) error {
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in MessageOneOf1OneOf1: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in MessageEntity: %v", offendingKeys)
 	}
 
-	*m = MessageOneOf1OneOf1(mm)
+	*m = MessageEntity(mm)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (m MessageOneOf1OneOf1) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalMessageOneOf1OneOf1(m), m.MapOfAnything)
+func (m MessageEntity) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalMessageEntity(m), m.MapOfAnything)
 }
 
 // MessageOneOf1OneOf1HeadersAllOf1 structure is generated from "#/definitions/message/oneOf/1/oneOf/1->headers/allOf/1".
@@ -3035,6 +3473,374 @@ func (m *MessageOneOf1OneOf1ExamplesItems) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MessageBindingsObject structure is generated from "#/definitions/messageBindingsObject".
+type MessageBindingsObject struct {
+	HTTP *interface{} `json:"http,omitempty"`
+	Ws   *interface{} `json:"ws,omitempty"`
+	// AMQP 0-9-1 Message Binding Object.
+	// This object contains information about the message representation in AMQP.
+	// See https://github.com/asyncapi/bindings/tree/master/amqp#message-binding-object.
+	Amqp                 *AMQP091MessageBindingObject `json:"amqp,omitempty"`
+	Amqp1                *interface{}                 `json:"amqp1,omitempty"`
+	Mqtt                 *interface{}                 `json:"mqtt,omitempty"`
+	Mqtt5                *interface{}                 `json:"mqtt5,omitempty"`
+	Kafka                *interface{}                 `json:"kafka,omitempty"`
+	Nats                 *interface{}                 `json:"nats,omitempty"`
+	Jms                  *interface{}                 `json:"jms,omitempty"`
+	Sns                  *interface{}                 `json:"sns,omitempty"`
+	Sqs                  *interface{}                 `json:"sqs,omitempty"`
+	Stomp                *interface{}                 `json:"stomp,omitempty"`
+	Redis                *interface{}                 `json:"redis,omitempty"`
+	Ibmmq                *interface{}                 `json:"ibmmq,omitempty"`
+	AdditionalProperties map[string]interface{}       `json:"-"` // All unmatched properties.
+}
+
+// WithHTTP sets HTTP value.
+func (m *MessageBindingsObject) WithHTTP(val interface{}) *MessageBindingsObject {
+	m.HTTP = &val
+	return m
+}
+
+// WithWs sets Ws value.
+func (m *MessageBindingsObject) WithWs(val interface{}) *MessageBindingsObject {
+	m.Ws = &val
+	return m
+}
+
+// WithAmqp sets Amqp value.
+func (m *MessageBindingsObject) WithAmqp(val AMQP091MessageBindingObject) *MessageBindingsObject {
+	m.Amqp = &val
+	return m
+}
+
+// AmqpEns ensures returned Amqp is not nil.
+func (m *MessageBindingsObject) AmqpEns() *AMQP091MessageBindingObject {
+	if m.Amqp == nil {
+		m.Amqp = new(AMQP091MessageBindingObject)
+	}
+
+	return m.Amqp
+}
+
+// WithAmqp1 sets Amqp1 value.
+func (m *MessageBindingsObject) WithAmqp1(val interface{}) *MessageBindingsObject {
+	m.Amqp1 = &val
+	return m
+}
+
+// WithMqtt sets Mqtt value.
+func (m *MessageBindingsObject) WithMqtt(val interface{}) *MessageBindingsObject {
+	m.Mqtt = &val
+	return m
+}
+
+// WithMqtt5 sets Mqtt5 value.
+func (m *MessageBindingsObject) WithMqtt5(val interface{}) *MessageBindingsObject {
+	m.Mqtt5 = &val
+	return m
+}
+
+// WithKafka sets Kafka value.
+func (m *MessageBindingsObject) WithKafka(val interface{}) *MessageBindingsObject {
+	m.Kafka = &val
+	return m
+}
+
+// WithNats sets Nats value.
+func (m *MessageBindingsObject) WithNats(val interface{}) *MessageBindingsObject {
+	m.Nats = &val
+	return m
+}
+
+// WithJms sets Jms value.
+func (m *MessageBindingsObject) WithJms(val interface{}) *MessageBindingsObject {
+	m.Jms = &val
+	return m
+}
+
+// WithSns sets Sns value.
+func (m *MessageBindingsObject) WithSns(val interface{}) *MessageBindingsObject {
+	m.Sns = &val
+	return m
+}
+
+// WithSqs sets Sqs value.
+func (m *MessageBindingsObject) WithSqs(val interface{}) *MessageBindingsObject {
+	m.Sqs = &val
+	return m
+}
+
+// WithStomp sets Stomp value.
+func (m *MessageBindingsObject) WithStomp(val interface{}) *MessageBindingsObject {
+	m.Stomp = &val
+	return m
+}
+
+// WithRedis sets Redis value.
+func (m *MessageBindingsObject) WithRedis(val interface{}) *MessageBindingsObject {
+	m.Redis = &val
+	return m
+}
+
+// WithIbmmq sets Ibmmq value.
+func (m *MessageBindingsObject) WithIbmmq(val interface{}) *MessageBindingsObject {
+	m.Ibmmq = &val
+	return m
+}
+
+// WithAdditionalProperties sets AdditionalProperties value.
+func (m *MessageBindingsObject) WithAdditionalProperties(val map[string]interface{}) *MessageBindingsObject {
+	m.AdditionalProperties = val
+	return m
+}
+
+// WithAdditionalPropertiesItem sets AdditionalProperties item value.
+func (m *MessageBindingsObject) WithAdditionalPropertiesItem(key string, val interface{}) *MessageBindingsObject {
+	if m.AdditionalProperties == nil {
+		m.AdditionalProperties = make(map[string]interface{}, 1)
+	}
+
+	m.AdditionalProperties[key] = val
+
+	return m
+}
+
+type marshalMessageBindingsObject MessageBindingsObject
+
+var knownKeysMessageBindingsObject = []string{
+	"http",
+	"ws",
+	"amqp",
+	"amqp1",
+	"mqtt",
+	"mqtt5",
+	"kafka",
+	"nats",
+	"jms",
+	"sns",
+	"sqs",
+	"stomp",
+	"redis",
+	"ibmmq",
+}
+
+// UnmarshalJSON decodes JSON.
+func (m *MessageBindingsObject) UnmarshalJSON(data []byte) error {
+	var err error
+
+	mm := marshalMessageBindingsObject(*m)
+
+	err = json.Unmarshal(data, &mm)
+	if err != nil {
+		return err
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	if mm.HTTP == nil {
+		if _, ok := rawMap["http"]; ok {
+			var v interface{}
+			mm.HTTP = &v
+		}
+	}
+
+	if mm.Ws == nil {
+		if _, ok := rawMap["ws"]; ok {
+			var v interface{}
+			mm.Ws = &v
+		}
+	}
+
+	if mm.Amqp1 == nil {
+		if _, ok := rawMap["amqp1"]; ok {
+			var v interface{}
+			mm.Amqp1 = &v
+		}
+	}
+
+	if mm.Mqtt == nil {
+		if _, ok := rawMap["mqtt"]; ok {
+			var v interface{}
+			mm.Mqtt = &v
+		}
+	}
+
+	if mm.Mqtt5 == nil {
+		if _, ok := rawMap["mqtt5"]; ok {
+			var v interface{}
+			mm.Mqtt5 = &v
+		}
+	}
+
+	if mm.Kafka == nil {
+		if _, ok := rawMap["kafka"]; ok {
+			var v interface{}
+			mm.Kafka = &v
+		}
+	}
+
+	if mm.Nats == nil {
+		if _, ok := rawMap["nats"]; ok {
+			var v interface{}
+			mm.Nats = &v
+		}
+	}
+
+	if mm.Jms == nil {
+		if _, ok := rawMap["jms"]; ok {
+			var v interface{}
+			mm.Jms = &v
+		}
+	}
+
+	if mm.Sns == nil {
+		if _, ok := rawMap["sns"]; ok {
+			var v interface{}
+			mm.Sns = &v
+		}
+	}
+
+	if mm.Sqs == nil {
+		if _, ok := rawMap["sqs"]; ok {
+			var v interface{}
+			mm.Sqs = &v
+		}
+	}
+
+	if mm.Stomp == nil {
+		if _, ok := rawMap["stomp"]; ok {
+			var v interface{}
+			mm.Stomp = &v
+		}
+	}
+
+	if mm.Redis == nil {
+		if _, ok := rawMap["redis"]; ok {
+			var v interface{}
+			mm.Redis = &v
+		}
+	}
+
+	if mm.Ibmmq == nil {
+		if _, ok := rawMap["ibmmq"]; ok {
+			var v interface{}
+			mm.Ibmmq = &v
+		}
+	}
+
+	for _, key := range knownKeysMessageBindingsObject {
+		delete(rawMap, key)
+	}
+
+	for key, rawValue := range rawMap {
+		if mm.AdditionalProperties == nil {
+			mm.AdditionalProperties = make(map[string]interface{}, 1)
+		}
+
+		var val interface{}
+
+		err = json.Unmarshal(rawValue, &val)
+		if err != nil {
+			return err
+		}
+
+		mm.AdditionalProperties[key] = val
+	}
+
+	*m = MessageBindingsObject(mm)
+
+	return nil
+}
+
+// MarshalJSON encodes JSON.
+func (m MessageBindingsObject) MarshalJSON() ([]byte, error) {
+	if len(m.AdditionalProperties) == 0 {
+		return json.Marshal(marshalMessageBindingsObject(m))
+	}
+
+	return marshalUnion(marshalMessageBindingsObject(m), m.AdditionalProperties)
+}
+
+// AMQP091MessageBindingObject structure is generated from "amqp-message-binding-object-0.1.0.json".
+//
+// AMQP 0-9-1 Message Binding Object.
+//
+// This object contains information about the message representation in AMQP.
+// See https://github.com/asyncapi/bindings/tree/master/amqp#message-binding-object.
+type AMQP091MessageBindingObject struct {
+	ContentEncoding string                                    `json:"contentEncoding,omitempty"` // A MIME encoding for the message content.
+	MessageType     string                                    `json:"messageType,omitempty"`     // Application-specific message type.
+	BindingVersion  AMQP091MessageBindingObjectBindingVersion `json:"bindingVersion,omitempty"`  // The version of this binding. If omitted, "latest" MUST be assumed.
+}
+
+// WithContentEncoding sets ContentEncoding value.
+func (a *AMQP091MessageBindingObject) WithContentEncoding(val string) *AMQP091MessageBindingObject {
+	a.ContentEncoding = val
+	return a
+}
+
+// WithMessageType sets MessageType value.
+func (a *AMQP091MessageBindingObject) WithMessageType(val string) *AMQP091MessageBindingObject {
+	a.MessageType = val
+	return a
+}
+
+// WithBindingVersion sets BindingVersion value.
+func (a *AMQP091MessageBindingObject) WithBindingVersion(val AMQP091MessageBindingObjectBindingVersion) *AMQP091MessageBindingObject {
+	a.BindingVersion = val
+	return a
+}
+
+type marshalAMQP091MessageBindingObject AMQP091MessageBindingObject
+
+var knownKeysAMQP091MessageBindingObject = []string{
+	"contentEncoding",
+	"messageType",
+	"bindingVersion",
+}
+
+// UnmarshalJSON decodes JSON.
+func (a *AMQP091MessageBindingObject) UnmarshalJSON(data []byte) error {
+	var err error
+
+	ma := marshalAMQP091MessageBindingObject(*a)
+
+	err = json.Unmarshal(data, &ma)
+	if err != nil {
+		return err
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	for _, key := range knownKeysAMQP091MessageBindingObject {
+		delete(rawMap, key)
+	}
+
+	if len(rawMap) != 0 {
+		offendingKeys := make([]string, 0, len(rawMap))
+
+		for key := range rawMap {
+			offendingKeys = append(offendingKeys, key)
+		}
+
+		return fmt.Errorf("additional properties not allowed in AMQP091MessageBindingObject: %v", offendingKeys)
+	}
+
+	*a = AMQP091MessageBindingObject(ma)
+
+	return nil
+}
+
 // MessageTrait structure is generated from "#/definitions/messageTrait".
 type MessageTrait struct {
 	SchemaFormat  string                     `json:"schemaFormat,omitempty"`
@@ -3049,7 +3855,7 @@ type MessageTrait struct {
 	ExternalDocs  *ExternalDocs              `json:"externalDocs,omitempty"` // Information about external documentation.
 	Deprecated    bool                       `json:"deprecated,omitempty"`
 	Examples      []map[string]interface{}   `json:"examples,omitempty"`
-	Bindings      *BindingsObject            `json:"bindings,omitempty"`
+	Bindings      *MessageBindingsObject     `json:"bindings,omitempty"`
 	MapOfAnything map[string]interface{}     `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
@@ -3153,15 +3959,15 @@ func (m *MessageTrait) WithExamples(val ...map[string]interface{}) *MessageTrait
 }
 
 // WithBindings sets Bindings value.
-func (m *MessageTrait) WithBindings(val BindingsObject) *MessageTrait {
+func (m *MessageTrait) WithBindings(val MessageBindingsObject) *MessageTrait {
 	m.Bindings = &val
 	return m
 }
 
 // BindingsEns ensures returned Bindings is not nil.
-func (m *MessageTrait) BindingsEns() *BindingsObject {
+func (m *MessageTrait) BindingsEns() *MessageBindingsObject {
 	if m.Bindings == nil {
-		m.Bindings = new(BindingsObject)
+		m.Bindings = new(MessageBindingsObject)
 	}
 
 	return m.Bindings
@@ -3501,8 +4307,8 @@ func (m MessageOneOf1OneOf1TraitsItems) MarshalJSON() ([]byte, error) {
 
 // MessageOneOf1 structure is generated from "#/definitions/message/oneOf/1".
 type MessageOneOf1 struct {
-	OneOf0 *MessageOneOf1OneOf0 `json:"-"`
-	OneOf1 *MessageOneOf1OneOf1 `json:"-"`
+	OneOf0        *MessageOneOf1OneOf0 `json:"-"`
+	MessageEntity *MessageEntity       `json:"-"`
 }
 
 // WithOneOf0 sets OneOf0 value.
@@ -3520,19 +4326,19 @@ func (m *MessageOneOf1) OneOf0Ens() *MessageOneOf1OneOf0 {
 	return m.OneOf0
 }
 
-// WithOneOf1 sets OneOf1 value.
-func (m *MessageOneOf1) WithOneOf1(val MessageOneOf1OneOf1) *MessageOneOf1 {
-	m.OneOf1 = &val
+// WithMessageEntity sets MessageEntity value.
+func (m *MessageOneOf1) WithMessageEntity(val MessageEntity) *MessageOneOf1 {
+	m.MessageEntity = &val
 	return m
 }
 
-// OneOf1Ens ensures returned OneOf1 is not nil.
-func (m *MessageOneOf1) OneOf1Ens() *MessageOneOf1OneOf1 {
-	if m.OneOf1 == nil {
-		m.OneOf1 = new(MessageOneOf1OneOf1)
+// MessageEntityEns ensures returned MessageEntity is not nil.
+func (m *MessageOneOf1) MessageEntityEns() *MessageEntity {
+	if m.MessageEntity == nil {
+		m.MessageEntity = new(MessageEntity)
 	}
 
-	return m.OneOf1
+	return m.MessageEntity
 }
 
 // UnmarshalJSON decodes JSON.
@@ -3550,10 +4356,10 @@ func (m *MessageOneOf1) UnmarshalJSON(data []byte) error {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &m.OneOf1)
+	err = json.Unmarshal(data, &m.MessageEntity)
 	if err != nil {
-		oneOfErrors["OneOf1"] = err
-		m.OneOf1 = nil
+		oneOfErrors["MessageEntity"] = err
+		m.MessageEntity = nil
 	} else {
 		oneOfValid++
 	}
@@ -3567,7 +4373,7 @@ func (m *MessageOneOf1) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON encodes JSON.
 func (m MessageOneOf1) MarshalJSON() ([]byte, error) {
-	return marshalUnion(m.OneOf0, m.OneOf1)
+	return marshalUnion(m.OneOf0, m.MessageEntity)
 }
 
 // Message structure is generated from "#/definitions/message".
@@ -3641,22 +4447,498 @@ func (m Message) MarshalJSON() ([]byte, error) {
 	return marshalUnion(m.Reference, m.OneOf1)
 }
 
+// ChannelBindingsObject structure is generated from "#/definitions/channelBindingsObject".
+type ChannelBindingsObject struct {
+	HTTP *interface{} `json:"http,omitempty"`
+	Ws   *interface{} `json:"ws,omitempty"`
+	// AMQP 0-9-1 Channel Binding Object.
+	// This object contains information about the channel representation in AMQP.
+	// See https://github.com/asyncapi/bindings/tree/master/amqp#channel-binding-object.
+	Amqp                 *AMQP091ChannelBindingObject `json:"amqp,omitempty"`
+	Amqp1                *interface{}                 `json:"amqp1,omitempty"`
+	Mqtt                 *interface{}                 `json:"mqtt,omitempty"`
+	Mqtt5                *interface{}                 `json:"mqtt5,omitempty"`
+	Kafka                *interface{}                 `json:"kafka,omitempty"`
+	Nats                 *interface{}                 `json:"nats,omitempty"`
+	Jms                  *interface{}                 `json:"jms,omitempty"`
+	Sns                  *interface{}                 `json:"sns,omitempty"`
+	Sqs                  *interface{}                 `json:"sqs,omitempty"`
+	Stomp                *interface{}                 `json:"stomp,omitempty"`
+	Redis                *interface{}                 `json:"redis,omitempty"`
+	Ibmmq                *interface{}                 `json:"ibmmq,omitempty"`
+	AdditionalProperties map[string]interface{}       `json:"-"` // All unmatched properties.
+}
+
+// WithHTTP sets HTTP value.
+func (c *ChannelBindingsObject) WithHTTP(val interface{}) *ChannelBindingsObject {
+	c.HTTP = &val
+	return c
+}
+
+// WithWs sets Ws value.
+func (c *ChannelBindingsObject) WithWs(val interface{}) *ChannelBindingsObject {
+	c.Ws = &val
+	return c
+}
+
+// WithAmqp sets Amqp value.
+func (c *ChannelBindingsObject) WithAmqp(val AMQP091ChannelBindingObject) *ChannelBindingsObject {
+	c.Amqp = &val
+	return c
+}
+
+// AmqpEns ensures returned Amqp is not nil.
+func (c *ChannelBindingsObject) AmqpEns() *AMQP091ChannelBindingObject {
+	if c.Amqp == nil {
+		c.Amqp = new(AMQP091ChannelBindingObject)
+	}
+
+	return c.Amqp
+}
+
+// WithAmqp1 sets Amqp1 value.
+func (c *ChannelBindingsObject) WithAmqp1(val interface{}) *ChannelBindingsObject {
+	c.Amqp1 = &val
+	return c
+}
+
+// WithMqtt sets Mqtt value.
+func (c *ChannelBindingsObject) WithMqtt(val interface{}) *ChannelBindingsObject {
+	c.Mqtt = &val
+	return c
+}
+
+// WithMqtt5 sets Mqtt5 value.
+func (c *ChannelBindingsObject) WithMqtt5(val interface{}) *ChannelBindingsObject {
+	c.Mqtt5 = &val
+	return c
+}
+
+// WithKafka sets Kafka value.
+func (c *ChannelBindingsObject) WithKafka(val interface{}) *ChannelBindingsObject {
+	c.Kafka = &val
+	return c
+}
+
+// WithNats sets Nats value.
+func (c *ChannelBindingsObject) WithNats(val interface{}) *ChannelBindingsObject {
+	c.Nats = &val
+	return c
+}
+
+// WithJms sets Jms value.
+func (c *ChannelBindingsObject) WithJms(val interface{}) *ChannelBindingsObject {
+	c.Jms = &val
+	return c
+}
+
+// WithSns sets Sns value.
+func (c *ChannelBindingsObject) WithSns(val interface{}) *ChannelBindingsObject {
+	c.Sns = &val
+	return c
+}
+
+// WithSqs sets Sqs value.
+func (c *ChannelBindingsObject) WithSqs(val interface{}) *ChannelBindingsObject {
+	c.Sqs = &val
+	return c
+}
+
+// WithStomp sets Stomp value.
+func (c *ChannelBindingsObject) WithStomp(val interface{}) *ChannelBindingsObject {
+	c.Stomp = &val
+	return c
+}
+
+// WithRedis sets Redis value.
+func (c *ChannelBindingsObject) WithRedis(val interface{}) *ChannelBindingsObject {
+	c.Redis = &val
+	return c
+}
+
+// WithIbmmq sets Ibmmq value.
+func (c *ChannelBindingsObject) WithIbmmq(val interface{}) *ChannelBindingsObject {
+	c.Ibmmq = &val
+	return c
+}
+
+// WithAdditionalProperties sets AdditionalProperties value.
+func (c *ChannelBindingsObject) WithAdditionalProperties(val map[string]interface{}) *ChannelBindingsObject {
+	c.AdditionalProperties = val
+	return c
+}
+
+// WithAdditionalPropertiesItem sets AdditionalProperties item value.
+func (c *ChannelBindingsObject) WithAdditionalPropertiesItem(key string, val interface{}) *ChannelBindingsObject {
+	if c.AdditionalProperties == nil {
+		c.AdditionalProperties = make(map[string]interface{}, 1)
+	}
+
+	c.AdditionalProperties[key] = val
+
+	return c
+}
+
+type marshalChannelBindingsObject ChannelBindingsObject
+
+var knownKeysChannelBindingsObject = []string{
+	"http",
+	"ws",
+	"amqp",
+	"amqp1",
+	"mqtt",
+	"mqtt5",
+	"kafka",
+	"nats",
+	"jms",
+	"sns",
+	"sqs",
+	"stomp",
+	"redis",
+	"ibmmq",
+}
+
+// UnmarshalJSON decodes JSON.
+func (c *ChannelBindingsObject) UnmarshalJSON(data []byte) error {
+	var err error
+
+	mc := marshalChannelBindingsObject(*c)
+
+	err = json.Unmarshal(data, &mc)
+	if err != nil {
+		return err
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	if mc.HTTP == nil {
+		if _, ok := rawMap["http"]; ok {
+			var v interface{}
+			mc.HTTP = &v
+		}
+	}
+
+	if mc.Ws == nil {
+		if _, ok := rawMap["ws"]; ok {
+			var v interface{}
+			mc.Ws = &v
+		}
+	}
+
+	if mc.Amqp1 == nil {
+		if _, ok := rawMap["amqp1"]; ok {
+			var v interface{}
+			mc.Amqp1 = &v
+		}
+	}
+
+	if mc.Mqtt == nil {
+		if _, ok := rawMap["mqtt"]; ok {
+			var v interface{}
+			mc.Mqtt = &v
+		}
+	}
+
+	if mc.Mqtt5 == nil {
+		if _, ok := rawMap["mqtt5"]; ok {
+			var v interface{}
+			mc.Mqtt5 = &v
+		}
+	}
+
+	if mc.Kafka == nil {
+		if _, ok := rawMap["kafka"]; ok {
+			var v interface{}
+			mc.Kafka = &v
+		}
+	}
+
+	if mc.Nats == nil {
+		if _, ok := rawMap["nats"]; ok {
+			var v interface{}
+			mc.Nats = &v
+		}
+	}
+
+	if mc.Jms == nil {
+		if _, ok := rawMap["jms"]; ok {
+			var v interface{}
+			mc.Jms = &v
+		}
+	}
+
+	if mc.Sns == nil {
+		if _, ok := rawMap["sns"]; ok {
+			var v interface{}
+			mc.Sns = &v
+		}
+	}
+
+	if mc.Sqs == nil {
+		if _, ok := rawMap["sqs"]; ok {
+			var v interface{}
+			mc.Sqs = &v
+		}
+	}
+
+	if mc.Stomp == nil {
+		if _, ok := rawMap["stomp"]; ok {
+			var v interface{}
+			mc.Stomp = &v
+		}
+	}
+
+	if mc.Redis == nil {
+		if _, ok := rawMap["redis"]; ok {
+			var v interface{}
+			mc.Redis = &v
+		}
+	}
+
+	if mc.Ibmmq == nil {
+		if _, ok := rawMap["ibmmq"]; ok {
+			var v interface{}
+			mc.Ibmmq = &v
+		}
+	}
+
+	for _, key := range knownKeysChannelBindingsObject {
+		delete(rawMap, key)
+	}
+
+	for key, rawValue := range rawMap {
+		if mc.AdditionalProperties == nil {
+			mc.AdditionalProperties = make(map[string]interface{}, 1)
+		}
+
+		var val interface{}
+
+		err = json.Unmarshal(rawValue, &val)
+		if err != nil {
+			return err
+		}
+
+		mc.AdditionalProperties[key] = val
+	}
+
+	*c = ChannelBindingsObject(mc)
+
+	return nil
+}
+
+// MarshalJSON encodes JSON.
+func (c ChannelBindingsObject) MarshalJSON() ([]byte, error) {
+	if len(c.AdditionalProperties) == 0 {
+		return json.Marshal(marshalChannelBindingsObject(c))
+	}
+
+	return marshalUnion(marshalChannelBindingsObject(c), c.AdditionalProperties)
+}
+
+// AMQP091ChannelBindingObject structure is generated from "amqp-channel-binding-object-0.1.0.json".
+//
+// AMQP 0-9-1 Channel Binding Object.
+//
+// This object contains information about the channel representation in AMQP.
+// See https://github.com/asyncapi/bindings/tree/master/amqp#channel-binding-object.
+type AMQP091ChannelBindingObject struct {
+	Is             AMQP091ChannelBindingObjectIs             `json:"is,omitempty"`             // Defines what type of channel is it. Can be either `queue` or `routingKey` (default).
+	Exchange       *Exchange                                 `json:"exchange,omitempty"`       // When `is`=`routingKey`, this object defines the exchange properties.
+	Queue          *Queue                                    `json:"queue,omitempty"`          // When `is`=`queue`, this object defines the queue properties.
+	BindingVersion AMQP091ChannelBindingObjectBindingVersion `json:"bindingVersion,omitempty"` // The version of this binding. If omitted, "latest" MUST be assumed.
+}
+
+// WithIs sets Is value.
+func (a *AMQP091ChannelBindingObject) WithIs(val AMQP091ChannelBindingObjectIs) *AMQP091ChannelBindingObject {
+	a.Is = val
+	return a
+}
+
+// WithExchange sets Exchange value.
+func (a *AMQP091ChannelBindingObject) WithExchange(val Exchange) *AMQP091ChannelBindingObject {
+	a.Exchange = &val
+	return a
+}
+
+// ExchangeEns ensures returned Exchange is not nil.
+func (a *AMQP091ChannelBindingObject) ExchangeEns() *Exchange {
+	if a.Exchange == nil {
+		a.Exchange = new(Exchange)
+	}
+
+	return a.Exchange
+}
+
+// WithQueue sets Queue value.
+func (a *AMQP091ChannelBindingObject) WithQueue(val Queue) *AMQP091ChannelBindingObject {
+	a.Queue = &val
+	return a
+}
+
+// QueueEns ensures returned Queue is not nil.
+func (a *AMQP091ChannelBindingObject) QueueEns() *Queue {
+	if a.Queue == nil {
+		a.Queue = new(Queue)
+	}
+
+	return a.Queue
+}
+
+// WithBindingVersion sets BindingVersion value.
+func (a *AMQP091ChannelBindingObject) WithBindingVersion(val AMQP091ChannelBindingObjectBindingVersion) *AMQP091ChannelBindingObject {
+	a.BindingVersion = val
+	return a
+}
+
+type marshalAMQP091ChannelBindingObject AMQP091ChannelBindingObject
+
+var knownKeysAMQP091ChannelBindingObject = []string{
+	"is",
+	"exchange",
+	"queue",
+	"bindingVersion",
+}
+
+// UnmarshalJSON decodes JSON.
+func (a *AMQP091ChannelBindingObject) UnmarshalJSON(data []byte) error {
+	var err error
+
+	ma := marshalAMQP091ChannelBindingObject(*a)
+
+	err = json.Unmarshal(data, &ma)
+	if err != nil {
+		return err
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	for _, key := range knownKeysAMQP091ChannelBindingObject {
+		delete(rawMap, key)
+	}
+
+	if len(rawMap) != 0 {
+		offendingKeys := make([]string, 0, len(rawMap))
+
+		for key := range rawMap {
+			offendingKeys = append(offendingKeys, key)
+		}
+
+		return fmt.Errorf("additional properties not allowed in AMQP091ChannelBindingObject: %v", offendingKeys)
+	}
+
+	*a = AMQP091ChannelBindingObject(ma)
+
+	return nil
+}
+
+// Exchange structure is generated from "#/definitions/exchange".
+//
+// When `is`=`routingKey`, this object defines the exchange properties.
+type Exchange struct {
+	Name       string       `json:"name,omitempty"`       // The name of the exchange. It MUST NOT exceed 255 characters long.
+	Type       ExchangeType `json:"type,omitempty"`       // The type of the exchange. Can be either `topic`, `direct`, `fanout`, `default` or `headers`.
+	Durable    bool         `json:"durable,omitempty"`    // Whether the exchange should survive broker restarts or not.
+	AutoDelete bool         `json:"autoDelete,omitempty"` // Whether the exchange should be deleted when the last queue is unbound from it.
+	Vhost      string       `json:"vhost,omitempty"`      // The virtual host of the queue. Defaults to /.
+}
+
+// WithName sets Name value.
+func (e *Exchange) WithName(val string) *Exchange {
+	e.Name = val
+	return e
+}
+
+// WithType sets Type value.
+func (e *Exchange) WithType(val ExchangeType) *Exchange {
+	e.Type = val
+	return e
+}
+
+// WithDurable sets Durable value.
+func (e *Exchange) WithDurable(val bool) *Exchange {
+	e.Durable = val
+	return e
+}
+
+// WithAutoDelete sets AutoDelete value.
+func (e *Exchange) WithAutoDelete(val bool) *Exchange {
+	e.AutoDelete = val
+	return e
+}
+
+// WithVhost sets Vhost value.
+func (e *Exchange) WithVhost(val string) *Exchange {
+	e.Vhost = val
+	return e
+}
+
+// Queue structure is generated from "#/definitions/queue".
+//
+// When `is`=`queue`, this object defines the queue properties.
+type Queue struct {
+	Name       string `json:"name,omitempty"`       // The name of the queue. It MUST NOT exceed 255 characters long.
+	Durable    bool   `json:"durable,omitempty"`    // Whether the queue should survive broker restarts or not.
+	Exclusive  bool   `json:"exclusive,omitempty"`  // Whether the queue should be used only by one connection or not.
+	AutoDelete bool   `json:"autoDelete,omitempty"` // Whether the queue should be deleted when the last consumer unsubscribes.
+	Vhost      string `json:"vhost,omitempty"`      // The virtual host of the queue. Defaults to /.
+}
+
+// WithName sets Name value.
+func (q *Queue) WithName(val string) *Queue {
+	q.Name = val
+	return q
+}
+
+// WithDurable sets Durable value.
+func (q *Queue) WithDurable(val bool) *Queue {
+	q.Durable = val
+	return q
+}
+
+// WithExclusive sets Exclusive value.
+func (q *Queue) WithExclusive(val bool) *Queue {
+	q.Exclusive = val
+	return q
+}
+
+// WithAutoDelete sets AutoDelete value.
+func (q *Queue) WithAutoDelete(val bool) *Queue {
+	q.AutoDelete = val
+	return q
+}
+
+// WithVhost sets Vhost value.
+func (q *Queue) WithVhost(val string) *Queue {
+	q.Vhost = val
+	return q
+}
+
 // Components structure is generated from "#/definitions/components".
 //
 // An object to hold a set of reusable objects for different aspects of the AsyncAPI Specification.
 type Components struct {
-	Schemas           map[string]map[string]interface{} `json:"schemas,omitempty"`  // JSON objects describing schemas the API uses.
-	Messages          map[string]Message                `json:"messages,omitempty"` // JSON objects describing the messages being consumed and produced by the API.
-	SecuritySchemes   *ComponentsSecuritySchemes        `json:"securitySchemes,omitempty"`
-	Parameters        map[string]Parameter              `json:"parameters,omitempty"` // JSON objects describing re-usable channel parameters.
-	CorrelationIds    *ComponentsCorrelationIds         `json:"correlationIds,omitempty"`
-	OperationTraits   map[string]OperationTrait         `json:"operationTraits,omitempty"`
-	MessageTraits     map[string]MessageTrait           `json:"messageTraits,omitempty"`
-	ServerBindings    map[string]BindingsObject         `json:"serverBindings,omitempty"`
-	ChannelBindings   map[string]BindingsObject         `json:"channelBindings,omitempty"`
-	OperationBindings map[string]BindingsObject         `json:"operationBindings,omitempty"`
-	MessageBindings   map[string]BindingsObject         `json:"messageBindings,omitempty"`
-	MapOfAnything     map[string]interface{}            `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+	Schemas           map[string]map[string]interface{}  `json:"schemas,omitempty"`  // JSON objects describing schemas the API uses.
+	Messages          map[string]Message                 `json:"messages,omitempty"` // JSON objects describing the messages being consumed and produced by the API.
+	SecuritySchemes   *ComponentsSecuritySchemes         `json:"securitySchemes,omitempty"`
+	Parameters        map[string]Parameter               `json:"parameters,omitempty"` // JSON objects describing re-usable channel parameters.
+	CorrelationIds    *ComponentsCorrelationIds          `json:"correlationIds,omitempty"`
+	OperationTraits   map[string]OperationTrait          `json:"operationTraits,omitempty"`
+	MessageTraits     map[string]MessageTrait            `json:"messageTraits,omitempty"`
+	ServerBindings    map[string]ServerBindingsObject    `json:"serverBindings,omitempty"`
+	ChannelBindings   map[string]ChannelBindingsObject   `json:"channelBindings,omitempty"`
+	OperationBindings map[string]OperationBindingsObject `json:"operationBindings,omitempty"`
+	MessageBindings   map[string]MessageBindingsObject   `json:"messageBindings,omitempty"`
+	MapOfAnything     map[string]interface{}             `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithSchemas sets Schemas value.
@@ -3775,15 +5057,15 @@ func (c *Components) WithMessageTraitsItem(key string, val MessageTrait) *Compon
 }
 
 // WithServerBindings sets ServerBindings value.
-func (c *Components) WithServerBindings(val map[string]BindingsObject) *Components {
+func (c *Components) WithServerBindings(val map[string]ServerBindingsObject) *Components {
 	c.ServerBindings = val
 	return c
 }
 
 // WithServerBindingsItem sets ServerBindings item value.
-func (c *Components) WithServerBindingsItem(key string, val BindingsObject) *Components {
+func (c *Components) WithServerBindingsItem(key string, val ServerBindingsObject) *Components {
 	if c.ServerBindings == nil {
-		c.ServerBindings = make(map[string]BindingsObject, 1)
+		c.ServerBindings = make(map[string]ServerBindingsObject, 1)
 	}
 
 	c.ServerBindings[key] = val
@@ -3792,15 +5074,15 @@ func (c *Components) WithServerBindingsItem(key string, val BindingsObject) *Com
 }
 
 // WithChannelBindings sets ChannelBindings value.
-func (c *Components) WithChannelBindings(val map[string]BindingsObject) *Components {
+func (c *Components) WithChannelBindings(val map[string]ChannelBindingsObject) *Components {
 	c.ChannelBindings = val
 	return c
 }
 
 // WithChannelBindingsItem sets ChannelBindings item value.
-func (c *Components) WithChannelBindingsItem(key string, val BindingsObject) *Components {
+func (c *Components) WithChannelBindingsItem(key string, val ChannelBindingsObject) *Components {
 	if c.ChannelBindings == nil {
-		c.ChannelBindings = make(map[string]BindingsObject, 1)
+		c.ChannelBindings = make(map[string]ChannelBindingsObject, 1)
 	}
 
 	c.ChannelBindings[key] = val
@@ -3809,15 +5091,15 @@ func (c *Components) WithChannelBindingsItem(key string, val BindingsObject) *Co
 }
 
 // WithOperationBindings sets OperationBindings value.
-func (c *Components) WithOperationBindings(val map[string]BindingsObject) *Components {
+func (c *Components) WithOperationBindings(val map[string]OperationBindingsObject) *Components {
 	c.OperationBindings = val
 	return c
 }
 
 // WithOperationBindingsItem sets OperationBindings item value.
-func (c *Components) WithOperationBindingsItem(key string, val BindingsObject) *Components {
+func (c *Components) WithOperationBindingsItem(key string, val OperationBindingsObject) *Components {
 	if c.OperationBindings == nil {
-		c.OperationBindings = make(map[string]BindingsObject, 1)
+		c.OperationBindings = make(map[string]OperationBindingsObject, 1)
 	}
 
 	c.OperationBindings[key] = val
@@ -3826,15 +5108,15 @@ func (c *Components) WithOperationBindingsItem(key string, val BindingsObject) *
 }
 
 // WithMessageBindings sets MessageBindings value.
-func (c *Components) WithMessageBindings(val map[string]BindingsObject) *Components {
+func (c *Components) WithMessageBindings(val map[string]MessageBindingsObject) *Components {
 	c.MessageBindings = val
 	return c
 }
 
 // WithMessageBindingsItem sets MessageBindings item value.
-func (c *Components) WithMessageBindingsItem(key string, val BindingsObject) *Components {
+func (c *Components) WithMessageBindingsItem(key string, val MessageBindingsObject) *Components {
 	if c.MessageBindings == nil {
-		c.MessageBindings = make(map[string]BindingsObject, 1)
+		c.MessageBindings = make(map[string]MessageBindingsObject, 1)
 	}
 
 	c.MessageBindings[key] = val
@@ -6578,6 +7860,291 @@ func (c *ComponentsCorrelationIds) UnmarshalJSON(data []byte) error {
 // MarshalJSON encodes JSON.
 func (c ComponentsCorrelationIds) MarshalJSON() ([]byte, error) {
 	return marshalUnion(c.MapOfComponentsCorrelationIdsWDValues)
+}
+
+// AMQP091OperationBindingObjectDeliveryMode is an enum type.
+type AMQP091OperationBindingObjectDeliveryMode int64
+
+// AMQP091OperationBindingObjectDeliveryMode values enumeration.
+const (
+	AMQP091OperationBindingObjectDeliveryModeTransient  = AMQP091OperationBindingObjectDeliveryMode(1)
+	AMQP091OperationBindingObjectDeliveryModePersistent = AMQP091OperationBindingObjectDeliveryMode(2)
+)
+
+// MarshalJSON encodes JSON.
+func (i AMQP091OperationBindingObjectDeliveryMode) MarshalJSON() ([]byte, error) {
+	switch i {
+	case AMQP091OperationBindingObjectDeliveryModeTransient:
+	case AMQP091OperationBindingObjectDeliveryModePersistent:
+
+	default:
+		return nil, fmt.Errorf("unexpected AMQP091OperationBindingObjectDeliveryMode value: %v", i)
+	}
+
+	return json.Marshal(int64(i))
+}
+
+// UnmarshalJSON decodes JSON.
+func (i *AMQP091OperationBindingObjectDeliveryMode) UnmarshalJSON(data []byte) error {
+	var ii int64
+
+	err := json.Unmarshal(data, &ii)
+	if err != nil {
+		return err
+	}
+
+	v := AMQP091OperationBindingObjectDeliveryMode(ii)
+
+	switch v {
+	case AMQP091OperationBindingObjectDeliveryModeTransient:
+	case AMQP091OperationBindingObjectDeliveryModePersistent:
+
+	default:
+		return fmt.Errorf("unexpected AMQP091OperationBindingObjectDeliveryMode value: %v", v)
+	}
+
+	*i = v
+
+	return nil
+}
+
+// AMQP091OperationBindingObjectBindingVersion is an enum type.
+type AMQP091OperationBindingObjectBindingVersion string
+
+// AMQP091OperationBindingObjectBindingVersion values enumeration.
+const (
+	AMQP091OperationBindingObjectBindingVersion010    = AMQP091OperationBindingObjectBindingVersion("0.1.0")
+	AMQP091OperationBindingObjectBindingVersionLatest = AMQP091OperationBindingObjectBindingVersion("latest")
+)
+
+// MarshalJSON encodes JSON.
+func (i AMQP091OperationBindingObjectBindingVersion) MarshalJSON() ([]byte, error) {
+	switch i {
+	case AMQP091OperationBindingObjectBindingVersion010:
+	case AMQP091OperationBindingObjectBindingVersionLatest:
+
+	default:
+		return nil, fmt.Errorf("unexpected AMQP091OperationBindingObjectBindingVersion value: %v", i)
+	}
+
+	return json.Marshal(string(i))
+}
+
+// UnmarshalJSON decodes JSON.
+func (i *AMQP091OperationBindingObjectBindingVersion) UnmarshalJSON(data []byte) error {
+	var ii string
+
+	err := json.Unmarshal(data, &ii)
+	if err != nil {
+		return err
+	}
+
+	v := AMQP091OperationBindingObjectBindingVersion(ii)
+
+	switch v {
+	case AMQP091OperationBindingObjectBindingVersion010:
+	case AMQP091OperationBindingObjectBindingVersionLatest:
+
+	default:
+		return fmt.Errorf("unexpected AMQP091OperationBindingObjectBindingVersion value: %v", v)
+	}
+
+	*i = v
+
+	return nil
+}
+
+// AMQP091MessageBindingObjectBindingVersion is an enum type.
+type AMQP091MessageBindingObjectBindingVersion string
+
+// AMQP091MessageBindingObjectBindingVersion values enumeration.
+const (
+	AMQP091MessageBindingObjectBindingVersion010    = AMQP091MessageBindingObjectBindingVersion("0.1.0")
+	AMQP091MessageBindingObjectBindingVersionLatest = AMQP091MessageBindingObjectBindingVersion("latest")
+)
+
+// MarshalJSON encodes JSON.
+func (i AMQP091MessageBindingObjectBindingVersion) MarshalJSON() ([]byte, error) {
+	switch i {
+	case AMQP091MessageBindingObjectBindingVersion010:
+	case AMQP091MessageBindingObjectBindingVersionLatest:
+
+	default:
+		return nil, fmt.Errorf("unexpected AMQP091MessageBindingObjectBindingVersion value: %v", i)
+	}
+
+	return json.Marshal(string(i))
+}
+
+// UnmarshalJSON decodes JSON.
+func (i *AMQP091MessageBindingObjectBindingVersion) UnmarshalJSON(data []byte) error {
+	var ii string
+
+	err := json.Unmarshal(data, &ii)
+	if err != nil {
+		return err
+	}
+
+	v := AMQP091MessageBindingObjectBindingVersion(ii)
+
+	switch v {
+	case AMQP091MessageBindingObjectBindingVersion010:
+	case AMQP091MessageBindingObjectBindingVersionLatest:
+
+	default:
+		return fmt.Errorf("unexpected AMQP091MessageBindingObjectBindingVersion value: %v", v)
+	}
+
+	*i = v
+
+	return nil
+}
+
+// AMQP091ChannelBindingObjectIs is an enum type.
+type AMQP091ChannelBindingObjectIs string
+
+// AMQP091ChannelBindingObjectIs values enumeration.
+const (
+	AMQP091ChannelBindingObjectIsRoutingKey = AMQP091ChannelBindingObjectIs("routingKey")
+	AMQP091ChannelBindingObjectIsQueue      = AMQP091ChannelBindingObjectIs("queue")
+)
+
+// MarshalJSON encodes JSON.
+func (i AMQP091ChannelBindingObjectIs) MarshalJSON() ([]byte, error) {
+	switch i {
+	case AMQP091ChannelBindingObjectIsRoutingKey:
+	case AMQP091ChannelBindingObjectIsQueue:
+
+	default:
+		return nil, fmt.Errorf("unexpected AMQP091ChannelBindingObjectIs value: %v", i)
+	}
+
+	return json.Marshal(string(i))
+}
+
+// UnmarshalJSON decodes JSON.
+func (i *AMQP091ChannelBindingObjectIs) UnmarshalJSON(data []byte) error {
+	var ii string
+
+	err := json.Unmarshal(data, &ii)
+	if err != nil {
+		return err
+	}
+
+	v := AMQP091ChannelBindingObjectIs(ii)
+
+	switch v {
+	case AMQP091ChannelBindingObjectIsRoutingKey:
+	case AMQP091ChannelBindingObjectIsQueue:
+
+	default:
+		return fmt.Errorf("unexpected AMQP091ChannelBindingObjectIs value: %v", v)
+	}
+
+	*i = v
+
+	return nil
+}
+
+// ExchangeType is an enum type.
+type ExchangeType string
+
+// ExchangeType values enumeration.
+const (
+	ExchangeTypeTopic   = ExchangeType("topic")
+	ExchangeTypeDirect  = ExchangeType("direct")
+	ExchangeTypeFanout  = ExchangeType("fanout")
+	ExchangeTypeDefault = ExchangeType("default")
+	ExchangeTypeHeaders = ExchangeType("headers")
+)
+
+// MarshalJSON encodes JSON.
+func (i ExchangeType) MarshalJSON() ([]byte, error) {
+	switch i {
+	case ExchangeTypeTopic:
+	case ExchangeTypeDirect:
+	case ExchangeTypeFanout:
+	case ExchangeTypeDefault:
+	case ExchangeTypeHeaders:
+
+	default:
+		return nil, fmt.Errorf("unexpected ExchangeType value: %v", i)
+	}
+
+	return json.Marshal(string(i))
+}
+
+// UnmarshalJSON decodes JSON.
+func (i *ExchangeType) UnmarshalJSON(data []byte) error {
+	var ii string
+
+	err := json.Unmarshal(data, &ii)
+	if err != nil {
+		return err
+	}
+
+	v := ExchangeType(ii)
+
+	switch v {
+	case ExchangeTypeTopic:
+	case ExchangeTypeDirect:
+	case ExchangeTypeFanout:
+	case ExchangeTypeDefault:
+	case ExchangeTypeHeaders:
+
+	default:
+		return fmt.Errorf("unexpected ExchangeType value: %v", v)
+	}
+
+	*i = v
+
+	return nil
+}
+
+// AMQP091ChannelBindingObjectBindingVersion is an enum type.
+type AMQP091ChannelBindingObjectBindingVersion string
+
+// AMQP091ChannelBindingObjectBindingVersion values enumeration.
+const (
+	AMQP091ChannelBindingObjectBindingVersion010    = AMQP091ChannelBindingObjectBindingVersion("0.1.0")
+	AMQP091ChannelBindingObjectBindingVersionLatest = AMQP091ChannelBindingObjectBindingVersion("latest")
+)
+
+// MarshalJSON encodes JSON.
+func (i AMQP091ChannelBindingObjectBindingVersion) MarshalJSON() ([]byte, error) {
+	switch i {
+	case AMQP091ChannelBindingObjectBindingVersion010:
+	case AMQP091ChannelBindingObjectBindingVersionLatest:
+
+	default:
+		return nil, fmt.Errorf("unexpected AMQP091ChannelBindingObjectBindingVersion value: %v", i)
+	}
+
+	return json.Marshal(string(i))
+}
+
+// UnmarshalJSON decodes JSON.
+func (i *AMQP091ChannelBindingObjectBindingVersion) UnmarshalJSON(data []byte) error {
+	var ii string
+
+	err := json.Unmarshal(data, &ii)
+	if err != nil {
+		return err
+	}
+
+	v := AMQP091ChannelBindingObjectBindingVersion(ii)
+
+	switch v {
+	case AMQP091ChannelBindingObjectBindingVersion010:
+	case AMQP091ChannelBindingObjectBindingVersionLatest:
+
+	default:
+		return fmt.Errorf("unexpected AMQP091ChannelBindingObjectBindingVersion value: %v", v)
+	}
+
+	*i = v
+
+	return nil
 }
 
 // APIKeyIn is an enum type.
