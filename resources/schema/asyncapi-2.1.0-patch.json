@@ -1,96 +1,113 @@
-{
- "definitions":{
-  "server":{"properties":{"bindings":{"$ref":"#/definitions/serverBindingsObject"}}},
-  "components":{
-   "properties":{
-    "serverBindings":{"additionalProperties":{"$ref":"#/definitions/serverBindingsObject"}},
-    "channelBindings":{"additionalProperties":{"$ref":"#/definitions/channelBindingsObject"}},
-    "operationBindings":{"additionalProperties":{"$ref":"#/definitions/operationBindingsObject"}},
-    "messageBindings":{"additionalProperties":{"$ref":"#/definitions/messageBindingsObject"}}
-   }
-  },
-  "schema":{"x-go-type":"map[string]interface{}"},
-  "channelItem":{"properties":{"bindings":{"$ref":"#/definitions/channelBindingsObject"}}},
-  "operation":{"properties":{"bindings":{"$ref":"#/definitions/operationBindingsObject"}}},
-  "message":{
-   "oneOf":[
-    {"$ref":"#/definitions/Reference"},
-    {
-     "oneOf":[
-      {
-       "type":"object","required":["oneOf"],"additionalProperties":false,
-       "properties":{"oneOf":{"type":"array","items":{"$ref":"#/definitions/message"}}}
-      },
-      {
-       "title":"Message entity","type":"object","additionalProperties":false,
-       "patternProperties":{"^x-[\\w\\d\\.\\-\\_]+$":{"$ref":"#/definitions/specificationExtension"}},
-       "properties":{
-        "schemaFormat":{"type":"string"},"contentType":{"type":"string"},
-        "headers":{"allOf":[{"$ref":"#/definitions/schema"},{"properties":{"type":{"const":"object"}}}]},
-        "payload":{"$ref":"#/definitions/schema"},
-        "correlationId":{"oneOf":[{"$ref":"#/definitions/Reference"},{"$ref":"#/definitions/correlationId"}]},
-        "tags":{"type":"array","items":{"$ref":"#/definitions/tag"},"uniqueItems":true},
-        "summary":{"type":"string","description":"A brief summary of the message."},
-        "name":{"type":"string","description":"Name of the message."},
-        "title":{"type":"string","description":"A human-friendly title for the message."},
-        "description":{
-         "type":"string",
-         "description":"A longer description of the message. CommonMark is allowed."
-        },
-        "externalDocs":{"$ref":"#/definitions/externalDocs"},
-        "deprecated":{"type":"boolean","default":false},
-        "examples":{
-         "type":"array",
-         "items":{
-          "type":"object","additionalProperties":false,
-          "anyOf":[{"required":["payload"]},{"required":["headers"]}],
-          "properties":{
-           "name":{"type":"string","description":"Machine readable name of the message example."},
-           "summary":{"type":"string","description":"A brief summary of the message example."},
-           "headers":{"type":"object"},"payload":{}
-          }
-         }
-        },
-        "bindings":{"$ref":"#/definitions/messageBindingsObject"},
-        "traits":{
-         "type":"array",
-         "items":{
-          "oneOf":[
-           {"$ref":"#/definitions/Reference"},{"$ref":"#/definitions/messageTrait"},
-           {
-            "type":"array",
-            "items":[
-             {"oneOf":[{"$ref":"#/definitions/Reference"},{"$ref":"#/definitions/messageTrait"}]},
-             {"type":"object","additionalItems":true}
-            ]
-           }
-          ]
-         }
-        }
-       }
-      }
-     ]
-    }
-   ]
-  },
-  "bindingsObject":null,
-  "operationTrait":{"properties":{"bindings":{"$ref":"#/definitions/operationBindingsObject"}}},
-  "messageTrait":{"properties":{"bindings":{"$ref":"#/definitions/messageBindingsObject"}}},
-  "channelBindingsObject":{
+[
+ {
+  "value":"#/definitions/bindingsObject","op":"test",
+  "path":"/definitions/server/properties/bindings/$ref"
+ },
+ {
+  "value":"#/definitions/serverBindingsObject","op":"replace",
+  "path":"/definitions/server/properties/bindings/$ref"
+ },
+ {
+  "value":"#/definitions/bindingsObject","op":"test",
+  "path":"/definitions/components/properties/serverBindings/additionalProperties/$ref"
+ },
+ {
+  "value":"#/definitions/serverBindingsObject","op":"replace",
+  "path":"/definitions/components/properties/serverBindings/additionalProperties/$ref"
+ },
+ {
+  "value":"#/definitions/bindingsObject","op":"test",
+  "path":"/definitions/components/properties/channelBindings/additionalProperties/$ref"
+ },
+ {
+  "value":"#/definitions/channelBindingsObject","op":"replace",
+  "path":"/definitions/components/properties/channelBindings/additionalProperties/$ref"
+ },
+ {
+  "value":"#/definitions/bindingsObject","op":"test",
+  "path":"/definitions/components/properties/operationBindings/additionalProperties/$ref"
+ },
+ {
+  "value":"#/definitions/operationBindingsObject","op":"replace",
+  "path":"/definitions/components/properties/operationBindings/additionalProperties/$ref"
+ },
+ {
+  "value":"#/definitions/bindingsObject","op":"test",
+  "path":"/definitions/components/properties/messageBindings/additionalProperties/$ref"
+ },
+ {
+  "value":"#/definitions/messageBindingsObject","op":"replace",
+  "path":"/definitions/components/properties/messageBindings/additionalProperties/$ref"
+ },
+ {"value":"map[string]interface{}","op":"add","path":"/definitions/schema/x-go-type"},
+ {
+  "value":"#/definitions/bindingsObject","op":"test",
+  "path":"/definitions/channelItem/properties/bindings/$ref"
+ },
+ {
+  "value":"#/definitions/channelBindingsObject","op":"replace",
+  "path":"/definitions/channelItem/properties/bindings/$ref"
+ },
+ {
+  "value":"#/definitions/bindingsObject","op":"test",
+  "path":"/definitions/operation/properties/bindings/$ref"
+ },
+ {
+  "value":"#/definitions/operationBindingsObject","op":"replace",
+  "path":"/definitions/operation/properties/bindings/$ref"
+ },
+ {
+  "value":"#/definitions/schema","op":"add",
+  "path":"/definitions/message/oneOf/1/oneOf/1/properties/payload/$ref"
+ },
+ {
+  "value":"#/definitions/bindingsObject","op":"test",
+  "path":"/definitions/message/oneOf/1/oneOf/1/properties/bindings/$ref"
+ },
+ {
+  "value":"#/definitions/messageBindingsObject","op":"replace",
+  "path":"/definitions/message/oneOf/1/oneOf/1/properties/bindings/$ref"
+ },
+ {"value":"Message entity","op":"add","path":"/definitions/message/oneOf/1/oneOf/1/title"},
+ {"op":"remove","path":"/definitions/bindingsObject"},
+ {
+  "value":"#/definitions/bindingsObject","op":"test",
+  "path":"/definitions/operationTrait/properties/bindings/$ref"
+ },
+ {
+  "value":"#/definitions/operationBindingsObject","op":"replace",
+  "path":"/definitions/operationTrait/properties/bindings/$ref"
+ },
+ {
+  "value":"#/definitions/bindingsObject","op":"test",
+  "path":"/definitions/messageTrait/properties/bindings/$ref"
+ },
+ {
+  "value":"#/definitions/messageBindingsObject","op":"replace",
+  "path":"/definitions/messageTrait/properties/bindings/$ref"
+ },
+ {
+  "value":{
    "type":"object","additionalProperties":true,
    "properties":{
     "http":{},"ws":{},"amqp":{"$ref":"amqp-channel-binding-object-0.1.0.json"},"amqp1":{},"mqtt":{},
     "mqtt5":{},"kafka":{},"nats":{},"jms":{},"sns":{},"sqs":{},"stomp":{},"redis":{},"ibmmq":{}
    }
   },
-  "messageBindingsObject":{
+  "op":"add","path":"/definitions/channelBindingsObject"
+ },
+ {
+  "value":{
    "type":"object","additionalProperties":true,
    "properties":{
     "http":{},"ws":{},"amqp":{"$ref":"amqp-message-binding-object-0.1.0.json"},"amqp1":{},"mqtt":{},
     "mqtt5":{},"kafka":{},"nats":{},"jms":{},"sns":{},"sqs":{},"stomp":{},"redis":{},"ibmmq":{}
    }
   },
-  "operationBindingsObject":{
+  "op":"add","path":"/definitions/messageBindingsObject"
+ },
+ {
+  "value":{
    "type":"object","additionalProperties":true,
    "properties":{
     "http":{},"ws":{},"amqp":{"$ref":"amqp-operation-binding-object-0.1.0.json"},"amqp1":{},
@@ -98,12 +115,16 @@
     "ibmmq":{}
    }
   },
-  "serverBindingsObject":{
+  "op":"add","path":"/definitions/operationBindingsObject"
+ },
+ {
+  "value":{
    "type":"object","additionalProperties":true,
    "properties":{
     "http":{},"ws":{},"amqp":{},"amqp1":{},"mqtt":{},"mqtt5":{},"kafka":{},"nats":{},"jms":{},
     "sns":{},"sqs":{},"stomp":{},"redis":{},"ibmmq":{}
    }
-  }
+  },
+  "op":"add","path":"/definitions/serverBindingsObject"
  }
-}
+]

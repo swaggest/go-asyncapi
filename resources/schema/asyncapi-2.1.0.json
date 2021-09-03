@@ -196,7 +196,7 @@
           }
         },
         "bindings": {
-          "$ref": "#/definitions/serverBindingsObject"
+          "$ref": "#/definitions/bindingsObject"
         }
       }
     },
@@ -312,25 +312,25 @@
         "serverBindings": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/serverBindingsObject"
+            "$ref": "#/definitions/bindingsObject"
           }
         },
         "channelBindings": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/channelBindingsObject"
+            "$ref": "#/definitions/bindingsObject"
           }
         },
         "operationBindings": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/operationBindingsObject"
+            "$ref": "#/definitions/bindingsObject"
           }
         },
         "messageBindings": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/messageBindingsObject"
+            "$ref": "#/definitions/bindingsObject"
           }
         }
       }
@@ -357,7 +357,6 @@
       "description": "JSON objects describing re-usable channel parameters."
     },
     "schema": {
-      "x-go-type": "map[string]interface{}",
       "allOf": [
         {
           "$ref": "http://json-schema.org/draft-07/schema#"
@@ -508,7 +507,7 @@
           "default": false
         },
         "bindings": {
-          "$ref": "#/definitions/channelBindingsObject"
+          "$ref": "#/definitions/bindingsObject"
         }
       }
     },
@@ -598,7 +597,7 @@
           "type": "string"
         },
         "bindings": {
-          "$ref": "#/definitions/operationBindingsObject"
+          "$ref": "#/definitions/bindingsObject"
         },
         "message": {
           "$ref": "#/definitions/message"
@@ -628,7 +627,6 @@
               }
             },
             {
-              "title": "Message entity",
               "type": "object",
               "additionalProperties": false,
               "patternProperties": {
@@ -657,9 +655,7 @@
                     }
                   ]
                 },
-                "payload": {
-                  "$ref": "#/definitions/schema"
-                },
+                "payload": {},
                 "correlationId": {
                   "oneOf": [
                     {
@@ -706,16 +702,8 @@
                     "type": "object",
                     "additionalProperties": false,
                     "anyOf": [
-                      {
-                        "required": [
-                          "payload"
-                        ]
-                      },
-                      {
-                        "required": [
-                          "headers"
-                        ]
-                      }
+                      {"required": ["payload"] },
+                      {"required": ["headers"] }
                     ],
                     "properties": {
                       "name": {
@@ -734,7 +722,7 @@
                   }
                 },
                 "bindings": {
-                  "$ref": "#/definitions/messageBindingsObject"
+                  "$ref": "#/definitions/bindingsObject"
                 },
                 "traits": {
                   "type": "array",
@@ -774,73 +762,7 @@
         }
       ]
     },
-    "channelBindingsObject": {
-      "type": "object",
-      "additionalProperties": true,
-      "properties": {
-        "http": {},
-        "ws": {},
-        "amqp": {
-          "$ref": "amqp-channel-binding-object-0.1.0.json"
-        },
-        "amqp1": {},
-        "mqtt": {},
-        "mqtt5": {},
-        "kafka": {},
-        "nats": {},
-        "jms": {},
-        "sns": {},
-        "sqs": {},
-        "stomp": {},
-        "redis": {},
-        "ibmmq": {}
-      }
-    },
-    "messageBindingsObject": {
-      "type": "object",
-      "additionalProperties": true,
-      "properties": {
-        "http": {},
-        "ws": {},
-        "amqp": {
-          "$ref": "amqp-message-binding-object-0.1.0.json"
-        },
-        "amqp1": {},
-        "mqtt": {},
-        "mqtt5": {},
-        "kafka": {},
-        "nats": {},
-        "jms": {},
-        "sns": {},
-        "sqs": {},
-        "stomp": {},
-        "redis": {},
-        "ibmmq": {}
-      }
-    },
-    "operationBindingsObject": {
-      "type": "object",
-      "additionalProperties": true,
-      "properties": {
-        "http": {},
-        "ws": {},
-        "amqp": {
-          "$ref": "amqp-operation-binding-object-0.1.0.json"
-        },
-        "amqp1": {},
-        "mqtt": {},
-        "mqtt5": {},
-        "kafka": {},
-        "nats": {},
-        "jms": {},
-        "sns": {},
-        "sqs": {},
-        "stomp": {},
-        "redis": {},
-        "ibmmq": {}
-      }
-    },
-    "serverBindingsObject": {
+    "bindingsObject": {
       "type": "object",
       "additionalProperties": true,
       "properties": {
@@ -940,7 +862,7 @@
           "type": "string"
         },
         "bindings": {
-          "$ref": "#/definitions/operationBindingsObject"
+          "$ref": "#/definitions/bindingsObject"
         }
       }
     },
@@ -1016,7 +938,7 @@
           }
         },
         "bindings": {
-          "$ref": "#/definitions/messageBindingsObject"
+          "$ref": "#/definitions/bindingsObject"
         }
       }
     },
