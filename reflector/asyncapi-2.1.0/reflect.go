@@ -3,9 +3,10 @@ package asyncapi
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"strings"
 
-	"github.com/pkg/errors"
 	"github.com/swaggest/go-asyncapi/spec-2.1.0"
 	"github.com/swaggest/jsonschema-go"
 )
@@ -67,14 +68,14 @@ func (r *Reflector) AddChannel(info ChannelInfo) error {
 	if info.Publish != nil {
 		channelItem.Publish, err = r.makeOperation(&channelItem, info.Publish)
 		if err != nil {
-			return errors.Wrapf(err, "failed process publish operation for channel %s", info.Name)
+			return fmt.Errorf("failed process publish operation for channel %s: %w", info.Name, err)
 		}
 	}
 
 	if info.Subscribe != nil {
 		channelItem.Subscribe, err = r.makeOperation(&channelItem, info.Subscribe)
 		if err != nil {
-			return errors.Wrapf(err, "failed process subscribe operation for channel %s", info.Name)
+			return fmt.Errorf("failed process subscribe operation for channel %s: %w", info.Name, err)
 		}
 	}
 

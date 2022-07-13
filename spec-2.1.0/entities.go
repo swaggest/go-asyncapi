@@ -3092,8 +3092,7 @@ func (m MessageEntity) MarshalJSON() ([]byte, error) {
 }
 
 // MessageOneOf1OneOf1HeadersAllOf1 structure is generated from "#/definitions/message/oneOf/1/oneOf/1->headers/allOf/1".
-type MessageOneOf1OneOf1HeadersAllOf1 struct {
-}
+type MessageOneOf1OneOf1HeadersAllOf1 struct{}
 
 // UnmarshalJSON decodes JSON.
 func (m *MessageOneOf1OneOf1HeadersAllOf1) UnmarshalJSON(data []byte) error {
@@ -5981,8 +5980,7 @@ func (n NonBearerHTTPSecurityScheme) MarshalJSON() ([]byte, error) {
 }
 
 // NonBearerHTTPSecuritySchemeNot structure is generated from "#/definitions/NonBearerHTTPSecurityScheme->not".
-type NonBearerHTTPSecuritySchemeNot struct {
-}
+type NonBearerHTTPSecuritySchemeNot struct{}
 
 // UnmarshalJSON decodes JSON.
 func (n *NonBearerHTTPSecuritySchemeNot) UnmarshalJSON(data []byte) error {

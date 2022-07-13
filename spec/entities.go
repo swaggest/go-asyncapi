@@ -650,8 +650,7 @@ func (i StreamFramingOneOf0) MarshalJSON() ([]byte, error) {
 }
 
 // StreamFramingOneOf1 structure is generated from "#/definitions/stream->framing/oneOf/1".
-type StreamFramingOneOf1 struct {
-}
+type StreamFramingOneOf1 struct{}
 
 type marshalStreamFramingOneOf1 StreamFramingOneOf1
 
