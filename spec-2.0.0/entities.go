@@ -5638,8 +5638,7 @@ func (n NonBearerHTTPSecurityScheme) MarshalJSON() ([]byte, error) {
 }
 
 // NonBearerHTTPSecuritySchemeNot structure is generated from "#/definitions/NonBearerHTTPSecurityScheme->not".
-type NonBearerHTTPSecuritySchemeNot struct {
-}
+type NonBearerHTTPSecuritySchemeNot struct{}
 
 // UnmarshalJSON decodes JSON.
 func (n *NonBearerHTTPSecuritySchemeNot) UnmarshalJSON(data []byte) error {

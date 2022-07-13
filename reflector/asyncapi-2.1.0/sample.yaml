@@ -11,10 +11,10 @@ servers:
     variables:
       country:
         enum:
-          - RU
-          - US
-          - DE
-          - FR
+        - RU
+        - US
+        - DE
+        - FR
         default: US
         description: Country code.
 channels:
@@ -55,8 +55,8 @@ components:
           items:
             $ref: '#/components/schemas/Asyncapi210TestSubItem'
           type:
-            - array
-            - "null"
+          - array
+          - "null"
       type: object
     Asyncapi210TestSubItem:
       properties:
@@ -68,8 +68,8 @@ components:
           items:
             type: integer
           type:
-            - array
-            - "null"
+          - array
+          - "null"
           uniqueItems: true
       type: object
   messages:
@@ -80,7 +80,7 @@ components:
             description: Tracing header
             type: string
         required:
-          - X-Trace-ID
+        - X-Trace-ID
         type: object
       payload:
         $ref: '#/components/schemas/Asyncapi210TestMyAnotherMessage'
