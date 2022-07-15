@@ -1,0 +1,3 @@
+[
+ {"value":"map[string]interface{}","op":"add","path":"/definitions/schema/x-go-type"}
+]

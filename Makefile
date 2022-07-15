@@ -38,7 +38,33 @@ endif
 ## Run tests
 test: test-unit
 
-JSON_CLI_VERSION := v1.8.7
+JSON_CLI_VERSION := v1.9.1
+
+## Generate bindings for v2.1.0 spec.
+gen-2.4.0:
+	@test -s $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) || (curl -sSfL https://github.com/swaggest/json-cli/releases/download/$(JSON_CLI_VERSION)/json-cli -o $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) && chmod +x $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION))
+	cd resources/schema/ && $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) gen-go asyncapi-2.4.0-fixed.json --output ../../spec-2.4.0/entities.go --validate-required --fluent-setters --package-name spec --root-name AsyncAPI --renames \
+HTTPAsyncapiComDefinitions240InfoJSON:Info \
+HTTPAsyncapiComDefinitions240ServersJSONAdditionalProperties:Servers \
+HTTPAsyncapiComDefinitions240ChannelItemJSON:ChannelItem \
+HTTPAsyncapiComDefinitions240ComponentsJSON:Components \
+HTTPAsyncapiComDefinitions240TagJSON:Tag \
+HTTPAsyncapiComDefinitions240ExternalDocsJSON:ExternalDocs \
+HTTPAsyncapiComDefinitions240ContactJSON:Contact \
+HTTPAsyncapiComDefinitions240LicenseJSON:License \
+HTTPAsyncapiComDefinitions240ReferenceJSON:Reference \
+HTTPAsyncapiComDefinitions240ServerJSON:Server \
+HTTPAsyncapiComDefinitions240ServerVariableJSON:ServerVariable \
+HTTPAsyncapiComDefinitions240BindingsObjectJSON:ServerBindingsObject \
+HTTPAsyncapiComDefinitions240OperationJSON:Operation \
+HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn:APIKeyHTTPSecuritySchemeJSONIn \
+HTTPAsyncapiComDefinitions240ParameterJSON:Parameter \
+HTTPAsyncapiComDefinitions240OperationJSONTraitsItems:OperationTraitsItems \
+HTTPAsyncapiComDefinitions240MessageJSON:Message \
+HTTPAsyncapiComDefinitions240OperationTraitJSON:OperationTrait \
+HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0:
+	make fix-lint
+
 
 ## Generate bindings for v2.1.0 spec.
 gen-2.1.0:
