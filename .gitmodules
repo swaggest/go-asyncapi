@@ -1,0 +1,3 @@
+[submodule "resources/schema/bindings"]
+	path = resources/schema/bindings
+	url = https://github.com/asyncapi/bindings.git

@@ -221,7 +221,7 @@
           }
         },
         "bindings": {
-          "$ref": "http://asyncapi.com/definitions/2.4.0/bindingsObject.json"
+          "$ref": "http://asyncapi.com/definitions/2.4.0/serverBindingsObject.json"
         }
       }
     },
@@ -273,6 +273,98 @@
           "type": "string"
         },
         "uniqueItems": true
+      }
+    },
+    "http://asyncapi.com/definitions/2.4.0/operationBindingsObject.json": {
+      "$id": "http://asyncapi.com/definitions/2.4.0/operationBindingsObject.json",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "http": {},
+        "ws": {},
+        "amqp": {},
+        "amqp1": {},
+        "mqtt": {},
+        "mqtt5": {},
+        "kafka": {},
+        "anypointmq": {},
+        "nats": {},
+        "jms": {},
+        "sns": {},
+        "sqs": {},
+        "stomp": {},
+        "redis": {},
+        "ibmmq": {},
+        "solace": {}
+      }
+    },
+    "http://asyncapi.com/definitions/2.4.0/messageBindingsObject.json": {
+      "$id": "http://asyncapi.com/definitions/2.4.0/messageBindingsObject.json",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "http": {},
+        "ws": {},
+        "amqp": {},
+        "amqp1": {},
+        "mqtt": {},
+        "mqtt5": {},
+        "kafka": {},
+        "anypointmq": {},
+        "nats": {},
+        "jms": {},
+        "sns": {},
+        "sqs": {},
+        "stomp": {},
+        "redis": {},
+        "ibmmq": {},
+        "solace": {}
+      }
+    },
+    "http://asyncapi.com/definitions/2.4.0/channelBindingsObject.json": {
+      "$id": "http://asyncapi.com/definitions/2.4.0/channelBindingsObject.json",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "http": {},
+        "ws": {},
+        "amqp": {},
+        "amqp1": {},
+        "mqtt": {},
+        "mqtt5": {},
+        "kafka": {},
+        "anypointmq": {},
+        "nats": {},
+        "jms": {},
+        "sns": {},
+        "sqs": {},
+        "stomp": {},
+        "redis": {},
+        "ibmmq": {},
+        "solace": {}
+      }
+    },
+    "http://asyncapi.com/definitions/2.4.0/serverBindingsObject.json": {
+      "$id": "http://asyncapi.com/definitions/2.4.0/serverBindingsObject.json",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "http": {},
+        "ws": {},
+        "amqp": {},
+        "amqp1": {},
+        "mqtt": {},
+        "mqtt5": {},
+        "kafka": {},
+        "anypointmq": {},
+        "nats": {},
+        "jms": {},
+        "sns": {},
+        "sqs": {},
+        "stomp": {},
+        "redis": {},
+        "ibmmq": {},
+        "solace": {}
       }
     },
     "http://asyncapi.com/definitions/2.4.0/bindingsObject.json": {
@@ -352,7 +444,7 @@
           "default": false
         },
         "bindings": {
-          "$ref": "http://asyncapi.com/definitions/2.4.0/bindingsObject.json"
+          "$ref": "http://asyncapi.com/definitions/2.4.0/channelBindingsObject.json"
         }
       }
     },
@@ -814,7 +906,7 @@
           "type": "string"
         },
         "bindings": {
-          "$ref": "http://asyncapi.com/definitions/2.4.0/bindingsObject.json"
+          "$ref": "http://asyncapi.com/definitions/2.4.0/operationBindingsObject.json"
         },
         "message": {
           "$ref": "http://asyncapi.com/definitions/2.4.0/message.json"
@@ -857,7 +949,7 @@
           }
         },
         "bindings": {
-          "$ref": "http://asyncapi.com/definitions/2.4.0/bindingsObject.json"
+          "$ref": "http://asyncapi.com/definitions/2.4.0/operationBindingsObject.json"
         }
       }
     },
@@ -1015,7 +1107,7 @@
                   }
                 },
                 "bindings": {
-                  "$ref": "http://asyncapi.com/definitions/2.4.0/bindingsObject.json"
+                  "$ref": "http://asyncapi.com/definitions/2.4.0/messageBindingsObject.json"
                 },
                 "traits": {
                   "type": "array",
@@ -1159,7 +1251,7 @@
           }
         },
         "bindings": {
-          "$ref": "http://asyncapi.com/definitions/2.4.0/bindingsObject.json"
+          "$ref": "http://asyncapi.com/definitions/2.4.0/messageBindingsObject.json"
         }
       }
     },
@@ -1237,25 +1329,25 @@
         "serverBindings": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "http://asyncapi.com/definitions/2.4.0/bindingsObject.json"
+            "$ref": "http://asyncapi.com/definitions/2.4.0/serverBindingsObject.json"
           }
         },
         "channelBindings": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "http://asyncapi.com/definitions/2.4.0/bindingsObject.json"
+            "$ref": "http://asyncapi.com/definitions/2.4.0/channelBindingsObject.json"
           }
         },
         "operationBindings": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "http://asyncapi.com/definitions/2.4.0/bindingsObject.json"
+            "$ref": "http://asyncapi.com/definitions/2.4.0/operationBindingsObject.json"
           }
         },
         "messageBindings": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "http://asyncapi.com/definitions/2.4.0/bindingsObject.json"
+            "$ref": "http://asyncapi.com/definitions/2.4.0/messageBindingsObject.json"
           }
         }
       }

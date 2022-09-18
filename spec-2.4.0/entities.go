@@ -24,14 +24,14 @@ type AsyncAPI struct {
 	ID string `json:"id,omitempty"`
 	// General information about the API.
 	// Required.
-	Info               HTTPAsyncapiComDefinitions240InfoJSON                                   `json:"info"`
-	Servers            map[string]HTTPAsyncapiComDefinitions240ServersJSONAdditionalProperties `json:"servers,omitempty"` // An object representing multiple servers.
-	DefaultContentType string                                                                  `json:"defaultContentType,omitempty"`
-	Channels           map[string]ChannelItem                                                  `json:"channels"`             // Required.
-	Components         *HTTPAsyncapiComDefinitions240ComponentsJSON                            `json:"components,omitempty"` // An object to hold a set of reusable objects for different aspects of the AsyncAPI Specification.
-	Tags               []HTTPAsyncapiComDefinitions240TagJSON                                  `json:"tags,omitempty"`
-	ExternalDocs       *HTTPAsyncapiComDefinitions240ExternalDocsJSON                          `json:"externalDocs,omitempty"` // Information about external documentation.
-	MapOfAnything      map[string]interface{}                                                  `json:"-"`                      // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+	Info               Info                                   `json:"info"`
+	Servers            map[string]ServersAdditionalProperties `json:"servers,omitempty"` // An object representing multiple servers.
+	DefaultContentType string                                 `json:"defaultContentType,omitempty"`
+	Channels           map[string]ChannelItem                 `json:"channels"`             // Required.
+	Components         *Components                            `json:"components,omitempty"` // An object to hold a set of reusable objects for different aspects of the AsyncAPI Specification.
+	Tags               []Tag                                  `json:"tags,omitempty"`
+	ExternalDocs       *ExternalDocs                          `json:"externalDocs,omitempty"` // Information about external documentation.
+	MapOfAnything      map[string]interface{}                 `json:"-"`                      // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
 type marshalAsyncAPI AsyncAPI
@@ -124,10 +124,10 @@ func (a AsyncAPI) MarshalJSON() ([]byte, error) {
 	return marshalUnion(constAsyncAPI, marshalAsyncAPI(a), a.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240InfoJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/info.json".
+// Info structure is generated from "http://asyncapi.com/definitions/2.4.0/info.json".
 //
 // General information about the API.
-type HTTPAsyncapiComDefinitions240InfoJSON struct {
+type Info struct {
 	// A unique and precise title of the API.
 	// Required.
 	Title string `json:"title"`
@@ -137,15 +137,15 @@ type HTTPAsyncapiComDefinitions240InfoJSON struct {
 	Description string `json:"description,omitempty"` // A longer description of the API. Should be different from the title. CommonMark is allowed.
 	// A URL to the Terms of Service for the API. MUST be in the format of a URL.
 	// Format: uri.
-	TermsOfService string                                    `json:"termsOfService,omitempty"`
-	Contact        *HTTPAsyncapiComDefinitions240ContactJSON `json:"contact,omitempty"` // Contact information for the owners of the API.
-	License        *HTTPAsyncapiComDefinitions240LicenseJSON `json:"license,omitempty"`
-	MapOfAnything  map[string]interface{}                    `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+	TermsOfService string                 `json:"termsOfService,omitempty"`
+	Contact        *Contact               `json:"contact,omitempty"` // Contact information for the owners of the API.
+	License        *License               `json:"license,omitempty"`
+	MapOfAnything  map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240InfoJSON HTTPAsyncapiComDefinitions240InfoJSON
+type marshalInfo Info
 
-var knownKeysHTTPAsyncapiComDefinitions240InfoJSON = []string{
+var knownKeysInfo = []string{
 	"title",
 	"version",
 	"description",
@@ -155,12 +155,12 @@ var knownKeysHTTPAsyncapiComDefinitions240InfoJSON = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240InfoJSON) UnmarshalJSON(data []byte) error {
+func (i *Info) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240InfoJSON(*h)
+	mi := marshalInfo(*i)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mi)
 	if err != nil {
 		return err
 	}
@@ -172,7 +172,7 @@ func (h *HTTPAsyncapiComDefinitions240InfoJSON) UnmarshalJSON(data []byte) error
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240InfoJSON {
+	for _, key := range knownKeysInfo {
 		delete(rawMap, key)
 	}
 
@@ -182,8 +182,8 @@ func (h *HTTPAsyncapiComDefinitions240InfoJSON) UnmarshalJSON(data []byte) error
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mi.MapOfAnything == nil {
+				mi.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -193,7 +193,7 @@ func (h *HTTPAsyncapiComDefinitions240InfoJSON) UnmarshalJSON(data []byte) error
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mi.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -208,23 +208,23 @@ func (h *HTTPAsyncapiComDefinitions240InfoJSON) UnmarshalJSON(data []byte) error
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240InfoJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in Info: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240InfoJSON(mh)
+	*i = Info(mi)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240InfoJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240InfoJSON(h), h.MapOfAnything)
+func (i Info) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalInfo(i), i.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240ContactJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/contact.json".
+// Contact structure is generated from "http://asyncapi.com/definitions/2.4.0/contact.json".
 //
 // Contact information for the owners of the API.
-type HTTPAsyncapiComDefinitions240ContactJSON struct {
+type Contact struct {
 	Name string `json:"name,omitempty"` // The identifying name of the contact person/organization.
 	// The URL pointing to the contact information.
 	// Format: uri.
@@ -235,21 +235,21 @@ type HTTPAsyncapiComDefinitions240ContactJSON struct {
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240ContactJSON HTTPAsyncapiComDefinitions240ContactJSON
+type marshalContact Contact
 
-var knownKeysHTTPAsyncapiComDefinitions240ContactJSON = []string{
+var knownKeysContact = []string{
 	"name",
 	"url",
 	"email",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240ContactJSON) UnmarshalJSON(data []byte) error {
+func (c *Contact) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240ContactJSON(*h)
+	mc := marshalContact(*c)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mc)
 	if err != nil {
 		return err
 	}
@@ -261,7 +261,7 @@ func (h *HTTPAsyncapiComDefinitions240ContactJSON) UnmarshalJSON(data []byte) er
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240ContactJSON {
+	for _, key := range knownKeysContact {
 		delete(rawMap, key)
 	}
 
@@ -271,8 +271,8 @@ func (h *HTTPAsyncapiComDefinitions240ContactJSON) UnmarshalJSON(data []byte) er
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mc.MapOfAnything == nil {
+				mc.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -282,7 +282,7 @@ func (h *HTTPAsyncapiComDefinitions240ContactJSON) UnmarshalJSON(data []byte) er
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mc.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -297,21 +297,21 @@ func (h *HTTPAsyncapiComDefinitions240ContactJSON) UnmarshalJSON(data []byte) er
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240ContactJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in Contact: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240ContactJSON(mh)
+	*c = Contact(mc)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240ContactJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240ContactJSON(h), h.MapOfAnything)
+func (c Contact) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalContact(c), c.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240LicenseJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/license.json".
-type HTTPAsyncapiComDefinitions240LicenseJSON struct {
+// License structure is generated from "http://asyncapi.com/definitions/2.4.0/license.json".
+type License struct {
 	// The name of the license type. It's encouraged to use an OSI compatible license.
 	// Required.
 	Name string `json:"name"`
@@ -321,20 +321,20 @@ type HTTPAsyncapiComDefinitions240LicenseJSON struct {
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240LicenseJSON HTTPAsyncapiComDefinitions240LicenseJSON
+type marshalLicense License
 
-var knownKeysHTTPAsyncapiComDefinitions240LicenseJSON = []string{
+var knownKeysLicense = []string{
 	"name",
 	"url",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240LicenseJSON) UnmarshalJSON(data []byte) error {
+func (l *License) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240LicenseJSON(*h)
+	ml := marshalLicense(*l)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &ml)
 	if err != nil {
 		return err
 	}
@@ -346,7 +346,7 @@ func (h *HTTPAsyncapiComDefinitions240LicenseJSON) UnmarshalJSON(data []byte) er
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240LicenseJSON {
+	for _, key := range knownKeysLicense {
 		delete(rawMap, key)
 	}
 
@@ -356,8 +356,8 @@ func (h *HTTPAsyncapiComDefinitions240LicenseJSON) UnmarshalJSON(data []byte) er
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if ml.MapOfAnything == nil {
+				ml.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -367,7 +367,7 @@ func (h *HTTPAsyncapiComDefinitions240LicenseJSON) UnmarshalJSON(data []byte) er
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			ml.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -382,21 +382,21 @@ func (h *HTTPAsyncapiComDefinitions240LicenseJSON) UnmarshalJSON(data []byte) er
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240LicenseJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in License: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240LicenseJSON(mh)
+	*l = License(ml)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240LicenseJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240LicenseJSON(h), h.MapOfAnything)
+func (l License) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalLicense(l), l.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240ReferenceJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/Reference.json".
-type HTTPAsyncapiComDefinitions240ReferenceJSON struct {
+// Reference structure is generated from "http://asyncapi.com/definitions/2.4.0/Reference.json".
+type Reference struct {
 	// Format: uri-reference.
 	// Required.
 	Ref string `json:"$ref"`
@@ -414,7 +414,7 @@ type Server struct {
 	ProtocolVersion string                    `json:"protocolVersion,omitempty"`
 	Variables       map[string]ServerVariable `json:"variables,omitempty"`
 	Security        []map[string][]string     `json:"security,omitempty"`
-	Bindings        *ChannelBindingsObject    `json:"bindings,omitempty"`
+	Bindings        *ServerBindingsObject     `json:"bindings,omitempty"`
 	MapOfAnything   map[string]interface{}    `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
@@ -584,8 +584,8 @@ func (s ServerVariable) MarshalJSON() ([]byte, error) {
 	return marshalUnion(marshalServerVariable(s), s.MapOfAnything)
 }
 
-// ChannelBindingsObject structure is generated from "http://asyncapi.com/definitions/2.4.0/bindingsObject.json".
-type ChannelBindingsObject struct {
+// ServerBindingsObject structure is generated from "http://asyncapi.com/definitions/2.4.0/serverBindingsObject.json".
+type ServerBindingsObject struct {
 	HTTP                 *interface{}           `json:"http,omitempty"`
 	Ws                   *interface{}           `json:"ws,omitempty"`
 	Amqp                 *interface{}           `json:"amqp,omitempty"`
@@ -605,9 +605,9 @@ type ChannelBindingsObject struct {
 	AdditionalProperties map[string]interface{} `json:"-"` // All unmatched properties.
 }
 
-type marshalChannelBindingsObject ChannelBindingsObject
+type marshalServerBindingsObject ServerBindingsObject
 
-var knownKeysChannelBindingsObject = []string{
+var knownKeysServerBindingsObject = []string{
 	"http",
 	"ws",
 	"amqp",
@@ -627,12 +627,12 @@ var knownKeysChannelBindingsObject = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (c *ChannelBindingsObject) UnmarshalJSON(data []byte) error {
+func (s *ServerBindingsObject) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mc := marshalChannelBindingsObject(*c)
+	ms := marshalServerBindingsObject(*s)
 
-	err = json.Unmarshal(data, &mc)
+	err = json.Unmarshal(data, &ms)
 	if err != nil {
 		return err
 	}
@@ -644,125 +644,125 @@ func (c *ChannelBindingsObject) UnmarshalJSON(data []byte) error {
 		rawMap = nil
 	}
 
-	if mc.HTTP == nil {
+	if ms.HTTP == nil {
 		if _, ok := rawMap["http"]; ok {
 			var v interface{}
-			mc.HTTP = &v
+			ms.HTTP = &v
 		}
 	}
 
-	if mc.Ws == nil {
+	if ms.Ws == nil {
 		if _, ok := rawMap["ws"]; ok {
 			var v interface{}
-			mc.Ws = &v
+			ms.Ws = &v
 		}
 	}
 
-	if mc.Amqp == nil {
+	if ms.Amqp == nil {
 		if _, ok := rawMap["amqp"]; ok {
 			var v interface{}
-			mc.Amqp = &v
+			ms.Amqp = &v
 		}
 	}
 
-	if mc.Amqp1 == nil {
+	if ms.Amqp1 == nil {
 		if _, ok := rawMap["amqp1"]; ok {
 			var v interface{}
-			mc.Amqp1 = &v
+			ms.Amqp1 = &v
 		}
 	}
 
-	if mc.Mqtt == nil {
+	if ms.Mqtt == nil {
 		if _, ok := rawMap["mqtt"]; ok {
 			var v interface{}
-			mc.Mqtt = &v
+			ms.Mqtt = &v
 		}
 	}
 
-	if mc.Mqtt5 == nil {
+	if ms.Mqtt5 == nil {
 		if _, ok := rawMap["mqtt5"]; ok {
 			var v interface{}
-			mc.Mqtt5 = &v
+			ms.Mqtt5 = &v
 		}
 	}
 
-	if mc.Kafka == nil {
+	if ms.Kafka == nil {
 		if _, ok := rawMap["kafka"]; ok {
 			var v interface{}
-			mc.Kafka = &v
+			ms.Kafka = &v
 		}
 	}
 
-	if mc.Anypointmq == nil {
+	if ms.Anypointmq == nil {
 		if _, ok := rawMap["anypointmq"]; ok {
 			var v interface{}
-			mc.Anypointmq = &v
+			ms.Anypointmq = &v
 		}
 	}
 
-	if mc.Nats == nil {
+	if ms.Nats == nil {
 		if _, ok := rawMap["nats"]; ok {
 			var v interface{}
-			mc.Nats = &v
+			ms.Nats = &v
 		}
 	}
 
-	if mc.Jms == nil {
+	if ms.Jms == nil {
 		if _, ok := rawMap["jms"]; ok {
 			var v interface{}
-			mc.Jms = &v
+			ms.Jms = &v
 		}
 	}
 
-	if mc.Sns == nil {
+	if ms.Sns == nil {
 		if _, ok := rawMap["sns"]; ok {
 			var v interface{}
-			mc.Sns = &v
+			ms.Sns = &v
 		}
 	}
 
-	if mc.Sqs == nil {
+	if ms.Sqs == nil {
 		if _, ok := rawMap["sqs"]; ok {
 			var v interface{}
-			mc.Sqs = &v
+			ms.Sqs = &v
 		}
 	}
 
-	if mc.Stomp == nil {
+	if ms.Stomp == nil {
 		if _, ok := rawMap["stomp"]; ok {
 			var v interface{}
-			mc.Stomp = &v
+			ms.Stomp = &v
 		}
 	}
 
-	if mc.Redis == nil {
+	if ms.Redis == nil {
 		if _, ok := rawMap["redis"]; ok {
 			var v interface{}
-			mc.Redis = &v
+			ms.Redis = &v
 		}
 	}
 
-	if mc.Ibmmq == nil {
+	if ms.Ibmmq == nil {
 		if _, ok := rawMap["ibmmq"]; ok {
 			var v interface{}
-			mc.Ibmmq = &v
+			ms.Ibmmq = &v
 		}
 	}
 
-	if mc.Solace == nil {
+	if ms.Solace == nil {
 		if _, ok := rawMap["solace"]; ok {
 			var v interface{}
-			mc.Solace = &v
+			ms.Solace = &v
 		}
 	}
 
-	for _, key := range knownKeysChannelBindingsObject {
+	for _, key := range knownKeysServerBindingsObject {
 		delete(rawMap, key)
 	}
 
 	for key, rawValue := range rawMap {
-		if mc.AdditionalProperties == nil {
-			mc.AdditionalProperties = make(map[string]interface{}, 1)
+		if ms.AdditionalProperties == nil {
+			ms.AdditionalProperties = make(map[string]interface{}, 1)
 		}
 
 		var val interface{}
@@ -772,75 +772,75 @@ func (c *ChannelBindingsObject) UnmarshalJSON(data []byte) error {
 			return err
 		}
 
-		mc.AdditionalProperties[key] = val
+		ms.AdditionalProperties[key] = val
 	}
 
-	*c = ChannelBindingsObject(mc)
+	*s = ServerBindingsObject(ms)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (c ChannelBindingsObject) MarshalJSON() ([]byte, error) {
-	if len(c.AdditionalProperties) == 0 {
-		return json.Marshal(marshalChannelBindingsObject(c))
+func (s ServerBindingsObject) MarshalJSON() ([]byte, error) {
+	if len(s.AdditionalProperties) == 0 {
+		return json.Marshal(marshalServerBindingsObject(s))
 	}
 
-	return marshalUnion(marshalChannelBindingsObject(c), c.AdditionalProperties)
+	return marshalUnion(marshalServerBindingsObject(s), s.AdditionalProperties)
 }
 
-// HTTPAsyncapiComDefinitions240ServersJSONAdditionalProperties structure is generated from "http://asyncapi.com/definitions/2.4.0/servers.json->additionalProperties".
-type HTTPAsyncapiComDefinitions240ServersJSONAdditionalProperties struct {
-	HTTPAsyncapiComDefinitions240ReferenceJSON *HTTPAsyncapiComDefinitions240ReferenceJSON `json:"-"`
-	Server                                     *Server                                     `json:"-"`
+// ServersAdditionalProperties structure is generated from "http://asyncapi.com/definitions/2.4.0/servers.json->additionalProperties".
+type ServersAdditionalProperties struct {
+	Reference *Reference `json:"-"`
+	Server    *Server    `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240ServersJSONAdditionalProperties) UnmarshalJSON(data []byte) error {
+func (s *ServersAdditionalProperties) UnmarshalJSON(data []byte) error {
 	var err error
 
 	oneOfErrors := make(map[string]error, 2)
 	oneOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240ReferenceJSON)
+	err = json.Unmarshal(data, &s.Reference)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240ReferenceJSON"] = err
-		h.HTTPAsyncapiComDefinitions240ReferenceJSON = nil
+		oneOfErrors["Reference"] = err
+		s.Reference = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.Server)
+	err = json.Unmarshal(data, &s.Server)
 	if err != nil {
 		oneOfErrors["Server"] = err
-		h.Server = nil
+		s.Server = nil
 	} else {
 		oneOfValid++
 	}
 
 	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for HTTPAsyncapiComDefinitions240ServersJSONAdditionalProperties with %d valid results: %v", oneOfValid, oneOfErrors)
+		return fmt.Errorf("oneOf constraint failed for ServersAdditionalProperties with %d valid results: %v", oneOfValid, oneOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240ServersJSONAdditionalProperties) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240ReferenceJSON, h.Server)
+func (s ServersAdditionalProperties) MarshalJSON() ([]byte, error) {
+	return marshalUnion(s.Reference, s.Server)
 }
 
 // ChannelItem structure is generated from "http://asyncapi.com/definitions/2.4.0/channelItem.json".
 type ChannelItem struct {
-	Ref           string                                                `json:"$ref,omitempty"` // Format: uri-reference.
-	Parameters    map[string]HTTPAsyncapiComDefinitions240ParameterJSON `json:"parameters,omitempty"`
-	Description   string                                                `json:"description,omitempty"` // A description of the channel.
-	Servers       []string                                              `json:"servers,omitempty"`     // The names of the servers on which this channel is available. If absent or empty then this channel must be available on all servers.
-	Publish       *HTTPAsyncapiComDefinitions240OperationJSON           `json:"publish,omitempty"`
-	Subscribe     *HTTPAsyncapiComDefinitions240OperationJSON           `json:"subscribe,omitempty"`
-	Deprecated    bool                                                  `json:"deprecated,omitempty"`
-	Bindings      *ChannelBindingsObject                                `json:"bindings,omitempty"`
-	MapOfAnything map[string]interface{}                                `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+	Ref           string                 `json:"$ref,omitempty"` // Format: uri-reference.
+	Parameters    map[string]Parameter   `json:"parameters,omitempty"`
+	Description   string                 `json:"description,omitempty"` // A description of the channel.
+	Servers       []string               `json:"servers,omitempty"`     // The names of the servers on which this channel is available. If absent or empty then this channel must be available on all servers.
+	Publish       *Operation             `json:"publish,omitempty"`
+	Subscribe     *Operation             `json:"subscribe,omitempty"`
+	Deprecated    bool                   `json:"deprecated,omitempty"`
+	Bindings      *ChannelBindingsObject `json:"bindings,omitempty"`
+	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
 type marshalChannelItem ChannelItem
@@ -923,8 +923,8 @@ func (c ChannelItem) MarshalJSON() ([]byte, error) {
 	return marshalUnion(marshalChannelItem(c), c.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240ParameterJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/parameter.json".
-type HTTPAsyncapiComDefinitions240ParameterJSON struct {
+// Parameter structure is generated from "http://asyncapi.com/definitions/2.4.0/parameter.json".
+type Parameter struct {
 	Description string                 `json:"description,omitempty"` // A brief description of the parameter. This could contain examples of use. GitHub Flavored Markdown is allowed.
 	Schema      map[string]interface{} `json:"schema,omitempty"`
 	// A runtime expression that specifies the location of the parameter value.
@@ -934,9 +934,9 @@ type HTTPAsyncapiComDefinitions240ParameterJSON struct {
 	MapOfAnything map[string]interface{} `json:"-"`              // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240ParameterJSON HTTPAsyncapiComDefinitions240ParameterJSON
+type marshalParameter Parameter
 
-var knownKeysHTTPAsyncapiComDefinitions240ParameterJSON = []string{
+var knownKeysParameter = []string{
 	"description",
 	"schema",
 	"location",
@@ -944,12 +944,12 @@ var knownKeysHTTPAsyncapiComDefinitions240ParameterJSON = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240ParameterJSON) UnmarshalJSON(data []byte) error {
+func (p *Parameter) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240ParameterJSON(*h)
+	mp := marshalParameter(*p)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mp)
 	if err != nil {
 		return err
 	}
@@ -961,7 +961,7 @@ func (h *HTTPAsyncapiComDefinitions240ParameterJSON) UnmarshalJSON(data []byte) 
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240ParameterJSON {
+	for _, key := range knownKeysParameter {
 		delete(rawMap, key)
 	}
 
@@ -971,8 +971,8 @@ func (h *HTTPAsyncapiComDefinitions240ParameterJSON) UnmarshalJSON(data []byte) 
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mp.MapOfAnything == nil {
+				mp.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -982,7 +982,7 @@ func (h *HTTPAsyncapiComDefinitions240ParameterJSON) UnmarshalJSON(data []byte) 
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mp.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -997,36 +997,36 @@ func (h *HTTPAsyncapiComDefinitions240ParameterJSON) UnmarshalJSON(data []byte) 
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240ParameterJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in Parameter: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240ParameterJSON(mh)
+	*p = Parameter(mp)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240ParameterJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240ParameterJSON(h), h.MapOfAnything)
+func (p Parameter) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalParameter(p), p.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240OperationJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/operation.json".
-type HTTPAsyncapiComDefinitions240OperationJSON struct {
-	Traits        []HTTPAsyncapiComDefinitions240OperationJSONTraitsItems `json:"traits,omitempty"`
-	Summary       string                                                  `json:"summary,omitempty"`
-	Description   string                                                  `json:"description,omitempty"`
-	Security      []map[string][]string                                   `json:"security,omitempty"`
-	Tags          []HTTPAsyncapiComDefinitions240TagJSON                  `json:"tags,omitempty"`
-	ExternalDocs  *HTTPAsyncapiComDefinitions240ExternalDocsJSON          `json:"externalDocs,omitempty"` // Information about external documentation.
-	OperationID   string                                                  `json:"operationId,omitempty"`
-	Bindings      *ChannelBindingsObject                                  `json:"bindings,omitempty"`
-	Message       *HTTPAsyncapiComDefinitions240MessageJSON               `json:"message,omitempty"`
-	MapOfAnything map[string]interface{}                                  `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+// Operation structure is generated from "http://asyncapi.com/definitions/2.4.0/operation.json".
+type Operation struct {
+	Traits        []OperationTraitsItems   `json:"traits,omitempty"`
+	Summary       string                   `json:"summary,omitempty"`
+	Description   string                   `json:"description,omitempty"`
+	Security      []map[string][]string    `json:"security,omitempty"`
+	Tags          []Tag                    `json:"tags,omitempty"`
+	ExternalDocs  *ExternalDocs            `json:"externalDocs,omitempty"` // Information about external documentation.
+	ID            string                   `json:"operationId,omitempty"`
+	Bindings      *OperationBindingsObject `json:"bindings,omitempty"`
+	Message       *Message                 `json:"message,omitempty"`
+	MapOfAnything map[string]interface{}   `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240OperationJSON HTTPAsyncapiComDefinitions240OperationJSON
+type marshalOperation Operation
 
-var knownKeysHTTPAsyncapiComDefinitions240OperationJSON = []string{
+var knownKeysOperation = []string{
 	"traits",
 	"summary",
 	"description",
@@ -1039,12 +1039,12 @@ var knownKeysHTTPAsyncapiComDefinitions240OperationJSON = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240OperationJSON) UnmarshalJSON(data []byte) error {
+func (o *Operation) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240OperationJSON(*h)
+	mo := marshalOperation(*o)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mo)
 	if err != nil {
 		return err
 	}
@@ -1056,7 +1056,7 @@ func (h *HTTPAsyncapiComDefinitions240OperationJSON) UnmarshalJSON(data []byte) 
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240OperationJSON {
+	for _, key := range knownKeysOperation {
 		delete(rawMap, key)
 	}
 
@@ -1066,8 +1066,8 @@ func (h *HTTPAsyncapiComDefinitions240OperationJSON) UnmarshalJSON(data []byte) 
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mo.MapOfAnything == nil {
+				mo.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -1077,7 +1077,7 @@ func (h *HTTPAsyncapiComDefinitions240OperationJSON) UnmarshalJSON(data []byte) 
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mo.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -1092,34 +1092,34 @@ func (h *HTTPAsyncapiComDefinitions240OperationJSON) UnmarshalJSON(data []byte) 
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240OperationJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in Operation: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240OperationJSON(mh)
+	*o = Operation(mo)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240OperationJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240OperationJSON(h), h.MapOfAnything)
+func (o Operation) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalOperation(o), o.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240OperationTraitJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/operationTrait.json".
-type HTTPAsyncapiComDefinitions240OperationTraitJSON struct {
-	Summary       string                                         `json:"summary,omitempty"`
-	Description   string                                         `json:"description,omitempty"`
-	Tags          []HTTPAsyncapiComDefinitions240TagJSON         `json:"tags,omitempty"`
-	ExternalDocs  *HTTPAsyncapiComDefinitions240ExternalDocsJSON `json:"externalDocs,omitempty"` // Information about external documentation.
-	OperationID   string                                         `json:"operationId,omitempty"`
-	Security      []map[string][]string                          `json:"security,omitempty"`
-	Bindings      *ChannelBindingsObject                         `json:"bindings,omitempty"`
-	MapOfAnything map[string]interface{}                         `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+// OperationTrait structure is generated from "http://asyncapi.com/definitions/2.4.0/operationTrait.json".
+type OperationTrait struct {
+	Summary       string                   `json:"summary,omitempty"`
+	Description   string                   `json:"description,omitempty"`
+	Tags          []Tag                    `json:"tags,omitempty"`
+	ExternalDocs  *ExternalDocs            `json:"externalDocs,omitempty"` // Information about external documentation.
+	OperationID   string                   `json:"operationId,omitempty"`
+	Security      []map[string][]string    `json:"security,omitempty"`
+	Bindings      *OperationBindingsObject `json:"bindings,omitempty"`
+	MapOfAnything map[string]interface{}   `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240OperationTraitJSON HTTPAsyncapiComDefinitions240OperationTraitJSON
+type marshalOperationTrait OperationTrait
 
-var knownKeysHTTPAsyncapiComDefinitions240OperationTraitJSON = []string{
+var knownKeysOperationTrait = []string{
 	"summary",
 	"description",
 	"tags",
@@ -1130,12 +1130,12 @@ var knownKeysHTTPAsyncapiComDefinitions240OperationTraitJSON = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240OperationTraitJSON) UnmarshalJSON(data []byte) error {
+func (o *OperationTrait) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240OperationTraitJSON(*h)
+	mo := marshalOperationTrait(*o)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mo)
 	if err != nil {
 		return err
 	}
@@ -1147,7 +1147,7 @@ func (h *HTTPAsyncapiComDefinitions240OperationTraitJSON) UnmarshalJSON(data []b
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240OperationTraitJSON {
+	for _, key := range knownKeysOperationTrait {
 		delete(rawMap, key)
 	}
 
@@ -1157,8 +1157,8 @@ func (h *HTTPAsyncapiComDefinitions240OperationTraitJSON) UnmarshalJSON(data []b
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mo.MapOfAnything == nil {
+				mo.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -1168,7 +1168,7 @@ func (h *HTTPAsyncapiComDefinitions240OperationTraitJSON) UnmarshalJSON(data []b
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mo.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -1183,42 +1183,42 @@ func (h *HTTPAsyncapiComDefinitions240OperationTraitJSON) UnmarshalJSON(data []b
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240OperationTraitJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in OperationTrait: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240OperationTraitJSON(mh)
+	*o = OperationTrait(mo)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240OperationTraitJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240OperationTraitJSON(h), h.MapOfAnything)
+func (o OperationTrait) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalOperationTrait(o), o.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240TagJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/tag.json".
-type HTTPAsyncapiComDefinitions240TagJSON struct {
-	Name          string                                         `json:"name"` // Required.
-	Description   string                                         `json:"description,omitempty"`
-	ExternalDocs  *HTTPAsyncapiComDefinitions240ExternalDocsJSON `json:"externalDocs,omitempty"` // Information about external documentation.
-	MapOfAnything map[string]interface{}                         `json:"-"`                      // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+// Tag structure is generated from "http://asyncapi.com/definitions/2.4.0/tag.json".
+type Tag struct {
+	Name          string                 `json:"name"` // Required.
+	Description   string                 `json:"description,omitempty"`
+	ExternalDocs  *ExternalDocs          `json:"externalDocs,omitempty"` // Information about external documentation.
+	MapOfAnything map[string]interface{} `json:"-"`                      // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240TagJSON HTTPAsyncapiComDefinitions240TagJSON
+type marshalTag Tag
 
-var knownKeysHTTPAsyncapiComDefinitions240TagJSON = []string{
+var knownKeysTag = []string{
 	"name",
 	"description",
 	"externalDocs",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240TagJSON) UnmarshalJSON(data []byte) error {
+func (t *Tag) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240TagJSON(*h)
+	mt := marshalTag(*t)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mt)
 	if err != nil {
 		return err
 	}
@@ -1230,7 +1230,7 @@ func (h *HTTPAsyncapiComDefinitions240TagJSON) UnmarshalJSON(data []byte) error 
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240TagJSON {
+	for _, key := range knownKeysTag {
 		delete(rawMap, key)
 	}
 
@@ -1240,8 +1240,8 @@ func (h *HTTPAsyncapiComDefinitions240TagJSON) UnmarshalJSON(data []byte) error 
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mt.MapOfAnything == nil {
+				mt.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -1251,7 +1251,7 @@ func (h *HTTPAsyncapiComDefinitions240TagJSON) UnmarshalJSON(data []byte) error 
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mt.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -1266,23 +1266,23 @@ func (h *HTTPAsyncapiComDefinitions240TagJSON) UnmarshalJSON(data []byte) error 
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240TagJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in Tag: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240TagJSON(mh)
+	*t = Tag(mt)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240TagJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240TagJSON(h), h.MapOfAnything)
+func (t Tag) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalTag(t), t.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240ExternalDocsJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/externalDocs.json".
+// ExternalDocs structure is generated from "http://asyncapi.com/definitions/2.4.0/externalDocs.json".
 //
 // information about external documentation.
-type HTTPAsyncapiComDefinitions240ExternalDocsJSON struct {
+type ExternalDocs struct {
 	Description string `json:"description,omitempty"`
 	// Format: uri.
 	// Required.
@@ -1290,20 +1290,20 @@ type HTTPAsyncapiComDefinitions240ExternalDocsJSON struct {
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240ExternalDocsJSON HTTPAsyncapiComDefinitions240ExternalDocsJSON
+type marshalExternalDocs ExternalDocs
 
-var knownKeysHTTPAsyncapiComDefinitions240ExternalDocsJSON = []string{
+var knownKeysExternalDocs = []string{
 	"description",
 	"url",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240ExternalDocsJSON) UnmarshalJSON(data []byte) error {
+func (e *ExternalDocs) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240ExternalDocsJSON(*h)
+	me := marshalExternalDocs(*e)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &me)
 	if err != nil {
 		return err
 	}
@@ -1315,7 +1315,7 @@ func (h *HTTPAsyncapiComDefinitions240ExternalDocsJSON) UnmarshalJSON(data []byt
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240ExternalDocsJSON {
+	for _, key := range knownKeysExternalDocs {
 		delete(rawMap, key)
 	}
 
@@ -1325,8 +1325,8 @@ func (h *HTTPAsyncapiComDefinitions240ExternalDocsJSON) UnmarshalJSON(data []byt
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if me.MapOfAnything == nil {
+				me.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -1336,7 +1336,7 @@ func (h *HTTPAsyncapiComDefinitions240ExternalDocsJSON) UnmarshalJSON(data []byt
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			me.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -1351,87 +1351,68 @@ func (h *HTTPAsyncapiComDefinitions240ExternalDocsJSON) UnmarshalJSON(data []byt
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240ExternalDocsJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in ExternalDocs: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240ExternalDocsJSON(mh)
+	*e = ExternalDocs(me)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240ExternalDocsJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240ExternalDocsJSON(h), h.MapOfAnything)
+func (e ExternalDocs) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalExternalDocs(e), e.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240OperationJSONTraitsItems structure is generated from "http://asyncapi.com/definitions/2.4.0/operation.json->traits->items".
-type HTTPAsyncapiComDefinitions240OperationJSONTraitsItems struct {
-	HTTPAsyncapiComDefinitions240ReferenceJSON      *HTTPAsyncapiComDefinitions240ReferenceJSON      `json:"-"`
-	HTTPAsyncapiComDefinitions240OperationTraitJSON *HTTPAsyncapiComDefinitions240OperationTraitJSON `json:"-"`
-	SliceOfAnything                                 []interface{}                                    `json:"-"`
+// OperationBindingsObject structure is generated from "http://asyncapi.com/definitions/2.4.0/operationBindingsObject.json".
+type OperationBindingsObject struct {
+	HTTP                 *interface{}           `json:"http,omitempty"`
+	Ws                   *interface{}           `json:"ws,omitempty"`
+	Amqp                 *interface{}           `json:"amqp,omitempty"`
+	Amqp1                *interface{}           `json:"amqp1,omitempty"`
+	Mqtt                 *interface{}           `json:"mqtt,omitempty"`
+	Mqtt5                *interface{}           `json:"mqtt5,omitempty"`
+	Kafka                *interface{}           `json:"kafka,omitempty"`
+	Anypointmq           *interface{}           `json:"anypointmq,omitempty"`
+	Nats                 *interface{}           `json:"nats,omitempty"`
+	Jms                  *interface{}           `json:"jms,omitempty"`
+	Sns                  *interface{}           `json:"sns,omitempty"`
+	Sqs                  *interface{}           `json:"sqs,omitempty"`
+	Stomp                *interface{}           `json:"stomp,omitempty"`
+	Redis                *interface{}           `json:"redis,omitempty"`
+	Ibmmq                *interface{}           `json:"ibmmq,omitempty"`
+	Solace               *interface{}           `json:"solace,omitempty"`
+	AdditionalProperties map[string]interface{} `json:"-"` // All unmatched properties.
 }
 
-// UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240OperationJSONTraitsItems) UnmarshalJSON(data []byte) error {
-	var err error
+type marshalOperationBindingsObject OperationBindingsObject
 
-	oneOfErrors := make(map[string]error, 3)
-	oneOfValid := 0
-
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240ReferenceJSON)
-	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240ReferenceJSON"] = err
-		h.HTTPAsyncapiComDefinitions240ReferenceJSON = nil
-	} else {
-		oneOfValid++
-	}
-
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240OperationTraitJSON)
-	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240OperationTraitJSON"] = err
-		h.HTTPAsyncapiComDefinitions240OperationTraitJSON = nil
-	} else {
-		oneOfValid++
-	}
-
-	err = json.Unmarshal(data, &h.SliceOfAnything)
-	if err != nil {
-		oneOfErrors["SliceOfAnything"] = err
-		h.SliceOfAnything = nil
-	} else {
-		oneOfValid++
-	}
-
-	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for HTTPAsyncapiComDefinitions240OperationJSONTraitsItems with %d valid results: %v", oneOfValid, oneOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240OperationJSONTraitsItems) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240ReferenceJSON, h.HTTPAsyncapiComDefinitions240OperationTraitJSON, h.SliceOfAnything)
-}
-
-// HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0 structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/0".
-type HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0 struct {
-	OneOf []HTTPAsyncapiComDefinitions240MessageJSON `json:"oneOf"` // Required.
-}
-
-type marshalHTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0 HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0
-
-var knownKeysHTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0 = []string{
-	"oneOf",
+var knownKeysOperationBindingsObject = []string{
+	"http",
+	"ws",
+	"amqp",
+	"amqp1",
+	"mqtt",
+	"mqtt5",
+	"kafka",
+	"anypointmq",
+	"nats",
+	"jms",
+	"sns",
+	"sqs",
+	"stomp",
+	"redis",
+	"ibmmq",
+	"solace",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0) UnmarshalJSON(data []byte) error {
+func (o *OperationBindingsObject) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0(*h)
+	mo := marshalOperationBindingsObject(*o)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mo)
 	if err != nil {
 		return err
 	}
@@ -1443,7 +1424,231 @@ func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0) UnmarshalJSON(dat
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0 {
+	if mo.HTTP == nil {
+		if _, ok := rawMap["http"]; ok {
+			var v interface{}
+			mo.HTTP = &v
+		}
+	}
+
+	if mo.Ws == nil {
+		if _, ok := rawMap["ws"]; ok {
+			var v interface{}
+			mo.Ws = &v
+		}
+	}
+
+	if mo.Amqp == nil {
+		if _, ok := rawMap["amqp"]; ok {
+			var v interface{}
+			mo.Amqp = &v
+		}
+	}
+
+	if mo.Amqp1 == nil {
+		if _, ok := rawMap["amqp1"]; ok {
+			var v interface{}
+			mo.Amqp1 = &v
+		}
+	}
+
+	if mo.Mqtt == nil {
+		if _, ok := rawMap["mqtt"]; ok {
+			var v interface{}
+			mo.Mqtt = &v
+		}
+	}
+
+	if mo.Mqtt5 == nil {
+		if _, ok := rawMap["mqtt5"]; ok {
+			var v interface{}
+			mo.Mqtt5 = &v
+		}
+	}
+
+	if mo.Kafka == nil {
+		if _, ok := rawMap["kafka"]; ok {
+			var v interface{}
+			mo.Kafka = &v
+		}
+	}
+
+	if mo.Anypointmq == nil {
+		if _, ok := rawMap["anypointmq"]; ok {
+			var v interface{}
+			mo.Anypointmq = &v
+		}
+	}
+
+	if mo.Nats == nil {
+		if _, ok := rawMap["nats"]; ok {
+			var v interface{}
+			mo.Nats = &v
+		}
+	}
+
+	if mo.Jms == nil {
+		if _, ok := rawMap["jms"]; ok {
+			var v interface{}
+			mo.Jms = &v
+		}
+	}
+
+	if mo.Sns == nil {
+		if _, ok := rawMap["sns"]; ok {
+			var v interface{}
+			mo.Sns = &v
+		}
+	}
+
+	if mo.Sqs == nil {
+		if _, ok := rawMap["sqs"]; ok {
+			var v interface{}
+			mo.Sqs = &v
+		}
+	}
+
+	if mo.Stomp == nil {
+		if _, ok := rawMap["stomp"]; ok {
+			var v interface{}
+			mo.Stomp = &v
+		}
+	}
+
+	if mo.Redis == nil {
+		if _, ok := rawMap["redis"]; ok {
+			var v interface{}
+			mo.Redis = &v
+		}
+	}
+
+	if mo.Ibmmq == nil {
+		if _, ok := rawMap["ibmmq"]; ok {
+			var v interface{}
+			mo.Ibmmq = &v
+		}
+	}
+
+	if mo.Solace == nil {
+		if _, ok := rawMap["solace"]; ok {
+			var v interface{}
+			mo.Solace = &v
+		}
+	}
+
+	for _, key := range knownKeysOperationBindingsObject {
+		delete(rawMap, key)
+	}
+
+	for key, rawValue := range rawMap {
+		if mo.AdditionalProperties == nil {
+			mo.AdditionalProperties = make(map[string]interface{}, 1)
+		}
+
+		var val interface{}
+
+		err = json.Unmarshal(rawValue, &val)
+		if err != nil {
+			return err
+		}
+
+		mo.AdditionalProperties[key] = val
+	}
+
+	*o = OperationBindingsObject(mo)
+
+	return nil
+}
+
+// MarshalJSON encodes JSON.
+func (o OperationBindingsObject) MarshalJSON() ([]byte, error) {
+	if len(o.AdditionalProperties) == 0 {
+		return json.Marshal(marshalOperationBindingsObject(o))
+	}
+
+	return marshalUnion(marshalOperationBindingsObject(o), o.AdditionalProperties)
+}
+
+// OperationTraitsItems structure is generated from "http://asyncapi.com/definitions/2.4.0/operation.json->traits->items".
+type OperationTraitsItems struct {
+	Reference       *Reference      `json:"-"`
+	OperationTrait  *OperationTrait `json:"-"`
+	SliceOfAnything []interface{}   `json:"-"`
+}
+
+// UnmarshalJSON decodes JSON.
+func (o *OperationTraitsItems) UnmarshalJSON(data []byte) error {
+	var err error
+
+	oneOfErrors := make(map[string]error, 3)
+	oneOfValid := 0
+
+	err = json.Unmarshal(data, &o.Reference)
+	if err != nil {
+		oneOfErrors["Reference"] = err
+		o.Reference = nil
+	} else {
+		oneOfValid++
+	}
+
+	err = json.Unmarshal(data, &o.OperationTrait)
+	if err != nil {
+		oneOfErrors["OperationTrait"] = err
+		o.OperationTrait = nil
+	} else {
+		oneOfValid++
+	}
+
+	err = json.Unmarshal(data, &o.SliceOfAnything)
+	if err != nil {
+		oneOfErrors["SliceOfAnything"] = err
+		o.SliceOfAnything = nil
+	} else {
+		oneOfValid++
+	}
+
+	if oneOfValid != 1 {
+		return fmt.Errorf("oneOf constraint failed for OperationTraitsItems with %d valid results: %v", oneOfValid, oneOfErrors)
+	}
+
+	return nil
+}
+
+// MarshalJSON encodes JSON.
+func (o OperationTraitsItems) MarshalJSON() ([]byte, error) {
+	return marshalUnion(o.Reference, o.OperationTrait, o.SliceOfAnything)
+}
+
+// MessageOneOf1OneOf0 structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/0".
+type MessageOneOf1OneOf0 struct {
+	OneOf []Message `json:"oneOf"` // Required.
+}
+
+type marshalMessageOneOf1OneOf0 MessageOneOf1OneOf0
+
+var knownKeysMessageOneOf1OneOf0 = []string{
+	"oneOf",
+}
+
+// UnmarshalJSON decodes JSON.
+func (m *MessageOneOf1OneOf0) UnmarshalJSON(data []byte) error {
+	var err error
+
+	mm := marshalMessageOneOf1OneOf0(*m)
+
+	err = json.Unmarshal(data, &mm)
+	if err != nil {
+		return err
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	for _, key := range knownKeysMessageOneOf1OneOf0 {
 		delete(rawMap, key)
 	}
 
@@ -1454,33 +1659,33 @@ func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0) UnmarshalJSON(dat
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in MessageOneOf1OneOf0: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0(mh)
+	*m = MessageOneOf1OneOf0(mm)
 
 	return nil
 }
 
 // MessageEntity structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/1".
 type MessageEntity struct {
-	SchemaFormat  string                                                              `json:"schemaFormat,omitempty"`
-	ContentType   string                                                              `json:"contentType,omitempty"`
-	Headers       *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1Headers        `json:"headers,omitempty"`
-	MessageID     string                                                              `json:"messageId,omitempty"`
-	Payload       *interface{}                                                        `json:"payload,omitempty"`
-	CorrelationID *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1CorrelationID  `json:"correlationId,omitempty"`
-	Tags          []HTTPAsyncapiComDefinitions240TagJSON                              `json:"tags,omitempty"`
-	Summary       string                                                              `json:"summary,omitempty"`      // A brief summary of the message.
-	Name          string                                                              `json:"name,omitempty"`         // Name of the message.
-	Title         string                                                              `json:"title,omitempty"`        // A human-friendly title for the message.
-	Description   string                                                              `json:"description,omitempty"`  // A longer description of the message. CommonMark is allowed.
-	ExternalDocs  *HTTPAsyncapiComDefinitions240ExternalDocsJSON                      `json:"externalDocs,omitempty"` // Information about external documentation.
-	Deprecated    bool                                                                `json:"deprecated,omitempty"`
-	Examples      []HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems `json:"examples,omitempty"`
-	Bindings      *ChannelBindingsObject                                              `json:"bindings,omitempty"`
-	Traits        []HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1TraitsItems   `json:"traits,omitempty"`
-	MapOfAnything map[string]interface{}                                              `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+	SchemaFormat  string                             `json:"schemaFormat,omitempty"`
+	ContentType   string                             `json:"contentType,omitempty"`
+	Headers       *MessageOneOf1OneOf1Headers        `json:"headers,omitempty"`
+	MessageID     string                             `json:"messageId,omitempty"`
+	Payload       *interface{}                       `json:"payload,omitempty"`
+	CorrelationID *MessageOneOf1OneOf1CorrelationID  `json:"correlationId,omitempty"`
+	Tags          []Tag                              `json:"tags,omitempty"`
+	Summary       string                             `json:"summary,omitempty"`      // A brief summary of the message.
+	Name          string                             `json:"name,omitempty"`         // Name of the message.
+	Title         string                             `json:"title,omitempty"`        // A human-friendly title for the message.
+	Description   string                             `json:"description,omitempty"`  // A longer description of the message. CommonMark is allowed.
+	ExternalDocs  *ExternalDocs                      `json:"externalDocs,omitempty"` // Information about external documentation.
+	Deprecated    bool                               `json:"deprecated,omitempty"`
+	Examples      []MessageOneOf1OneOf1ExamplesItems `json:"examples,omitempty"`
+	Bindings      *MessageBindingsObject             `json:"bindings,omitempty"`
+	Traits        []MessageOneOf1OneOf1TraitsItems   `json:"traits,omitempty"`
+	MapOfAnything map[string]interface{}             `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
 type marshalMessageEntity MessageEntity
@@ -1949,27 +2154,27 @@ func (j JSONSchemaType) MarshalJSON() ([]byte, error) {
 	return marshalUnion(j.AnyOf0, j.SliceOfJSONSchemaTypeAnyOf1ItemsValues)
 }
 
-// HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 structure is generated from "http://asyncapi.com/definitions/2.4.0/schema.json/allOf/1".
-type HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 struct {
-	AdditionalProperties *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties `json:"additionalProperties,omitempty"`
-	Items                *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items                `json:"items,omitempty"`
-	AllOf                []HTTPAsyncapiComDefinitions240SchemaJSON                          `json:"allOf,omitempty"`
-	OneOf                []HTTPAsyncapiComDefinitions240SchemaJSON                          `json:"oneOf,omitempty"`
-	AnyOf                []HTTPAsyncapiComDefinitions240SchemaJSON                          `json:"anyOf,omitempty"`
-	Not                  *HTTPAsyncapiComDefinitions240SchemaJSON                           `json:"not,omitempty"`
-	Properties           map[string]HTTPAsyncapiComDefinitions240SchemaJSON                 `json:"properties,omitempty"`
-	PatternProperties    map[string]HTTPAsyncapiComDefinitions240SchemaJSON                 `json:"patternProperties,omitempty"`
-	PropertyNames        *HTTPAsyncapiComDefinitions240SchemaJSON                           `json:"propertyNames,omitempty"`
-	Contains             *HTTPAsyncapiComDefinitions240SchemaJSON                           `json:"contains,omitempty"`
-	Discriminator        string                                                             `json:"discriminator,omitempty"`
-	ExternalDocs         *HTTPAsyncapiComDefinitions240ExternalDocsJSON                     `json:"externalDocs,omitempty"` // Information about external documentation.
-	Deprecated           bool                                                               `json:"deprecated,omitempty"`
-	MapOfAnything        map[string]interface{}                                             `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+// SchemaAllOf1 structure is generated from "http://asyncapi.com/definitions/2.4.0/schema.json/allOf/1".
+type SchemaAllOf1 struct {
+	AdditionalProperties *SchemaAllOf1AdditionalProperties `json:"additionalProperties,omitempty"`
+	Items                *SchemaAllOf1Items                `json:"items,omitempty"`
+	AllOf                []Schema                          `json:"allOf,omitempty"`
+	OneOf                []Schema                          `json:"oneOf,omitempty"`
+	AnyOf                []Schema                          `json:"anyOf,omitempty"`
+	Not                  *Schema                           `json:"not,omitempty"`
+	Properties           map[string]Schema                 `json:"properties,omitempty"`
+	PatternProperties    map[string]Schema                 `json:"patternProperties,omitempty"`
+	PropertyNames        *Schema                           `json:"propertyNames,omitempty"`
+	Contains             *Schema                           `json:"contains,omitempty"`
+	Discriminator        string                            `json:"discriminator,omitempty"`
+	ExternalDocs         *ExternalDocs                     `json:"externalDocs,omitempty"` // Information about external documentation.
+	Deprecated           bool                              `json:"deprecated,omitempty"`
+	MapOfAnything        map[string]interface{}            `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240SchemaJSONAllOf1 HTTPAsyncapiComDefinitions240SchemaJSONAllOf1
+type marshalSchemaAllOf1 SchemaAllOf1
 
-var knownKeysHTTPAsyncapiComDefinitions240SchemaJSONAllOf1 = []string{
+var knownKeysSchemaAllOf1 = []string{
 	"additionalProperties",
 	"items",
 	"allOf",
@@ -1986,12 +2191,12 @@ var knownKeysHTTPAsyncapiComDefinitions240SchemaJSONAllOf1 = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) UnmarshalJSON(data []byte) error {
+func (s *SchemaAllOf1) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240SchemaJSONAllOf1(*h)
+	ms := marshalSchemaAllOf1(*s)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &ms)
 	if err != nil {
 		return err
 	}
@@ -2003,7 +2208,7 @@ func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) UnmarshalJSON(data []byt
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
+	for _, key := range knownKeysSchemaAllOf1 {
 		delete(rawMap, key)
 	}
 
@@ -2013,8 +2218,8 @@ func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) UnmarshalJSON(data []byt
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if ms.MapOfAnything == nil {
+				ms.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -2024,7 +2229,7 @@ func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) UnmarshalJSON(data []byt
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			ms.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -2032,26 +2237,26 @@ func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) UnmarshalJSON(data []byt
 		}
 	}
 
-	*h = HTTPAsyncapiComDefinitions240SchemaJSONAllOf1(mh)
+	*s = SchemaAllOf1(ms)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240SchemaJSONAllOf1(h), h.MapOfAnything)
+func (s SchemaAllOf1) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalSchemaAllOf1(s), s.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240SchemaJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/schema.json".
-type HTTPAsyncapiComDefinitions240SchemaJSON struct {
-	AllOf1 *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 `json:"-"`
+// Schema structure is generated from "http://asyncapi.com/definitions/2.4.0/schema.json".
+type Schema struct {
+	AllOf1 *SchemaAllOf1 `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSON) UnmarshalJSON(data []byte) error {
+func (s *Schema) UnmarshalJSON(data []byte) error {
 	var err error
 
-	err = json.Unmarshal(data, &h.AllOf1)
+	err = json.Unmarshal(data, &s.AllOf1)
 	if err != nil {
 		return err
 	}
@@ -2060,97 +2265,97 @@ func (h *HTTPAsyncapiComDefinitions240SchemaJSON) UnmarshalJSON(data []byte) err
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SchemaJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.AllOf1)
+func (s Schema) MarshalJSON() ([]byte, error) {
+	return marshalUnion(s.AllOf1)
 }
 
-// HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties structure is generated from "http://asyncapi.com/definitions/2.4.0/schema.json/allOf/1->additionalProperties".
-type HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties struct {
-	HTTPAsyncapiComDefinitions240SchemaJSON *HTTPAsyncapiComDefinitions240SchemaJSON `json:"-"`
-	Bool                                    *bool                                    `json:"-"`
+// SchemaAllOf1AdditionalProperties structure is generated from "http://asyncapi.com/definitions/2.4.0/schema.json/allOf/1->additionalProperties".
+type SchemaAllOf1AdditionalProperties struct {
+	Schema *Schema `json:"-"`
+	Bool   *bool   `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties) UnmarshalJSON(data []byte) error {
+func (s *SchemaAllOf1AdditionalProperties) UnmarshalJSON(data []byte) error {
 	var err error
 
 	anyOfErrors := make(map[string]error, 2)
 	anyOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240SchemaJSON)
+	err = json.Unmarshal(data, &s.Schema)
 	if err != nil {
-		anyOfErrors["HTTPAsyncapiComDefinitions240SchemaJSON"] = err
-		h.HTTPAsyncapiComDefinitions240SchemaJSON = nil
+		anyOfErrors["Schema"] = err
+		s.Schema = nil
 	} else {
 		anyOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.Bool)
+	err = json.Unmarshal(data, &s.Bool)
 	if err != nil {
 		anyOfErrors["Bool"] = err
-		h.Bool = nil
+		s.Bool = nil
 	} else {
 		anyOfValid++
 	}
 
 	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties failed with %d valid results: %v", anyOfValid, anyOfErrors)
+		return fmt.Errorf("anyOf constraint for SchemaAllOf1AdditionalProperties failed with %d valid results: %v", anyOfValid, anyOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240SchemaJSON, h.Bool)
+func (s SchemaAllOf1AdditionalProperties) MarshalJSON() ([]byte, error) {
+	return marshalUnion(s.Schema, s.Bool)
 }
 
-// HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items structure is generated from "http://asyncapi.com/definitions/2.4.0/schema.json/allOf/1->items".
-type HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items struct {
-	HTTPAsyncapiComDefinitions240SchemaJSON              *HTTPAsyncapiComDefinitions240SchemaJSON  `json:"-"`
-	SliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues []HTTPAsyncapiComDefinitions240SchemaJSON `json:"-"`
+// SchemaAllOf1Items structure is generated from "http://asyncapi.com/definitions/2.4.0/schema.json/allOf/1->items".
+type SchemaAllOf1Items struct {
+	Schema              *Schema  `json:"-"`
+	SliceOfSchemaValues []Schema `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items) UnmarshalJSON(data []byte) error {
+func (s *SchemaAllOf1Items) UnmarshalJSON(data []byte) error {
 	var err error
 
 	anyOfErrors := make(map[string]error, 2)
 	anyOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240SchemaJSON)
+	err = json.Unmarshal(data, &s.Schema)
 	if err != nil {
-		anyOfErrors["HTTPAsyncapiComDefinitions240SchemaJSON"] = err
-		h.HTTPAsyncapiComDefinitions240SchemaJSON = nil
+		anyOfErrors["Schema"] = err
+		s.Schema = nil
 	} else {
 		anyOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.SliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues)
+	err = json.Unmarshal(data, &s.SliceOfSchemaValues)
 	if err != nil {
-		anyOfErrors["SliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues"] = err
-		h.SliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues = nil
+		anyOfErrors["SliceOfSchemaValues"] = err
+		s.SliceOfSchemaValues = nil
 	} else {
 		anyOfValid++
 	}
 
 	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items failed with %d valid results: %v", anyOfValid, anyOfErrors)
+		return fmt.Errorf("anyOf constraint for SchemaAllOf1Items failed with %d valid results: %v", anyOfValid, anyOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240SchemaJSON, h.SliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues)
+func (s SchemaAllOf1Items) MarshalJSON() ([]byte, error) {
+	return marshalUnion(s.Schema, s.SliceOfSchemaValues)
 }
 
-// HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1HeadersAllOf1 structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/1->headers/allOf/1".
-type HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1HeadersAllOf1 struct{}
+// MessageOneOf1OneOf1HeadersAllOf1 structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/1->headers/allOf/1".
+type MessageOneOf1OneOf1HeadersAllOf1 struct{}
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1HeadersAllOf1) UnmarshalJSON(data []byte) error {
+func (m *MessageOneOf1OneOf1HeadersAllOf1) UnmarshalJSON(data []byte) error {
 	var err error
 
 	var rawMap map[string]json.RawMessage
@@ -2169,30 +2374,30 @@ func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1HeadersAllOf1) Unma
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1HeadersAllOf1 is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1HeadersAllOf1 = json.RawMessage(`{"type":"object"}`)
+// constMessageOneOf1OneOf1HeadersAllOf1 is unconditionally added to JSON.
+var constMessageOneOf1OneOf1HeadersAllOf1 = json.RawMessage(`{"type":"object"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1HeadersAllOf1) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1HeadersAllOf1)
+func (m MessageOneOf1OneOf1HeadersAllOf1) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constMessageOneOf1OneOf1HeadersAllOf1)
 }
 
-// HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1Headers structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/1->headers".
-type HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1Headers struct {
-	HTTPAsyncapiComDefinitions240SchemaJSON *HTTPAsyncapiComDefinitions240SchemaJSON                           `json:"-"`
-	AllOf1                                  *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1HeadersAllOf1 `json:"-"`
+// MessageOneOf1OneOf1Headers structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/1->headers".
+type MessageOneOf1OneOf1Headers struct {
+	Schema *Schema                           `json:"-"`
+	AllOf1 *MessageOneOf1OneOf1HeadersAllOf1 `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1Headers) UnmarshalJSON(data []byte) error {
+func (m *MessageOneOf1OneOf1Headers) UnmarshalJSON(data []byte) error {
 	var err error
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240SchemaJSON)
+	err = json.Unmarshal(data, &m.Schema)
 	if err != nil {
 		return err
 	}
 
-	err = json.Unmarshal(data, &h.AllOf1)
+	err = json.Unmarshal(data, &m.AllOf1)
 	if err != nil {
 		return err
 	}
@@ -2201,12 +2406,12 @@ func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1Headers) UnmarshalJ
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1Headers) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240SchemaJSON, h.AllOf1)
+func (m MessageOneOf1OneOf1Headers) MarshalJSON() ([]byte, error) {
+	return marshalUnion(m.Schema, m.AllOf1)
 }
 
-// HTTPAsyncapiComDefinitions240CorrelationIDJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/correlationId.json".
-type HTTPAsyncapiComDefinitions240CorrelationIDJSON struct {
+// CorrelationID structure is generated from "http://asyncapi.com/definitions/2.4.0/correlationId.json".
+type CorrelationID struct {
 	Description string `json:"description,omitempty"` // A optional description of the correlation ID. GitHub Flavored Markdown is allowed.
 	// A runtime expression that specifies the location of the correlation ID.
 	// Value must match pattern: `^\$message\.(header|payload)#(\/(([^\/~])|(~[01]))*)*`.
@@ -2215,20 +2420,20 @@ type HTTPAsyncapiComDefinitions240CorrelationIDJSON struct {
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240CorrelationIDJSON HTTPAsyncapiComDefinitions240CorrelationIDJSON
+type marshalCorrelationID CorrelationID
 
-var knownKeysHTTPAsyncapiComDefinitions240CorrelationIDJSON = []string{
+var knownKeysCorrelationID = []string{
 	"description",
 	"location",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240CorrelationIDJSON) UnmarshalJSON(data []byte) error {
+func (c *CorrelationID) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240CorrelationIDJSON(*h)
+	mc := marshalCorrelationID(*c)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mc)
 	if err != nil {
 		return err
 	}
@@ -2240,7 +2445,7 @@ func (h *HTTPAsyncapiComDefinitions240CorrelationIDJSON) UnmarshalJSON(data []by
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240CorrelationIDJSON {
+	for _, key := range knownKeysCorrelationID {
 		delete(rawMap, key)
 	}
 
@@ -2250,8 +2455,8 @@ func (h *HTTPAsyncapiComDefinitions240CorrelationIDJSON) UnmarshalJSON(data []by
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mc.MapOfAnything == nil {
+				mc.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -2261,7 +2466,7 @@ func (h *HTTPAsyncapiComDefinitions240CorrelationIDJSON) UnmarshalJSON(data []by
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mc.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -2276,71 +2481,71 @@ func (h *HTTPAsyncapiComDefinitions240CorrelationIDJSON) UnmarshalJSON(data []by
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240CorrelationIDJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in CorrelationID: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240CorrelationIDJSON(mh)
+	*c = CorrelationID(mc)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240CorrelationIDJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240CorrelationIDJSON(h), h.MapOfAnything)
+func (c CorrelationID) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalCorrelationID(c), c.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1CorrelationID structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/1->correlationId".
-type HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1CorrelationID struct {
-	HTTPAsyncapiComDefinitions240ReferenceJSON     *HTTPAsyncapiComDefinitions240ReferenceJSON     `json:"-"`
-	HTTPAsyncapiComDefinitions240CorrelationIDJSON *HTTPAsyncapiComDefinitions240CorrelationIDJSON `json:"-"`
+// MessageOneOf1OneOf1CorrelationID structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/1->correlationId".
+type MessageOneOf1OneOf1CorrelationID struct {
+	Reference     *Reference     `json:"-"`
+	CorrelationID *CorrelationID `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1CorrelationID) UnmarshalJSON(data []byte) error {
+func (m *MessageOneOf1OneOf1CorrelationID) UnmarshalJSON(data []byte) error {
 	var err error
 
 	oneOfErrors := make(map[string]error, 2)
 	oneOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240ReferenceJSON)
+	err = json.Unmarshal(data, &m.Reference)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240ReferenceJSON"] = err
-		h.HTTPAsyncapiComDefinitions240ReferenceJSON = nil
+		oneOfErrors["Reference"] = err
+		m.Reference = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240CorrelationIDJSON)
+	err = json.Unmarshal(data, &m.CorrelationID)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240CorrelationIDJSON"] = err
-		h.HTTPAsyncapiComDefinitions240CorrelationIDJSON = nil
+		oneOfErrors["CorrelationID"] = err
+		m.CorrelationID = nil
 	} else {
 		oneOfValid++
 	}
 
 	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1CorrelationID with %d valid results: %v", oneOfValid, oneOfErrors)
+		return fmt.Errorf("oneOf constraint failed for MessageOneOf1OneOf1CorrelationID with %d valid results: %v", oneOfValid, oneOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1CorrelationID) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240ReferenceJSON, h.HTTPAsyncapiComDefinitions240CorrelationIDJSON)
+func (m MessageOneOf1OneOf1CorrelationID) MarshalJSON() ([]byte, error) {
+	return marshalUnion(m.Reference, m.CorrelationID)
 }
 
-// HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/1->examples->items".
-type HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems struct {
+// MessageOneOf1OneOf1ExamplesItems structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/1->examples->items".
+type MessageOneOf1OneOf1ExamplesItems struct {
 	Name    string                 `json:"name,omitempty"`    // Machine readable name of the message example.
 	Summary string                 `json:"summary,omitempty"` // A brief summary of the message example.
 	Headers map[string]interface{} `json:"headers,omitempty"`
 	Payload *interface{}           `json:"payload,omitempty"`
 }
 
-type marshalHTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems
+type marshalMessageOneOf1OneOf1ExamplesItems MessageOneOf1OneOf1ExamplesItems
 
-var knownKeysHTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems = []string{
+var knownKeysMessageOneOf1OneOf1ExamplesItems = []string{
 	"name",
 	"summary",
 	"headers",
@@ -2348,12 +2553,12 @@ var knownKeysHTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems =
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems) UnmarshalJSON(data []byte) error {
+func (m *MessageOneOf1OneOf1ExamplesItems) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems(*h)
+	mm := marshalMessageOneOf1OneOf1ExamplesItems(*m)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mm)
 	if err != nil {
 		return err
 	}
@@ -2365,14 +2570,14 @@ func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems) Unma
 		rawMap = nil
 	}
 
-	if mh.Payload == nil {
+	if mm.Payload == nil {
 		if _, ok := rawMap["payload"]; ok {
 			var v interface{}
-			mh.Payload = &v
+			mm.Payload = &v
 		}
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems {
+	for _, key := range knownKeysMessageOneOf1OneOf1ExamplesItems {
 		delete(rawMap, key)
 	}
 
@@ -2383,36 +2588,241 @@ func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems) Unma
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in MessageOneOf1OneOf1ExamplesItems: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1ExamplesItems(mh)
+	*m = MessageOneOf1OneOf1ExamplesItems(mm)
 
 	return nil
 }
 
-// HTTPAsyncapiComDefinitions240MessageTraitJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/messageTrait.json".
-type HTTPAsyncapiComDefinitions240MessageTraitJSON struct {
-	SchemaFormat  string                                                      `json:"schemaFormat,omitempty"`
-	ContentType   string                                                      `json:"contentType,omitempty"`
-	Headers       *HTTPAsyncapiComDefinitions240MessageTraitJSONHeaders       `json:"headers,omitempty"`
-	MessageID     string                                                      `json:"messageId,omitempty"`
-	CorrelationID *HTTPAsyncapiComDefinitions240MessageTraitJSONCorrelationID `json:"correlationId,omitempty"`
-	Tags          []HTTPAsyncapiComDefinitions240TagJSON                      `json:"tags,omitempty"`
-	Summary       string                                                      `json:"summary,omitempty"`      // A brief summary of the message.
-	Name          string                                                      `json:"name,omitempty"`         // Name of the message.
-	Title         string                                                      `json:"title,omitempty"`        // A human-friendly title for the message.
-	Description   string                                                      `json:"description,omitempty"`  // A longer description of the message. CommonMark is allowed.
-	ExternalDocs  *HTTPAsyncapiComDefinitions240ExternalDocsJSON              `json:"externalDocs,omitempty"` // Information about external documentation.
-	Deprecated    bool                                                        `json:"deprecated,omitempty"`
-	Examples      []map[string]interface{}                                    `json:"examples,omitempty"`
-	Bindings      *ChannelBindingsObject                                      `json:"bindings,omitempty"`
-	MapOfAnything map[string]interface{}                                      `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+// MessageBindingsObject structure is generated from "http://asyncapi.com/definitions/2.4.0/messageBindingsObject.json".
+type MessageBindingsObject struct {
+	HTTP                 *interface{}           `json:"http,omitempty"`
+	Ws                   *interface{}           `json:"ws,omitempty"`
+	Amqp                 *interface{}           `json:"amqp,omitempty"`
+	Amqp1                *interface{}           `json:"amqp1,omitempty"`
+	Mqtt                 *interface{}           `json:"mqtt,omitempty"`
+	Mqtt5                *interface{}           `json:"mqtt5,omitempty"`
+	Kafka                *interface{}           `json:"kafka,omitempty"`
+	Anypointmq           *interface{}           `json:"anypointmq,omitempty"`
+	Nats                 *interface{}           `json:"nats,omitempty"`
+	Jms                  *interface{}           `json:"jms,omitempty"`
+	Sns                  *interface{}           `json:"sns,omitempty"`
+	Sqs                  *interface{}           `json:"sqs,omitempty"`
+	Stomp                *interface{}           `json:"stomp,omitempty"`
+	Redis                *interface{}           `json:"redis,omitempty"`
+	Ibmmq                *interface{}           `json:"ibmmq,omitempty"`
+	Solace               *interface{}           `json:"solace,omitempty"`
+	AdditionalProperties map[string]interface{} `json:"-"` // All unmatched properties.
 }
 
-type marshalHTTPAsyncapiComDefinitions240MessageTraitJSON HTTPAsyncapiComDefinitions240MessageTraitJSON
+type marshalMessageBindingsObject MessageBindingsObject
 
-var knownKeysHTTPAsyncapiComDefinitions240MessageTraitJSON = []string{
+var knownKeysMessageBindingsObject = []string{
+	"http",
+	"ws",
+	"amqp",
+	"amqp1",
+	"mqtt",
+	"mqtt5",
+	"kafka",
+	"anypointmq",
+	"nats",
+	"jms",
+	"sns",
+	"sqs",
+	"stomp",
+	"redis",
+	"ibmmq",
+	"solace",
+}
+
+// UnmarshalJSON decodes JSON.
+func (m *MessageBindingsObject) UnmarshalJSON(data []byte) error {
+	var err error
+
+	mm := marshalMessageBindingsObject(*m)
+
+	err = json.Unmarshal(data, &mm)
+	if err != nil {
+		return err
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	if mm.HTTP == nil {
+		if _, ok := rawMap["http"]; ok {
+			var v interface{}
+			mm.HTTP = &v
+		}
+	}
+
+	if mm.Ws == nil {
+		if _, ok := rawMap["ws"]; ok {
+			var v interface{}
+			mm.Ws = &v
+		}
+	}
+
+	if mm.Amqp == nil {
+		if _, ok := rawMap["amqp"]; ok {
+			var v interface{}
+			mm.Amqp = &v
+		}
+	}
+
+	if mm.Amqp1 == nil {
+		if _, ok := rawMap["amqp1"]; ok {
+			var v interface{}
+			mm.Amqp1 = &v
+		}
+	}
+
+	if mm.Mqtt == nil {
+		if _, ok := rawMap["mqtt"]; ok {
+			var v interface{}
+			mm.Mqtt = &v
+		}
+	}
+
+	if mm.Mqtt5 == nil {
+		if _, ok := rawMap["mqtt5"]; ok {
+			var v interface{}
+			mm.Mqtt5 = &v
+		}
+	}
+
+	if mm.Kafka == nil {
+		if _, ok := rawMap["kafka"]; ok {
+			var v interface{}
+			mm.Kafka = &v
+		}
+	}
+
+	if mm.Anypointmq == nil {
+		if _, ok := rawMap["anypointmq"]; ok {
+			var v interface{}
+			mm.Anypointmq = &v
+		}
+	}
+
+	if mm.Nats == nil {
+		if _, ok := rawMap["nats"]; ok {
+			var v interface{}
+			mm.Nats = &v
+		}
+	}
+
+	if mm.Jms == nil {
+		if _, ok := rawMap["jms"]; ok {
+			var v interface{}
+			mm.Jms = &v
+		}
+	}
+
+	if mm.Sns == nil {
+		if _, ok := rawMap["sns"]; ok {
+			var v interface{}
+			mm.Sns = &v
+		}
+	}
+
+	if mm.Sqs == nil {
+		if _, ok := rawMap["sqs"]; ok {
+			var v interface{}
+			mm.Sqs = &v
+		}
+	}
+
+	if mm.Stomp == nil {
+		if _, ok := rawMap["stomp"]; ok {
+			var v interface{}
+			mm.Stomp = &v
+		}
+	}
+
+	if mm.Redis == nil {
+		if _, ok := rawMap["redis"]; ok {
+			var v interface{}
+			mm.Redis = &v
+		}
+	}
+
+	if mm.Ibmmq == nil {
+		if _, ok := rawMap["ibmmq"]; ok {
+			var v interface{}
+			mm.Ibmmq = &v
+		}
+	}
+
+	if mm.Solace == nil {
+		if _, ok := rawMap["solace"]; ok {
+			var v interface{}
+			mm.Solace = &v
+		}
+	}
+
+	for _, key := range knownKeysMessageBindingsObject {
+		delete(rawMap, key)
+	}
+
+	for key, rawValue := range rawMap {
+		if mm.AdditionalProperties == nil {
+			mm.AdditionalProperties = make(map[string]interface{}, 1)
+		}
+
+		var val interface{}
+
+		err = json.Unmarshal(rawValue, &val)
+		if err != nil {
+			return err
+		}
+
+		mm.AdditionalProperties[key] = val
+	}
+
+	*m = MessageBindingsObject(mm)
+
+	return nil
+}
+
+// MarshalJSON encodes JSON.
+func (m MessageBindingsObject) MarshalJSON() ([]byte, error) {
+	if len(m.AdditionalProperties) == 0 {
+		return json.Marshal(marshalMessageBindingsObject(m))
+	}
+
+	return marshalUnion(marshalMessageBindingsObject(m), m.AdditionalProperties)
+}
+
+// MessageTrait structure is generated from "http://asyncapi.com/definitions/2.4.0/messageTrait.json".
+type MessageTrait struct {
+	SchemaFormat  string                     `json:"schemaFormat,omitempty"`
+	ContentType   string                     `json:"contentType,omitempty"`
+	Headers       *MessageTraitHeaders       `json:"headers,omitempty"`
+	MessageID     string                     `json:"messageId,omitempty"`
+	CorrelationID *MessageTraitCorrelationID `json:"correlationId,omitempty"`
+	Tags          []Tag                      `json:"tags,omitempty"`
+	Summary       string                     `json:"summary,omitempty"`      // A brief summary of the message.
+	Name          string                     `json:"name,omitempty"`         // Name of the message.
+	Title         string                     `json:"title,omitempty"`        // A human-friendly title for the message.
+	Description   string                     `json:"description,omitempty"`  // A longer description of the message. CommonMark is allowed.
+	ExternalDocs  *ExternalDocs              `json:"externalDocs,omitempty"` // Information about external documentation.
+	Deprecated    bool                       `json:"deprecated,omitempty"`
+	Examples      []map[string]interface{}   `json:"examples,omitempty"`
+	Bindings      *MessageBindingsObject     `json:"bindings,omitempty"`
+	MapOfAnything map[string]interface{}     `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+}
+
+type marshalMessageTrait MessageTrait
+
+var knownKeysMessageTrait = []string{
 	"schemaFormat",
 	"contentType",
 	"headers",
@@ -2430,12 +2840,12 @@ var knownKeysHTTPAsyncapiComDefinitions240MessageTraitJSON = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240MessageTraitJSON) UnmarshalJSON(data []byte) error {
+func (m *MessageTrait) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240MessageTraitJSON(*h)
+	mm := marshalMessageTrait(*m)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mm)
 	if err != nil {
 		return err
 	}
@@ -2447,7 +2857,7 @@ func (h *HTTPAsyncapiComDefinitions240MessageTraitJSON) UnmarshalJSON(data []byt
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240MessageTraitJSON {
+	for _, key := range knownKeysMessageTrait {
 		delete(rawMap, key)
 	}
 
@@ -2457,8 +2867,8 @@ func (h *HTTPAsyncapiComDefinitions240MessageTraitJSON) UnmarshalJSON(data []byt
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mm.MapOfAnything == nil {
+				mm.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -2468,7 +2878,7 @@ func (h *HTTPAsyncapiComDefinitions240MessageTraitJSON) UnmarshalJSON(data []byt
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mm.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -2483,24 +2893,24 @@ func (h *HTTPAsyncapiComDefinitions240MessageTraitJSON) UnmarshalJSON(data []byt
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240MessageTraitJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in MessageTrait: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240MessageTraitJSON(mh)
+	*m = MessageTrait(mm)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240MessageTraitJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240MessageTraitJSON(h), h.MapOfAnything)
+func (m MessageTrait) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalMessageTrait(m), m.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240MessageTraitJSONHeadersAllOf1 structure is generated from "http://asyncapi.com/definitions/2.4.0/messageTrait.json->headers/allOf/1".
-type HTTPAsyncapiComDefinitions240MessageTraitJSONHeadersAllOf1 struct{}
+// MessageTraitHeadersAllOf1 structure is generated from "http://asyncapi.com/definitions/2.4.0/messageTrait.json->headers/allOf/1".
+type MessageTraitHeadersAllOf1 struct{}
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240MessageTraitJSONHeadersAllOf1) UnmarshalJSON(data []byte) error {
+func (m *MessageTraitHeadersAllOf1) UnmarshalJSON(data []byte) error {
 	var err error
 
 	var rawMap map[string]json.RawMessage
@@ -2519,30 +2929,30 @@ func (h *HTTPAsyncapiComDefinitions240MessageTraitJSONHeadersAllOf1) UnmarshalJS
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240MessageTraitJSONHeadersAllOf1 is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240MessageTraitJSONHeadersAllOf1 = json.RawMessage(`{"type":"object"}`)
+// constMessageTraitHeadersAllOf1 is unconditionally added to JSON.
+var constMessageTraitHeadersAllOf1 = json.RawMessage(`{"type":"object"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240MessageTraitJSONHeadersAllOf1) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240MessageTraitJSONHeadersAllOf1)
+func (m MessageTraitHeadersAllOf1) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constMessageTraitHeadersAllOf1)
 }
 
-// HTTPAsyncapiComDefinitions240MessageTraitJSONHeaders structure is generated from "http://asyncapi.com/definitions/2.4.0/messageTrait.json->headers".
-type HTTPAsyncapiComDefinitions240MessageTraitJSONHeaders struct {
-	HTTPAsyncapiComDefinitions240SchemaJSON *HTTPAsyncapiComDefinitions240SchemaJSON                    `json:"-"`
-	AllOf1                                  *HTTPAsyncapiComDefinitions240MessageTraitJSONHeadersAllOf1 `json:"-"`
+// MessageTraitHeaders structure is generated from "http://asyncapi.com/definitions/2.4.0/messageTrait.json->headers".
+type MessageTraitHeaders struct {
+	Schema *Schema                    `json:"-"`
+	AllOf1 *MessageTraitHeadersAllOf1 `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240MessageTraitJSONHeaders) UnmarshalJSON(data []byte) error {
+func (m *MessageTraitHeaders) UnmarshalJSON(data []byte) error {
 	var err error
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240SchemaJSON)
+	err = json.Unmarshal(data, &m.Schema)
 	if err != nil {
 		return err
 	}
 
-	err = json.Unmarshal(data, &h.AllOf1)
+	err = json.Unmarshal(data, &m.AllOf1)
 	if err != nil {
 		return err
 	}
@@ -2551,207 +2961,412 @@ func (h *HTTPAsyncapiComDefinitions240MessageTraitJSONHeaders) UnmarshalJSON(dat
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240MessageTraitJSONHeaders) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240SchemaJSON, h.AllOf1)
+func (m MessageTraitHeaders) MarshalJSON() ([]byte, error) {
+	return marshalUnion(m.Schema, m.AllOf1)
 }
 
-// HTTPAsyncapiComDefinitions240MessageTraitJSONCorrelationID structure is generated from "http://asyncapi.com/definitions/2.4.0/messageTrait.json->correlationId".
-type HTTPAsyncapiComDefinitions240MessageTraitJSONCorrelationID struct {
-	HTTPAsyncapiComDefinitions240ReferenceJSON     *HTTPAsyncapiComDefinitions240ReferenceJSON     `json:"-"`
-	HTTPAsyncapiComDefinitions240CorrelationIDJSON *HTTPAsyncapiComDefinitions240CorrelationIDJSON `json:"-"`
+// MessageTraitCorrelationID structure is generated from "http://asyncapi.com/definitions/2.4.0/messageTrait.json->correlationId".
+type MessageTraitCorrelationID struct {
+	Reference     *Reference     `json:"-"`
+	CorrelationID *CorrelationID `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240MessageTraitJSONCorrelationID) UnmarshalJSON(data []byte) error {
+func (m *MessageTraitCorrelationID) UnmarshalJSON(data []byte) error {
 	var err error
 
 	oneOfErrors := make(map[string]error, 2)
 	oneOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240ReferenceJSON)
+	err = json.Unmarshal(data, &m.Reference)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240ReferenceJSON"] = err
-		h.HTTPAsyncapiComDefinitions240ReferenceJSON = nil
+		oneOfErrors["Reference"] = err
+		m.Reference = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240CorrelationIDJSON)
+	err = json.Unmarshal(data, &m.CorrelationID)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240CorrelationIDJSON"] = err
-		h.HTTPAsyncapiComDefinitions240CorrelationIDJSON = nil
+		oneOfErrors["CorrelationID"] = err
+		m.CorrelationID = nil
 	} else {
 		oneOfValid++
 	}
 
 	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for HTTPAsyncapiComDefinitions240MessageTraitJSONCorrelationID with %d valid results: %v", oneOfValid, oneOfErrors)
+		return fmt.Errorf("oneOf constraint failed for MessageTraitCorrelationID with %d valid results: %v", oneOfValid, oneOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240MessageTraitJSONCorrelationID) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240ReferenceJSON, h.HTTPAsyncapiComDefinitions240CorrelationIDJSON)
+func (m MessageTraitCorrelationID) MarshalJSON() ([]byte, error) {
+	return marshalUnion(m.Reference, m.CorrelationID)
 }
 
-// HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1TraitsItems structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/1->traits->items".
-type HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1TraitsItems struct {
-	HTTPAsyncapiComDefinitions240ReferenceJSON    *HTTPAsyncapiComDefinitions240ReferenceJSON    `json:"-"`
-	HTTPAsyncapiComDefinitions240MessageTraitJSON *HTTPAsyncapiComDefinitions240MessageTraitJSON `json:"-"`
-	SliceOfAnything                               []interface{}                                  `json:"-"`
+// MessageOneOf1OneOf1TraitsItems structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1/oneOf/1->traits->items".
+type MessageOneOf1OneOf1TraitsItems struct {
+	Reference       *Reference    `json:"-"`
+	MessageTrait    *MessageTrait `json:"-"`
+	SliceOfAnything []interface{} `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1TraitsItems) UnmarshalJSON(data []byte) error {
+func (m *MessageOneOf1OneOf1TraitsItems) UnmarshalJSON(data []byte) error {
 	var err error
 
 	oneOfErrors := make(map[string]error, 3)
 	oneOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240ReferenceJSON)
+	err = json.Unmarshal(data, &m.Reference)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240ReferenceJSON"] = err
-		h.HTTPAsyncapiComDefinitions240ReferenceJSON = nil
+		oneOfErrors["Reference"] = err
+		m.Reference = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240MessageTraitJSON)
+	err = json.Unmarshal(data, &m.MessageTrait)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240MessageTraitJSON"] = err
-		h.HTTPAsyncapiComDefinitions240MessageTraitJSON = nil
+		oneOfErrors["MessageTrait"] = err
+		m.MessageTrait = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.SliceOfAnything)
+	err = json.Unmarshal(data, &m.SliceOfAnything)
 	if err != nil {
 		oneOfErrors["SliceOfAnything"] = err
-		h.SliceOfAnything = nil
+		m.SliceOfAnything = nil
 	} else {
 		oneOfValid++
 	}
 
 	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1TraitsItems with %d valid results: %v", oneOfValid, oneOfErrors)
+		return fmt.Errorf("oneOf constraint failed for MessageOneOf1OneOf1TraitsItems with %d valid results: %v", oneOfValid, oneOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1TraitsItems) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240ReferenceJSON, h.HTTPAsyncapiComDefinitions240MessageTraitJSON, h.SliceOfAnything)
+func (m MessageOneOf1OneOf1TraitsItems) MarshalJSON() ([]byte, error) {
+	return marshalUnion(m.Reference, m.MessageTrait, m.SliceOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240MessageJSONOneOf1 structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1".
-type HTTPAsyncapiComDefinitions240MessageJSONOneOf1 struct {
-	OneOf0        *HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf0 `json:"-"`
-	MessageEntity *MessageEntity                                        `json:"-"`
+// MessageOneOf1 structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json/oneOf/1".
+type MessageOneOf1 struct {
+	OneOf0        *MessageOneOf1OneOf0 `json:"-"`
+	MessageEntity *MessageEntity       `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240MessageJSONOneOf1) UnmarshalJSON(data []byte) error {
+func (m *MessageOneOf1) UnmarshalJSON(data []byte) error {
 	var err error
 
 	oneOfErrors := make(map[string]error, 2)
 	oneOfValid := 0
 
-	err = json.Unmarshal(data, &h.OneOf0)
+	err = json.Unmarshal(data, &m.OneOf0)
 	if err != nil {
 		oneOfErrors["OneOf0"] = err
-		h.OneOf0 = nil
+		m.OneOf0 = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.MessageEntity)
+	err = json.Unmarshal(data, &m.MessageEntity)
 	if err != nil {
 		oneOfErrors["MessageEntity"] = err
-		h.MessageEntity = nil
+		m.MessageEntity = nil
 	} else {
 		oneOfValid++
 	}
 
 	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for HTTPAsyncapiComDefinitions240MessageJSONOneOf1 with %d valid results: %v", oneOfValid, oneOfErrors)
+		return fmt.Errorf("oneOf constraint failed for MessageOneOf1 with %d valid results: %v", oneOfValid, oneOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240MessageJSONOneOf1) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.OneOf0, h.MessageEntity)
+func (m MessageOneOf1) MarshalJSON() ([]byte, error) {
+	return marshalUnion(m.OneOf0, m.MessageEntity)
 }
 
-// HTTPAsyncapiComDefinitions240MessageJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json".
-type HTTPAsyncapiComDefinitions240MessageJSON struct {
-	HTTPAsyncapiComDefinitions240ReferenceJSON *HTTPAsyncapiComDefinitions240ReferenceJSON     `json:"-"`
-	OneOf1                                     *HTTPAsyncapiComDefinitions240MessageJSONOneOf1 `json:"-"`
+// Message structure is generated from "http://asyncapi.com/definitions/2.4.0/message.json".
+type Message struct {
+	Reference *Reference     `json:"-"`
+	OneOf1    *MessageOneOf1 `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240MessageJSON) UnmarshalJSON(data []byte) error {
+func (m *Message) UnmarshalJSON(data []byte) error {
 	var err error
 
 	oneOfErrors := make(map[string]error, 2)
 	oneOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240ReferenceJSON)
+	err = json.Unmarshal(data, &m.Reference)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240ReferenceJSON"] = err
-		h.HTTPAsyncapiComDefinitions240ReferenceJSON = nil
+		oneOfErrors["Reference"] = err
+		m.Reference = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.OneOf1)
+	err = json.Unmarshal(data, &m.OneOf1)
 	if err != nil {
 		oneOfErrors["OneOf1"] = err
-		h.OneOf1 = nil
+		m.OneOf1 = nil
 	} else {
 		oneOfValid++
 	}
 
 	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for HTTPAsyncapiComDefinitions240MessageJSON with %d valid results: %v", oneOfValid, oneOfErrors)
+		return fmt.Errorf("oneOf constraint failed for Message with %d valid results: %v", oneOfValid, oneOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240MessageJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240ReferenceJSON, h.OneOf1)
+func (m Message) MarshalJSON() ([]byte, error) {
+	return marshalUnion(m.Reference, m.OneOf1)
 }
 
-// HTTPAsyncapiComDefinitions240ComponentsJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/components.json".
+// ChannelBindingsObject structure is generated from "http://asyncapi.com/definitions/2.4.0/channelBindingsObject.json".
+type ChannelBindingsObject struct {
+	HTTP                 *interface{}           `json:"http,omitempty"`
+	Ws                   *interface{}           `json:"ws,omitempty"`
+	Amqp                 *interface{}           `json:"amqp,omitempty"`
+	Amqp1                *interface{}           `json:"amqp1,omitempty"`
+	Mqtt                 *interface{}           `json:"mqtt,omitempty"`
+	Mqtt5                *interface{}           `json:"mqtt5,omitempty"`
+	Kafka                *interface{}           `json:"kafka,omitempty"`
+	Anypointmq           *interface{}           `json:"anypointmq,omitempty"`
+	Nats                 *interface{}           `json:"nats,omitempty"`
+	Jms                  *interface{}           `json:"jms,omitempty"`
+	Sns                  *interface{}           `json:"sns,omitempty"`
+	Sqs                  *interface{}           `json:"sqs,omitempty"`
+	Stomp                *interface{}           `json:"stomp,omitempty"`
+	Redis                *interface{}           `json:"redis,omitempty"`
+	Ibmmq                *interface{}           `json:"ibmmq,omitempty"`
+	Solace               *interface{}           `json:"solace,omitempty"`
+	AdditionalProperties map[string]interface{} `json:"-"` // All unmatched properties.
+}
+
+type marshalChannelBindingsObject ChannelBindingsObject
+
+var knownKeysChannelBindingsObject = []string{
+	"http",
+	"ws",
+	"amqp",
+	"amqp1",
+	"mqtt",
+	"mqtt5",
+	"kafka",
+	"anypointmq",
+	"nats",
+	"jms",
+	"sns",
+	"sqs",
+	"stomp",
+	"redis",
+	"ibmmq",
+	"solace",
+}
+
+// UnmarshalJSON decodes JSON.
+func (c *ChannelBindingsObject) UnmarshalJSON(data []byte) error {
+	var err error
+
+	mc := marshalChannelBindingsObject(*c)
+
+	err = json.Unmarshal(data, &mc)
+	if err != nil {
+		return err
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	if mc.HTTP == nil {
+		if _, ok := rawMap["http"]; ok {
+			var v interface{}
+			mc.HTTP = &v
+		}
+	}
+
+	if mc.Ws == nil {
+		if _, ok := rawMap["ws"]; ok {
+			var v interface{}
+			mc.Ws = &v
+		}
+	}
+
+	if mc.Amqp == nil {
+		if _, ok := rawMap["amqp"]; ok {
+			var v interface{}
+			mc.Amqp = &v
+		}
+	}
+
+	if mc.Amqp1 == nil {
+		if _, ok := rawMap["amqp1"]; ok {
+			var v interface{}
+			mc.Amqp1 = &v
+		}
+	}
+
+	if mc.Mqtt == nil {
+		if _, ok := rawMap["mqtt"]; ok {
+			var v interface{}
+			mc.Mqtt = &v
+		}
+	}
+
+	if mc.Mqtt5 == nil {
+		if _, ok := rawMap["mqtt5"]; ok {
+			var v interface{}
+			mc.Mqtt5 = &v
+		}
+	}
+
+	if mc.Kafka == nil {
+		if _, ok := rawMap["kafka"]; ok {
+			var v interface{}
+			mc.Kafka = &v
+		}
+	}
+
+	if mc.Anypointmq == nil {
+		if _, ok := rawMap["anypointmq"]; ok {
+			var v interface{}
+			mc.Anypointmq = &v
+		}
+	}
+
+	if mc.Nats == nil {
+		if _, ok := rawMap["nats"]; ok {
+			var v interface{}
+			mc.Nats = &v
+		}
+	}
+
+	if mc.Jms == nil {
+		if _, ok := rawMap["jms"]; ok {
+			var v interface{}
+			mc.Jms = &v
+		}
+	}
+
+	if mc.Sns == nil {
+		if _, ok := rawMap["sns"]; ok {
+			var v interface{}
+			mc.Sns = &v
+		}
+	}
+
+	if mc.Sqs == nil {
+		if _, ok := rawMap["sqs"]; ok {
+			var v interface{}
+			mc.Sqs = &v
+		}
+	}
+
+	if mc.Stomp == nil {
+		if _, ok := rawMap["stomp"]; ok {
+			var v interface{}
+			mc.Stomp = &v
+		}
+	}
+
+	if mc.Redis == nil {
+		if _, ok := rawMap["redis"]; ok {
+			var v interface{}
+			mc.Redis = &v
+		}
+	}
+
+	if mc.Ibmmq == nil {
+		if _, ok := rawMap["ibmmq"]; ok {
+			var v interface{}
+			mc.Ibmmq = &v
+		}
+	}
+
+	if mc.Solace == nil {
+		if _, ok := rawMap["solace"]; ok {
+			var v interface{}
+			mc.Solace = &v
+		}
+	}
+
+	for _, key := range knownKeysChannelBindingsObject {
+		delete(rawMap, key)
+	}
+
+	for key, rawValue := range rawMap {
+		if mc.AdditionalProperties == nil {
+			mc.AdditionalProperties = make(map[string]interface{}, 1)
+		}
+
+		var val interface{}
+
+		err = json.Unmarshal(rawValue, &val)
+		if err != nil {
+			return err
+		}
+
+		mc.AdditionalProperties[key] = val
+	}
+
+	*c = ChannelBindingsObject(mc)
+
+	return nil
+}
+
+// MarshalJSON encodes JSON.
+func (c ChannelBindingsObject) MarshalJSON() ([]byte, error) {
+	if len(c.AdditionalProperties) == 0 {
+		return json.Marshal(marshalChannelBindingsObject(c))
+	}
+
+	return marshalUnion(marshalChannelBindingsObject(c), c.AdditionalProperties)
+}
+
+// Components structure is generated from "http://asyncapi.com/definitions/2.4.0/components.json".
 //
 // An object to hold a set of reusable objects for different aspects of the AsyncAPI Specification.
-type HTTPAsyncapiComDefinitions240ComponentsJSON struct {
-	Schemas           map[string]HTTPAsyncapiComDefinitions240SchemaJSON                      `json:"schemas,omitempty"` // JSON objects describing schemas the API uses.
-	Servers           map[string]HTTPAsyncapiComDefinitions240ServersJSONAdditionalProperties `json:"servers,omitempty"` // An object representing multiple servers.
-	Channels          map[string]ChannelItem                                                  `json:"channels,omitempty"`
-	ServerVariables   map[string]ServerVariable                                               `json:"serverVariables,omitempty"`
-	Messages          map[string]HTTPAsyncapiComDefinitions240MessageJSON                     `json:"messages,omitempty"` // JSON objects describing the messages being consumed and produced by the API.
-	SecuritySchemes   *HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemes             `json:"securitySchemes,omitempty"`
-	Parameters        map[string]HTTPAsyncapiComDefinitions240ParameterJSON                   `json:"parameters,omitempty"` // JSON objects describing re-usable channel parameters.
-	CorrelationIds    *HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIds              `json:"correlationIds,omitempty"`
-	OperationTraits   map[string]HTTPAsyncapiComDefinitions240OperationTraitJSON              `json:"operationTraits,omitempty"`
-	MessageTraits     map[string]HTTPAsyncapiComDefinitions240MessageTraitJSON                `json:"messageTraits,omitempty"`
-	ServerBindings    map[string]ChannelBindingsObject                                        `json:"serverBindings,omitempty"`
-	ChannelBindings   map[string]ChannelBindingsObject                                        `json:"channelBindings,omitempty"`
-	OperationBindings map[string]ChannelBindingsObject                                        `json:"operationBindings,omitempty"`
-	MessageBindings   map[string]ChannelBindingsObject                                        `json:"messageBindings,omitempty"`
-	MapOfAnything     map[string]interface{}                                                  `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+type Components struct {
+	Schemas           map[string]Schema                      `json:"schemas,omitempty"` // JSON objects describing schemas the API uses.
+	Servers           map[string]ServersAdditionalProperties `json:"servers,omitempty"` // An object representing multiple servers.
+	Channels          map[string]ChannelItem                 `json:"channels,omitempty"`
+	ServerVariables   map[string]ServerVariable              `json:"serverVariables,omitempty"`
+	Messages          map[string]Message                     `json:"messages,omitempty"` // JSON objects describing the messages being consumed and produced by the API.
+	SecuritySchemes   *ComponentsSecuritySchemes             `json:"securitySchemes,omitempty"`
+	Parameters        map[string]Parameter                   `json:"parameters,omitempty"` // JSON objects describing re-usable channel parameters.
+	CorrelationIds    *ComponentsCorrelationIds              `json:"correlationIds,omitempty"`
+	OperationTraits   map[string]OperationTrait              `json:"operationTraits,omitempty"`
+	MessageTraits     map[string]MessageTrait                `json:"messageTraits,omitempty"`
+	ServerBindings    map[string]ServerBindingsObject        `json:"serverBindings,omitempty"`
+	ChannelBindings   map[string]ChannelBindingsObject       `json:"channelBindings,omitempty"`
+	OperationBindings map[string]OperationBindingsObject     `json:"operationBindings,omitempty"`
+	MessageBindings   map[string]MessageBindingsObject       `json:"messageBindings,omitempty"`
+	MapOfAnything     map[string]interface{}                 `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240ComponentsJSON HTTPAsyncapiComDefinitions240ComponentsJSON
+type marshalComponents Components
 
-var knownKeysHTTPAsyncapiComDefinitions240ComponentsJSON = []string{
+var knownKeysComponents = []string{
 	"schemas",
 	"servers",
 	"channels",
@@ -2769,12 +3384,12 @@ var knownKeysHTTPAsyncapiComDefinitions240ComponentsJSON = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240ComponentsJSON) UnmarshalJSON(data []byte) error {
+func (c *Components) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240ComponentsJSON(*h)
+	mc := marshalComponents(*c)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mc)
 	if err != nil {
 		return err
 	}
@@ -2786,7 +3401,7 @@ func (h *HTTPAsyncapiComDefinitions240ComponentsJSON) UnmarshalJSON(data []byte)
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240ComponentsJSON {
+	for _, key := range knownKeysComponents {
 		delete(rawMap, key)
 	}
 
@@ -2796,8 +3411,8 @@ func (h *HTTPAsyncapiComDefinitions240ComponentsJSON) UnmarshalJSON(data []byte)
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mc.MapOfAnything == nil {
+				mc.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -2807,7 +3422,7 @@ func (h *HTTPAsyncapiComDefinitions240ComponentsJSON) UnmarshalJSON(data []byte)
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mc.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -2822,39 +3437,39 @@ func (h *HTTPAsyncapiComDefinitions240ComponentsJSON) UnmarshalJSON(data []byte)
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240ComponentsJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in Components: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240ComponentsJSON(mh)
+	*c = Components(mc)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240ComponentsJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240ComponentsJSON(h), h.MapOfAnything)
+func (c Components) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalComponents(c), c.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240UserPasswordJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/userPassword.json".
-type HTTPAsyncapiComDefinitions240UserPasswordJSON struct {
+// UserPassword structure is generated from "http://asyncapi.com/definitions/2.4.0/userPassword.json".
+type UserPassword struct {
 	Description   string                 `json:"description,omitempty"`
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240UserPasswordJSON HTTPAsyncapiComDefinitions240UserPasswordJSON
+type marshalUserPassword UserPassword
 
-var knownKeysHTTPAsyncapiComDefinitions240UserPasswordJSON = []string{
+var knownKeysUserPassword = []string{
 	"description",
 	"type",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240UserPasswordJSON) UnmarshalJSON(data []byte) error {
+func (u *UserPassword) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240UserPasswordJSON(*h)
+	mu := marshalUserPassword(*u)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mu)
 	if err != nil {
 		return err
 	}
@@ -2872,7 +3487,7 @@ func (h *HTTPAsyncapiComDefinitions240UserPasswordJSON) UnmarshalJSON(data []byt
 
 	delete(rawMap, "type")
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240UserPasswordJSON {
+	for _, key := range knownKeysUserPassword {
 		delete(rawMap, key)
 	}
 
@@ -2882,8 +3497,8 @@ func (h *HTTPAsyncapiComDefinitions240UserPasswordJSON) UnmarshalJSON(data []byt
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mu.MapOfAnything == nil {
+				mu.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -2893,7 +3508,7 @@ func (h *HTTPAsyncapiComDefinitions240UserPasswordJSON) UnmarshalJSON(data []byt
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mu.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -2908,44 +3523,44 @@ func (h *HTTPAsyncapiComDefinitions240UserPasswordJSON) UnmarshalJSON(data []byt
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240UserPasswordJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in UserPassword: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240UserPasswordJSON(mh)
+	*u = UserPassword(mu)
 
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240UserPasswordJSON is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240UserPasswordJSON = json.RawMessage(`{"type":"userPassword"}`)
+// constUserPassword is unconditionally added to JSON.
+var constUserPassword = json.RawMessage(`{"type":"userPassword"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240UserPasswordJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240UserPasswordJSON, marshalHTTPAsyncapiComDefinitions240UserPasswordJSON(h), h.MapOfAnything)
+func (u UserPassword) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constUserPassword, marshalUserPassword(u), u.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240APIKeyJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/apiKey.json".
-type HTTPAsyncapiComDefinitions240APIKeyJSON struct {
-	In            HTTPAsyncapiComDefinitions240APIKeyJSONIn `json:"in"` // Required.
-	Description   string                                    `json:"description,omitempty"`
-	MapOfAnything map[string]interface{}                    `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+// APIKey structure is generated from "http://asyncapi.com/definitions/2.4.0/apiKey.json".
+type APIKey struct {
+	In            APIKeyIn               `json:"in"` // Required.
+	Description   string                 `json:"description,omitempty"`
+	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240APIKeyJSON HTTPAsyncapiComDefinitions240APIKeyJSON
+type marshalAPIKey APIKey
 
-var knownKeysHTTPAsyncapiComDefinitions240APIKeyJSON = []string{
+var knownKeysAPIKey = []string{
 	"in",
 	"description",
 	"type",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240APIKeyJSON) UnmarshalJSON(data []byte) error {
+func (a *APIKey) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240APIKeyJSON(*h)
+	ma := marshalAPIKey(*a)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &ma)
 	if err != nil {
 		return err
 	}
@@ -2963,7 +3578,7 @@ func (h *HTTPAsyncapiComDefinitions240APIKeyJSON) UnmarshalJSON(data []byte) err
 
 	delete(rawMap, "type")
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240APIKeyJSON {
+	for _, key := range knownKeysAPIKey {
 		delete(rawMap, key)
 	}
 
@@ -2973,8 +3588,8 @@ func (h *HTTPAsyncapiComDefinitions240APIKeyJSON) UnmarshalJSON(data []byte) err
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if ma.MapOfAnything == nil {
+				ma.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -2984,7 +3599,7 @@ func (h *HTTPAsyncapiComDefinitions240APIKeyJSON) UnmarshalJSON(data []byte) err
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			ma.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -2999,42 +3614,42 @@ func (h *HTTPAsyncapiComDefinitions240APIKeyJSON) UnmarshalJSON(data []byte) err
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240APIKeyJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in APIKey: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240APIKeyJSON(mh)
+	*a = APIKey(ma)
 
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240APIKeyJSON is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240APIKeyJSON = json.RawMessage(`{"type":"apiKey"}`)
+// constAPIKey is unconditionally added to JSON.
+var constAPIKey = json.RawMessage(`{"type":"apiKey"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240APIKeyJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240APIKeyJSON, marshalHTTPAsyncapiComDefinitions240APIKeyJSON(h), h.MapOfAnything)
+func (a APIKey) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constAPIKey, marshalAPIKey(a), a.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240X509JSON structure is generated from "http://asyncapi.com/definitions/2.4.0/X509.json".
-type HTTPAsyncapiComDefinitions240X509JSON struct {
+// X509 structure is generated from "http://asyncapi.com/definitions/2.4.0/X509.json".
+type X509 struct {
 	Description   string                 `json:"description,omitempty"`
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240X509JSON HTTPAsyncapiComDefinitions240X509JSON
+type marshalX509 X509
 
-var knownKeysHTTPAsyncapiComDefinitions240X509JSON = []string{
+var knownKeysX509 = []string{
 	"description",
 	"type",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240X509JSON) UnmarshalJSON(data []byte) error {
+func (x *X509) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240X509JSON(*h)
+	mx := marshalX509(*x)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mx)
 	if err != nil {
 		return err
 	}
@@ -3052,7 +3667,7 @@ func (h *HTTPAsyncapiComDefinitions240X509JSON) UnmarshalJSON(data []byte) error
 
 	delete(rawMap, "type")
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240X509JSON {
+	for _, key := range knownKeysX509 {
 		delete(rawMap, key)
 	}
 
@@ -3062,8 +3677,8 @@ func (h *HTTPAsyncapiComDefinitions240X509JSON) UnmarshalJSON(data []byte) error
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mx.MapOfAnything == nil {
+				mx.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -3073,7 +3688,7 @@ func (h *HTTPAsyncapiComDefinitions240X509JSON) UnmarshalJSON(data []byte) error
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mx.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -3088,42 +3703,42 @@ func (h *HTTPAsyncapiComDefinitions240X509JSON) UnmarshalJSON(data []byte) error
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240X509JSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in X509: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240X509JSON(mh)
+	*x = X509(mx)
 
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240X509JSON is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240X509JSON = json.RawMessage(`{"type":"X509"}`)
+// constX509 is unconditionally added to JSON.
+var constX509 = json.RawMessage(`{"type":"X509"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240X509JSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240X509JSON, marshalHTTPAsyncapiComDefinitions240X509JSON(h), h.MapOfAnything)
+func (x X509) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constX509, marshalX509(x), x.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/symmetricEncryption.json".
-type HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON struct {
+// SymmetricEncryption structure is generated from "http://asyncapi.com/definitions/2.4.0/symmetricEncryption.json".
+type SymmetricEncryption struct {
 	Description   string                 `json:"description,omitempty"`
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240SymmetricEncryptionJSON HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON
+type marshalSymmetricEncryption SymmetricEncryption
 
-var knownKeysHTTPAsyncapiComDefinitions240SymmetricEncryptionJSON = []string{
+var knownKeysSymmetricEncryption = []string{
 	"description",
 	"type",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON) UnmarshalJSON(data []byte) error {
+func (s *SymmetricEncryption) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240SymmetricEncryptionJSON(*h)
+	ms := marshalSymmetricEncryption(*s)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &ms)
 	if err != nil {
 		return err
 	}
@@ -3141,7 +3756,7 @@ func (h *HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON) UnmarshalJSON(dat
 
 	delete(rawMap, "type")
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240SymmetricEncryptionJSON {
+	for _, key := range knownKeysSymmetricEncryption {
 		delete(rawMap, key)
 	}
 
@@ -3151,8 +3766,8 @@ func (h *HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON) UnmarshalJSON(dat
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if ms.MapOfAnything == nil {
+				ms.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -3162,7 +3777,7 @@ func (h *HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON) UnmarshalJSON(dat
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			ms.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -3177,42 +3792,42 @@ func (h *HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON) UnmarshalJSON(dat
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in SymmetricEncryption: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON(mh)
+	*s = SymmetricEncryption(ms)
 
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240SymmetricEncryptionJSON is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240SymmetricEncryptionJSON = json.RawMessage(`{"type":"symmetricEncryption"}`)
+// constSymmetricEncryption is unconditionally added to JSON.
+var constSymmetricEncryption = json.RawMessage(`{"type":"symmetricEncryption"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240SymmetricEncryptionJSON, marshalHTTPAsyncapiComDefinitions240SymmetricEncryptionJSON(h), h.MapOfAnything)
+func (s SymmetricEncryption) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constSymmetricEncryption, marshalSymmetricEncryption(s), s.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/asymmetricEncryption.json".
-type HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON struct {
+// AsymmetricEncryption structure is generated from "http://asyncapi.com/definitions/2.4.0/asymmetricEncryption.json".
+type AsymmetricEncryption struct {
 	Description   string                 `json:"description,omitempty"`
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON
+type marshalAsymmetricEncryption AsymmetricEncryption
 
-var knownKeysHTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON = []string{
+var knownKeysAsymmetricEncryption = []string{
 	"description",
 	"type",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON) UnmarshalJSON(data []byte) error {
+func (a *AsymmetricEncryption) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON(*h)
+	ma := marshalAsymmetricEncryption(*a)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &ma)
 	if err != nil {
 		return err
 	}
@@ -3230,7 +3845,7 @@ func (h *HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON) UnmarshalJSON(da
 
 	delete(rawMap, "type")
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON {
+	for _, key := range knownKeysAsymmetricEncryption {
 		delete(rawMap, key)
 	}
 
@@ -3240,8 +3855,8 @@ func (h *HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON) UnmarshalJSON(da
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if ma.MapOfAnything == nil {
+				ma.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -3251,7 +3866,7 @@ func (h *HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON) UnmarshalJSON(da
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			ma.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -3266,50 +3881,50 @@ func (h *HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON) UnmarshalJSON(da
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in AsymmetricEncryption: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON(mh)
+	*a = AsymmetricEncryption(ma)
 
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON = json.RawMessage(`{"type":"asymmetricEncryption"}`)
+// constAsymmetricEncryption is unconditionally added to JSON.
+var constAsymmetricEncryption = json.RawMessage(`{"type":"asymmetricEncryption"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON, marshalHTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON(h), h.MapOfAnything)
+func (a AsymmetricEncryption) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constAsymmetricEncryption, marshalAsymmetricEncryption(a), a.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/NonBearerHTTPSecurityScheme.json".
-type HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON struct {
+// NonBearerHTTPSecurityScheme structure is generated from "http://asyncapi.com/definitions/2.4.0/NonBearerHTTPSecurityScheme.json".
+type NonBearerHTTPSecurityScheme struct {
 	Scheme        string                 `json:"scheme"` // Required.
 	Description   string                 `json:"description,omitempty"`
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON
+type marshalNonBearerHTTPSecurityScheme NonBearerHTTPSecurityScheme
 
-var knownKeysHTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON = []string{
+var knownKeysNonBearerHTTPSecurityScheme = []string{
 	"scheme",
 	"description",
 	"type",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON) UnmarshalJSON(data []byte) error {
+func (n *NonBearerHTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
 
-	var not HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSONNot
+	var not NonBearerHTTPSecuritySchemeNot
 
 	if json.Unmarshal(data, &not) == nil {
-		return errors.New("not constraint failed for HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON")
+		return errors.New("not constraint failed for NonBearerHTTPSecurityScheme")
 	}
 
-	mh := marshalHTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON(*h)
+	mn := marshalNonBearerHTTPSecurityScheme(*n)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mn)
 	if err != nil {
 		return err
 	}
@@ -3327,7 +3942,7 @@ func (h *HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON) Unmarshal
 
 	delete(rawMap, "type")
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON {
+	for _, key := range knownKeysNonBearerHTTPSecurityScheme {
 		delete(rawMap, key)
 	}
 
@@ -3337,8 +3952,8 @@ func (h *HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON) Unmarshal
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mn.MapOfAnything == nil {
+				mn.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -3348,7 +3963,7 @@ func (h *HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON) Unmarshal
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mn.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -3363,27 +3978,27 @@ func (h *HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON) Unmarshal
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in NonBearerHTTPSecurityScheme: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON(mh)
+	*n = NonBearerHTTPSecurityScheme(mn)
 
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON = json.RawMessage(`{"type":"http"}`)
+// constNonBearerHTTPSecurityScheme is unconditionally added to JSON.
+var constNonBearerHTTPSecurityScheme = json.RawMessage(`{"type":"http"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON, marshalHTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON(h), h.MapOfAnything)
+func (n NonBearerHTTPSecurityScheme) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constNonBearerHTTPSecurityScheme, marshalNonBearerHTTPSecurityScheme(n), n.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSONNot structure is generated from "http://asyncapi.com/definitions/2.4.0/NonBearerHTTPSecurityScheme.json->not".
-type HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSONNot struct{}
+// NonBearerHTTPSecuritySchemeNot structure is generated from "http://asyncapi.com/definitions/2.4.0/NonBearerHTTPSecurityScheme.json->not".
+type NonBearerHTTPSecuritySchemeNot struct{}
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSONNot) UnmarshalJSON(data []byte) error {
+func (n *NonBearerHTTPSecuritySchemeNot) UnmarshalJSON(data []byte) error {
 	var err error
 
 	var rawMap map[string]json.RawMessage
@@ -3402,24 +4017,24 @@ func (h *HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSONNot) Unmars
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSONNot is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSONNot = json.RawMessage(`{"scheme":"bearer"}`)
+// constNonBearerHTTPSecuritySchemeNot is unconditionally added to JSON.
+var constNonBearerHTTPSecuritySchemeNot = json.RawMessage(`{"scheme":"bearer"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSONNot) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSONNot)
+func (n NonBearerHTTPSecuritySchemeNot) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constNonBearerHTTPSecuritySchemeNot)
 }
 
-// HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/BearerHTTPSecurityScheme.json".
-type HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON struct {
+// BearerHTTPSecurityScheme structure is generated from "http://asyncapi.com/definitions/2.4.0/BearerHTTPSecurityScheme.json".
+type BearerHTTPSecurityScheme struct {
 	BearerFormat  string                 `json:"bearerFormat,omitempty"`
 	Description   string                 `json:"description,omitempty"`
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON
+type marshalBearerHTTPSecurityScheme BearerHTTPSecurityScheme
 
-var knownKeysHTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON = []string{
+var knownKeysBearerHTTPSecurityScheme = []string{
 	"bearerFormat",
 	"description",
 	"scheme",
@@ -3427,12 +4042,12 @@ var knownKeysHTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON = []strin
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON) UnmarshalJSON(data []byte) error {
+func (b *BearerHTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON(*h)
+	mb := marshalBearerHTTPSecurityScheme(*b)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mb)
 	if err != nil {
 		return err
 	}
@@ -3456,7 +4071,7 @@ func (h *HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON) UnmarshalJSO
 
 	delete(rawMap, "type")
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON {
+	for _, key := range knownKeysBearerHTTPSecurityScheme {
 		delete(rawMap, key)
 	}
 
@@ -3466,8 +4081,8 @@ func (h *HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON) UnmarshalJSO
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mb.MapOfAnything == nil {
+				mb.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -3477,7 +4092,7 @@ func (h *HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON) UnmarshalJSO
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mb.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -3492,33 +4107,33 @@ func (h *HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON) UnmarshalJSO
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in BearerHTTPSecurityScheme: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON(mh)
+	*b = BearerHTTPSecurityScheme(mb)
 
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON = json.RawMessage(`{"scheme":"bearer","type":"http"}`)
+// constBearerHTTPSecurityScheme is unconditionally added to JSON.
+var constBearerHTTPSecurityScheme = json.RawMessage(`{"scheme":"bearer","type":"http"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON, marshalHTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON(h), h.MapOfAnything)
+func (b BearerHTTPSecurityScheme) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constBearerHTTPSecurityScheme, marshalBearerHTTPSecurityScheme(b), b.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/APIKeyHTTPSecurityScheme.json".
-type HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON struct {
-	Name          string                                                      `json:"name"` // Required.
-	In            HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn `json:"in"`   // Required.
-	Description   string                                                      `json:"description,omitempty"`
-	MapOfAnything map[string]interface{}                                      `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+// APIKeyHTTPSecurityScheme structure is generated from "http://asyncapi.com/definitions/2.4.0/APIKeyHTTPSecurityScheme.json".
+type APIKeyHTTPSecurityScheme struct {
+	Name          string                     `json:"name"` // Required.
+	In            APIKeyHTTPSecuritySchemeIn `json:"in"`   // Required.
+	Description   string                     `json:"description,omitempty"`
+	MapOfAnything map[string]interface{}     `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON
+type marshalAPIKeyHTTPSecurityScheme APIKeyHTTPSecurityScheme
 
-var knownKeysHTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON = []string{
+var knownKeysAPIKeyHTTPSecurityScheme = []string{
 	"name",
 	"in",
 	"description",
@@ -3526,12 +4141,12 @@ var knownKeysHTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON = []strin
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON) UnmarshalJSON(data []byte) error {
+func (a *APIKeyHTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON(*h)
+	ma := marshalAPIKeyHTTPSecurityScheme(*a)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &ma)
 	if err != nil {
 		return err
 	}
@@ -3549,7 +4164,7 @@ func (h *HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON) UnmarshalJSO
 
 	delete(rawMap, "type")
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON {
+	for _, key := range knownKeysAPIKeyHTTPSecurityScheme {
 		delete(rawMap, key)
 	}
 
@@ -3559,8 +4174,8 @@ func (h *HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON) UnmarshalJSO
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if ma.MapOfAnything == nil {
+				ma.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -3570,7 +4185,7 @@ func (h *HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON) UnmarshalJSO
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			ma.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -3585,94 +4200,94 @@ func (h *HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON) UnmarshalJSO
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in APIKeyHTTPSecurityScheme: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON(mh)
+	*a = APIKeyHTTPSecurityScheme(ma)
 
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON = json.RawMessage(`{"type":"httpApiKey"}`)
+// constAPIKeyHTTPSecurityScheme is unconditionally added to JSON.
+var constAPIKeyHTTPSecurityScheme = json.RawMessage(`{"type":"httpApiKey"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON, marshalHTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON(h), h.MapOfAnything)
+func (a APIKeyHTTPSecurityScheme) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constAPIKeyHTTPSecurityScheme, marshalAPIKeyHTTPSecurityScheme(a), a.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240HTTPSecuritySchemeJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/HTTPSecurityScheme.json".
-type HTTPAsyncapiComDefinitions240HTTPSecuritySchemeJSON struct {
-	HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON *HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON `json:"-"`
-	HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON    *HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON    `json:"-"`
-	HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON    *HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON    `json:"-"`
+// HTTPSecurityScheme structure is generated from "http://asyncapi.com/definitions/2.4.0/HTTPSecurityScheme.json".
+type HTTPSecurityScheme struct {
+	NonBearerHTTPSecurityScheme *NonBearerHTTPSecurityScheme `json:"-"`
+	BearerHTTPSecurityScheme    *BearerHTTPSecurityScheme    `json:"-"`
+	APIKeyHTTPSecurityScheme    *APIKeyHTTPSecurityScheme    `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240HTTPSecuritySchemeJSON) UnmarshalJSON(data []byte) error {
+func (h *HTTPSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
 
 	oneOfErrors := make(map[string]error, 3)
 	oneOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON)
+	err = json.Unmarshal(data, &h.NonBearerHTTPSecurityScheme)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON"] = err
-		h.HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON = nil
+		oneOfErrors["NonBearerHTTPSecurityScheme"] = err
+		h.NonBearerHTTPSecurityScheme = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON)
+	err = json.Unmarshal(data, &h.BearerHTTPSecurityScheme)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON"] = err
-		h.HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON = nil
+		oneOfErrors["BearerHTTPSecurityScheme"] = err
+		h.BearerHTTPSecurityScheme = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON)
+	err = json.Unmarshal(data, &h.APIKeyHTTPSecurityScheme)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON"] = err
-		h.HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON = nil
+		oneOfErrors["APIKeyHTTPSecurityScheme"] = err
+		h.APIKeyHTTPSecurityScheme = nil
 	} else {
 		oneOfValid++
 	}
 
 	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for HTTPAsyncapiComDefinitions240HTTPSecuritySchemeJSON with %d valid results: %v", oneOfValid, oneOfErrors)
+		return fmt.Errorf("oneOf constraint failed for HTTPSecurityScheme with %d valid results: %v", oneOfValid, oneOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240HTTPSecuritySchemeJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240NonBearerHTTPSecuritySchemeJSON, h.HTTPAsyncapiComDefinitions240BearerHTTPSecuritySchemeJSON, h.HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSON)
+func (h HTTPSecurityScheme) MarshalJSON() ([]byte, error) {
+	return marshalUnion(h.NonBearerHTTPSecurityScheme, h.BearerHTTPSecurityScheme, h.APIKeyHTTPSecurityScheme)
 }
 
-// HTTPAsyncapiComDefinitions240Oauth2FlowsJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/oauth2Flows.json".
-type HTTPAsyncapiComDefinitions240Oauth2FlowsJSON struct {
-	Description   string                                            `json:"description,omitempty"`
-	Flows         HTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows `json:"flows"` // Required.
-	MapOfAnything map[string]interface{}                            `json:"-"`     // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+// Oauth2Flows structure is generated from "http://asyncapi.com/definitions/2.4.0/oauth2Flows.json".
+type Oauth2Flows struct {
+	Description   string                 `json:"description,omitempty"`
+	Flows         Oauth2FlowsFlows       `json:"flows"` // Required.
+	MapOfAnything map[string]interface{} `json:"-"`     // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240Oauth2FlowsJSON HTTPAsyncapiComDefinitions240Oauth2FlowsJSON
+type marshalOauth2Flows Oauth2Flows
 
-var knownKeysHTTPAsyncapiComDefinitions240Oauth2FlowsJSON = []string{
+var knownKeysOauth2Flows = []string{
 	"description",
 	"flows",
 	"type",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240Oauth2FlowsJSON) UnmarshalJSON(data []byte) error {
+func (o *Oauth2Flows) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240Oauth2FlowsJSON(*h)
+	mo := marshalOauth2Flows(*o)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mo)
 	if err != nil {
 		return err
 	}
@@ -3690,7 +4305,7 @@ func (h *HTTPAsyncapiComDefinitions240Oauth2FlowsJSON) UnmarshalJSON(data []byte
 
 	delete(rawMap, "type")
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240Oauth2FlowsJSON {
+	for _, key := range knownKeysOauth2Flows {
 		delete(rawMap, key)
 	}
 
@@ -3700,8 +4315,8 @@ func (h *HTTPAsyncapiComDefinitions240Oauth2FlowsJSON) UnmarshalJSON(data []byte
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mo.MapOfAnything == nil {
+				mo.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -3711,7 +4326,7 @@ func (h *HTTPAsyncapiComDefinitions240Oauth2FlowsJSON) UnmarshalJSON(data []byte
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mo.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -3719,30 +4334,30 @@ func (h *HTTPAsyncapiComDefinitions240Oauth2FlowsJSON) UnmarshalJSON(data []byte
 		}
 	}
 
-	*h = HTTPAsyncapiComDefinitions240Oauth2FlowsJSON(mh)
+	*o = Oauth2Flows(mo)
 
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240Oauth2FlowsJSON is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240Oauth2FlowsJSON = json.RawMessage(`{"type":"oauth2"}`)
+// constOauth2Flows is unconditionally added to JSON.
+var constOauth2Flows = json.RawMessage(`{"type":"oauth2"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240Oauth2FlowsJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240Oauth2FlowsJSON, marshalHTTPAsyncapiComDefinitions240Oauth2FlowsJSON(h), h.MapOfAnything)
+func (o Oauth2Flows) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constOauth2Flows, marshalOauth2Flows(o), o.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows structure is generated from "http://asyncapi.com/definitions/2.4.0/oauth2Flows.json->flows".
-type HTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows struct {
-	Implicit          *HTTPAsyncapiComDefinitions240Oauth2FlowJSON `json:"implicit,omitempty"`
-	Password          *HTTPAsyncapiComDefinitions240Oauth2FlowJSON `json:"password,omitempty"`
-	ClientCredentials *HTTPAsyncapiComDefinitions240Oauth2FlowJSON `json:"clientCredentials,omitempty"`
-	AuthorizationCode *HTTPAsyncapiComDefinitions240Oauth2FlowJSON `json:"authorizationCode,omitempty"`
+// Oauth2FlowsFlows structure is generated from "http://asyncapi.com/definitions/2.4.0/oauth2Flows.json->flows".
+type Oauth2FlowsFlows struct {
+	Implicit          *Oauth2Flow `json:"implicit,omitempty"`
+	Password          *Oauth2Flow `json:"password,omitempty"`
+	ClientCredentials *Oauth2Flow `json:"clientCredentials,omitempty"`
+	AuthorizationCode *Oauth2Flow `json:"authorizationCode,omitempty"`
 }
 
-type marshalHTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows HTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows
+type marshalOauth2FlowsFlows Oauth2FlowsFlows
 
-var knownKeysHTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows = []string{
+var knownKeysOauth2FlowsFlows = []string{
 	"implicit",
 	"password",
 	"clientCredentials",
@@ -3750,12 +4365,12 @@ var knownKeysHTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows) UnmarshalJSON(data []byte) error {
+func (o *Oauth2FlowsFlows) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows(*h)
+	mo := marshalOauth2FlowsFlows(*o)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mo)
 	if err != nil {
 		return err
 	}
@@ -3767,7 +4382,7 @@ func (h *HTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows) UnmarshalJSON(data [
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows {
+	for _, key := range knownKeysOauth2FlowsFlows {
 		delete(rawMap, key)
 	}
 
@@ -3778,16 +4393,16 @@ func (h *HTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows) UnmarshalJSON(data [
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in Oauth2FlowsFlows: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240Oauth2FlowsJSONFlows(mh)
+	*o = Oauth2FlowsFlows(mo)
 
 	return nil
 }
 
-// HTTPAsyncapiComDefinitions240Oauth2FlowJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/oauth2Flow.json".
-type HTTPAsyncapiComDefinitions240Oauth2FlowJSON struct {
+// Oauth2Flow structure is generated from "http://asyncapi.com/definitions/2.4.0/oauth2Flow.json".
+type Oauth2Flow struct {
 	AuthorizationURL string                 `json:"authorizationUrl,omitempty"` // Format: uri.
 	TokenURL         string                 `json:"tokenUrl,omitempty"`         // Format: uri.
 	RefreshURL       string                 `json:"refreshUrl,omitempty"`       // Format: uri.
@@ -3795,9 +4410,9 @@ type HTTPAsyncapiComDefinitions240Oauth2FlowJSON struct {
 	MapOfAnything    map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240Oauth2FlowJSON HTTPAsyncapiComDefinitions240Oauth2FlowJSON
+type marshalOauth2Flow Oauth2Flow
 
-var knownKeysHTTPAsyncapiComDefinitions240Oauth2FlowJSON = []string{
+var knownKeysOauth2Flow = []string{
 	"authorizationUrl",
 	"tokenUrl",
 	"refreshUrl",
@@ -3805,12 +4420,12 @@ var knownKeysHTTPAsyncapiComDefinitions240Oauth2FlowJSON = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240Oauth2FlowJSON) UnmarshalJSON(data []byte) error {
+func (o *Oauth2Flow) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240Oauth2FlowJSON(*h)
+	mo := marshalOauth2Flow(*o)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mo)
 	if err != nil {
 		return err
 	}
@@ -3822,7 +4437,7 @@ func (h *HTTPAsyncapiComDefinitions240Oauth2FlowJSON) UnmarshalJSON(data []byte)
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240Oauth2FlowJSON {
+	for _, key := range knownKeysOauth2Flow {
 		delete(rawMap, key)
 	}
 
@@ -3832,8 +4447,8 @@ func (h *HTTPAsyncapiComDefinitions240Oauth2FlowJSON) UnmarshalJSON(data []byte)
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mo.MapOfAnything == nil {
+				mo.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -3843,7 +4458,7 @@ func (h *HTTPAsyncapiComDefinitions240Oauth2FlowJSON) UnmarshalJSON(data []byte)
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mo.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -3858,43 +4473,43 @@ func (h *HTTPAsyncapiComDefinitions240Oauth2FlowJSON) UnmarshalJSON(data []byte)
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240Oauth2FlowJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in Oauth2Flow: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240Oauth2FlowJSON(mh)
+	*o = Oauth2Flow(mo)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240Oauth2FlowJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240Oauth2FlowJSON(h), h.MapOfAnything)
+func (o Oauth2Flow) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalOauth2Flow(o), o.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240OpenIDConnectJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/openIdConnect.json".
-type HTTPAsyncapiComDefinitions240OpenIDConnectJSON struct {
+// OpenIDConnect structure is generated from "http://asyncapi.com/definitions/2.4.0/openIdConnect.json".
+type OpenIDConnect struct {
 	Description string `json:"description,omitempty"`
 	// Format: uri.
 	// Required.
-	OpenIDConnectURL string                 `json:"openIdConnectUrl"`
-	MapOfAnything    map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+	URL           string                 `json:"openIdConnectUrl"`
+	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240OpenIDConnectJSON HTTPAsyncapiComDefinitions240OpenIDConnectJSON
+type marshalOpenIDConnect OpenIDConnect
 
-var knownKeysHTTPAsyncapiComDefinitions240OpenIDConnectJSON = []string{
+var knownKeysOpenIDConnect = []string{
 	"description",
 	"openIdConnectUrl",
 	"type",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240OpenIDConnectJSON) UnmarshalJSON(data []byte) error {
+func (o *OpenIDConnect) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240OpenIDConnectJSON(*h)
+	mo := marshalOpenIDConnect(*o)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &mo)
 	if err != nil {
 		return err
 	}
@@ -3912,7 +4527,7 @@ func (h *HTTPAsyncapiComDefinitions240OpenIDConnectJSON) UnmarshalJSON(data []by
 
 	delete(rawMap, "type")
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240OpenIDConnectJSON {
+	for _, key := range knownKeysOpenIDConnect {
 		delete(rawMap, key)
 	}
 
@@ -3922,8 +4537,8 @@ func (h *HTTPAsyncapiComDefinitions240OpenIDConnectJSON) UnmarshalJSON(data []by
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if mo.MapOfAnything == nil {
+				mo.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -3933,7 +4548,7 @@ func (h *HTTPAsyncapiComDefinitions240OpenIDConnectJSON) UnmarshalJSON(data []by
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			mo.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -3948,42 +4563,42 @@ func (h *HTTPAsyncapiComDefinitions240OpenIDConnectJSON) UnmarshalJSON(data []by
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240OpenIDConnectJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in OpenIDConnect: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240OpenIDConnectJSON(mh)
+	*o = OpenIDConnect(mo)
 
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240OpenIDConnectJSON is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240OpenIDConnectJSON = json.RawMessage(`{"type":"openIdConnect"}`)
+// constOpenIDConnect is unconditionally added to JSON.
+var constOpenIDConnect = json.RawMessage(`{"type":"openIdConnect"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240OpenIDConnectJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240OpenIDConnectJSON, marshalHTTPAsyncapiComDefinitions240OpenIDConnectJSON(h), h.MapOfAnything)
+func (o OpenIDConnect) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constOpenIDConnect, marshalOpenIDConnect(o), o.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/SaslPlainSecurityScheme.json".
-type HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON struct {
+// SaslPlainSecurityScheme structure is generated from "http://asyncapi.com/definitions/2.4.0/SaslPlainSecurityScheme.json".
+type SaslPlainSecurityScheme struct {
 	Description   string                 `json:"description,omitempty"`
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON
+type marshalSaslPlainSecurityScheme SaslPlainSecurityScheme
 
-var knownKeysHTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON = []string{
+var knownKeysSaslPlainSecurityScheme = []string{
 	"description",
 	"type",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON) UnmarshalJSON(data []byte) error {
+func (s *SaslPlainSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON(*h)
+	ms := marshalSaslPlainSecurityScheme(*s)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &ms)
 	if err != nil {
 		return err
 	}
@@ -4001,7 +4616,7 @@ func (h *HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON) UnmarshalJSON
 
 	delete(rawMap, "type")
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON {
+	for _, key := range knownKeysSaslPlainSecurityScheme {
 		delete(rawMap, key)
 	}
 
@@ -4011,8 +4626,8 @@ func (h *HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON) UnmarshalJSON
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if ms.MapOfAnything == nil {
+				ms.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -4022,7 +4637,7 @@ func (h *HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON) UnmarshalJSON
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			ms.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -4037,43 +4652,43 @@ func (h *HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON) UnmarshalJSON
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in SaslPlainSecurityScheme: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON(mh)
+	*s = SaslPlainSecurityScheme(ms)
 
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON = json.RawMessage(`{"type":"plain"}`)
+// constSaslPlainSecurityScheme is unconditionally added to JSON.
+var constSaslPlainSecurityScheme = json.RawMessage(`{"type":"plain"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON, marshalHTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON(h), h.MapOfAnything)
+func (s SaslPlainSecurityScheme) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constSaslPlainSecurityScheme, marshalSaslPlainSecurityScheme(s), s.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/SaslScramSecurityScheme.json".
-type HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON struct {
-	Type          HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONType `json:"type"` // Required.
-	Description   string                                                       `json:"description,omitempty"`
-	MapOfAnything map[string]interface{}                                       `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+// SaslScramSecurityScheme structure is generated from "http://asyncapi.com/definitions/2.4.0/SaslScramSecurityScheme.json".
+type SaslScramSecurityScheme struct {
+	Type          SaslScramSecuritySchemeType `json:"type"` // Required.
+	Description   string                      `json:"description,omitempty"`
+	MapOfAnything map[string]interface{}      `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON
+type marshalSaslScramSecurityScheme SaslScramSecurityScheme
 
-var knownKeysHTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON = []string{
+var knownKeysSaslScramSecurityScheme = []string{
 	"type",
 	"description",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON) UnmarshalJSON(data []byte) error {
+func (s *SaslScramSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON(*h)
+	ms := marshalSaslScramSecurityScheme(*s)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &ms)
 	if err != nil {
 		return err
 	}
@@ -4085,7 +4700,7 @@ func (h *HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON) UnmarshalJSON
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON {
+	for _, key := range knownKeysSaslScramSecurityScheme {
 		delete(rawMap, key)
 	}
 
@@ -4095,8 +4710,8 @@ func (h *HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON) UnmarshalJSON
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if ms.MapOfAnything == nil {
+				ms.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -4106,7 +4721,7 @@ func (h *HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON) UnmarshalJSON
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			ms.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -4121,39 +4736,39 @@ func (h *HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON) UnmarshalJSON
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in SaslScramSecurityScheme: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON(mh)
+	*s = SaslScramSecurityScheme(ms)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON(h), h.MapOfAnything)
+func (s SaslScramSecurityScheme) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalSaslScramSecurityScheme(s), s.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/SaslGssapiSecurityScheme.json".
-type HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON struct {
+// SaslGssapiSecurityScheme structure is generated from "http://asyncapi.com/definitions/2.4.0/SaslGssapiSecurityScheme.json".
+type SaslGssapiSecurityScheme struct {
 	Description   string                 `json:"description,omitempty"`
 	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
-type marshalHTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON
+type marshalSaslGssapiSecurityScheme SaslGssapiSecurityScheme
 
-var knownKeysHTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON = []string{
+var knownKeysSaslGssapiSecurityScheme = []string{
 	"description",
 	"type",
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON) UnmarshalJSON(data []byte) error {
+func (s *SaslGssapiSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON(*h)
+	ms := marshalSaslGssapiSecurityScheme(*s)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &ms)
 	if err != nil {
 		return err
 	}
@@ -4171,7 +4786,7 @@ func (h *HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON) UnmarshalJSO
 
 	delete(rawMap, "type")
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON {
+	for _, key := range knownKeysSaslGssapiSecurityScheme {
 		delete(rawMap, key)
 	}
 
@@ -4181,8 +4796,8 @@ func (h *HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON) UnmarshalJSO
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if ms.MapOfAnything == nil {
+				ms.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -4192,7 +4807,7 @@ func (h *HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON) UnmarshalJSO
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			ms.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -4207,224 +4822,224 @@ func (h *HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON) UnmarshalJSO
 			offendingKeys = append(offendingKeys, key)
 		}
 
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON: %v", offendingKeys)
+		return fmt.Errorf("additional properties not allowed in SaslGssapiSecurityScheme: %v", offendingKeys)
 	}
 
-	*h = HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON(mh)
+	*s = SaslGssapiSecurityScheme(ms)
 
 	return nil
 }
 
-// constHTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON is unconditionally added to JSON.
-var constHTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON = json.RawMessage(`{"type":"gssapi"}`)
+// constSaslGssapiSecurityScheme is unconditionally added to JSON.
+var constSaslGssapiSecurityScheme = json.RawMessage(`{"type":"gssapi"}`)
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(constHTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON, marshalHTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON(h), h.MapOfAnything)
+func (s SaslGssapiSecurityScheme) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constSaslGssapiSecurityScheme, marshalSaslGssapiSecurityScheme(s), s.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240SaslSecuritySchemeJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/SaslSecurityScheme.json".
-type HTTPAsyncapiComDefinitions240SaslSecuritySchemeJSON struct {
-	HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON  *HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON  `json:"-"`
-	HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON  *HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON  `json:"-"`
-	HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON *HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON `json:"-"`
+// SaslSecurityScheme structure is generated from "http://asyncapi.com/definitions/2.4.0/SaslSecurityScheme.json".
+type SaslSecurityScheme struct {
+	SaslPlainSecurityScheme  *SaslPlainSecurityScheme  `json:"-"`
+	SaslScramSecurityScheme  *SaslScramSecurityScheme  `json:"-"`
+	SaslGssapiSecurityScheme *SaslGssapiSecurityScheme `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SaslSecuritySchemeJSON) UnmarshalJSON(data []byte) error {
+func (s *SaslSecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
 
 	oneOfErrors := make(map[string]error, 3)
 	oneOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON)
+	err = json.Unmarshal(data, &s.SaslPlainSecurityScheme)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON"] = err
-		h.HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON = nil
+		oneOfErrors["SaslPlainSecurityScheme"] = err
+		s.SaslPlainSecurityScheme = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON)
+	err = json.Unmarshal(data, &s.SaslScramSecurityScheme)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON"] = err
-		h.HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON = nil
+		oneOfErrors["SaslScramSecurityScheme"] = err
+		s.SaslScramSecurityScheme = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON)
+	err = json.Unmarshal(data, &s.SaslGssapiSecurityScheme)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON"] = err
-		h.HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON = nil
+		oneOfErrors["SaslGssapiSecurityScheme"] = err
+		s.SaslGssapiSecurityScheme = nil
 	} else {
 		oneOfValid++
 	}
 
 	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for HTTPAsyncapiComDefinitions240SaslSecuritySchemeJSON with %d valid results: %v", oneOfValid, oneOfErrors)
+		return fmt.Errorf("oneOf constraint failed for SaslSecurityScheme with %d valid results: %v", oneOfValid, oneOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SaslSecuritySchemeJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240SaslPlainSecuritySchemeJSON, h.HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSON, h.HTTPAsyncapiComDefinitions240SaslGssapiSecuritySchemeJSON)
+func (s SaslSecurityScheme) MarshalJSON() ([]byte, error) {
+	return marshalUnion(s.SaslPlainSecurityScheme, s.SaslScramSecurityScheme, s.SaslGssapiSecurityScheme)
 }
 
-// HTTPAsyncapiComDefinitions240SecuritySchemeJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/SecurityScheme.json".
-type HTTPAsyncapiComDefinitions240SecuritySchemeJSON struct {
-	HTTPAsyncapiComDefinitions240UserPasswordJSON         *HTTPAsyncapiComDefinitions240UserPasswordJSON         `json:"-"`
-	HTTPAsyncapiComDefinitions240APIKeyJSON               *HTTPAsyncapiComDefinitions240APIKeyJSON               `json:"-"`
-	HTTPAsyncapiComDefinitions240X509JSON                 *HTTPAsyncapiComDefinitions240X509JSON                 `json:"-"`
-	HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON  *HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON  `json:"-"`
-	HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON *HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON `json:"-"`
-	HTTPAsyncapiComDefinitions240HTTPSecuritySchemeJSON   *HTTPAsyncapiComDefinitions240HTTPSecuritySchemeJSON   `json:"-"`
-	HTTPAsyncapiComDefinitions240Oauth2FlowsJSON          *HTTPAsyncapiComDefinitions240Oauth2FlowsJSON          `json:"-"`
-	HTTPAsyncapiComDefinitions240OpenIDConnectJSON        *HTTPAsyncapiComDefinitions240OpenIDConnectJSON        `json:"-"`
-	HTTPAsyncapiComDefinitions240SaslSecuritySchemeJSON   *HTTPAsyncapiComDefinitions240SaslSecuritySchemeJSON   `json:"-"`
+// SecurityScheme structure is generated from "http://asyncapi.com/definitions/2.4.0/SecurityScheme.json".
+type SecurityScheme struct {
+	UserPassword         *UserPassword         `json:"-"`
+	APIKey               *APIKey               `json:"-"`
+	X509                 *X509                 `json:"-"`
+	SymmetricEncryption  *SymmetricEncryption  `json:"-"`
+	AsymmetricEncryption *AsymmetricEncryption `json:"-"`
+	HTTPSecurityScheme   *HTTPSecurityScheme   `json:"-"`
+	Oauth2Flows          *Oauth2Flows          `json:"-"`
+	OpenIDConnect        *OpenIDConnect        `json:"-"`
+	SaslSecurityScheme   *SaslSecurityScheme   `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SecuritySchemeJSON) UnmarshalJSON(data []byte) error {
+func (s *SecurityScheme) UnmarshalJSON(data []byte) error {
 	var err error
 
 	oneOfErrors := make(map[string]error, 9)
 	oneOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240UserPasswordJSON)
+	err = json.Unmarshal(data, &s.UserPassword)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240UserPasswordJSON"] = err
-		h.HTTPAsyncapiComDefinitions240UserPasswordJSON = nil
+		oneOfErrors["UserPassword"] = err
+		s.UserPassword = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240APIKeyJSON)
+	err = json.Unmarshal(data, &s.APIKey)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240APIKeyJSON"] = err
-		h.HTTPAsyncapiComDefinitions240APIKeyJSON = nil
+		oneOfErrors["APIKey"] = err
+		s.APIKey = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240X509JSON)
+	err = json.Unmarshal(data, &s.X509)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240X509JSON"] = err
-		h.HTTPAsyncapiComDefinitions240X509JSON = nil
+		oneOfErrors["X509"] = err
+		s.X509 = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON)
+	err = json.Unmarshal(data, &s.SymmetricEncryption)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON"] = err
-		h.HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON = nil
+		oneOfErrors["SymmetricEncryption"] = err
+		s.SymmetricEncryption = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON)
+	err = json.Unmarshal(data, &s.AsymmetricEncryption)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON"] = err
-		h.HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON = nil
+		oneOfErrors["AsymmetricEncryption"] = err
+		s.AsymmetricEncryption = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240HTTPSecuritySchemeJSON)
+	err = json.Unmarshal(data, &s.HTTPSecurityScheme)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240HTTPSecuritySchemeJSON"] = err
-		h.HTTPAsyncapiComDefinitions240HTTPSecuritySchemeJSON = nil
+		oneOfErrors["HTTPSecurityScheme"] = err
+		s.HTTPSecurityScheme = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240Oauth2FlowsJSON)
+	err = json.Unmarshal(data, &s.Oauth2Flows)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240Oauth2FlowsJSON"] = err
-		h.HTTPAsyncapiComDefinitions240Oauth2FlowsJSON = nil
+		oneOfErrors["Oauth2Flows"] = err
+		s.Oauth2Flows = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240OpenIDConnectJSON)
+	err = json.Unmarshal(data, &s.OpenIDConnect)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240OpenIDConnectJSON"] = err
-		h.HTTPAsyncapiComDefinitions240OpenIDConnectJSON = nil
+		oneOfErrors["OpenIDConnect"] = err
+		s.OpenIDConnect = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240SaslSecuritySchemeJSON)
+	err = json.Unmarshal(data, &s.SaslSecurityScheme)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240SaslSecuritySchemeJSON"] = err
-		h.HTTPAsyncapiComDefinitions240SaslSecuritySchemeJSON = nil
+		oneOfErrors["SaslSecurityScheme"] = err
+		s.SaslSecurityScheme = nil
 	} else {
 		oneOfValid++
 	}
 
 	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for HTTPAsyncapiComDefinitions240SecuritySchemeJSON with %d valid results: %v", oneOfValid, oneOfErrors)
+		return fmt.Errorf("oneOf constraint failed for SecurityScheme with %d valid results: %v", oneOfValid, oneOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SecuritySchemeJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240UserPasswordJSON, h.HTTPAsyncapiComDefinitions240APIKeyJSON, h.HTTPAsyncapiComDefinitions240X509JSON, h.HTTPAsyncapiComDefinitions240SymmetricEncryptionJSON, h.HTTPAsyncapiComDefinitions240AsymmetricEncryptionJSON, h.HTTPAsyncapiComDefinitions240HTTPSecuritySchemeJSON, h.HTTPAsyncapiComDefinitions240Oauth2FlowsJSON, h.HTTPAsyncapiComDefinitions240OpenIDConnectJSON, h.HTTPAsyncapiComDefinitions240SaslSecuritySchemeJSON)
+func (s SecurityScheme) MarshalJSON() ([]byte, error) {
+	return marshalUnion(s.UserPassword, s.APIKey, s.X509, s.SymmetricEncryption, s.AsymmetricEncryption, s.HTTPSecurityScheme, s.Oauth2Flows, s.OpenIDConnect, s.SaslSecurityScheme)
 }
 
-// HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWD structure is generated from "http://asyncapi.com/definitions/2.4.0/components.json->securitySchemes->^[\w\d\.\-_]+$".
-type HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWD struct {
-	HTTPAsyncapiComDefinitions240ReferenceJSON      *HTTPAsyncapiComDefinitions240ReferenceJSON      `json:"-"`
-	HTTPAsyncapiComDefinitions240SecuritySchemeJSON *HTTPAsyncapiComDefinitions240SecuritySchemeJSON `json:"-"`
+// ComponentsSecuritySchemesWD structure is generated from "http://asyncapi.com/definitions/2.4.0/components.json->securitySchemes->^[\w\d\.\-_]+$".
+type ComponentsSecuritySchemesWD struct {
+	Reference      *Reference      `json:"-"`
+	SecurityScheme *SecurityScheme `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWD) UnmarshalJSON(data []byte) error {
+func (c *ComponentsSecuritySchemesWD) UnmarshalJSON(data []byte) error {
 	var err error
 
 	oneOfErrors := make(map[string]error, 2)
 	oneOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240ReferenceJSON)
+	err = json.Unmarshal(data, &c.Reference)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240ReferenceJSON"] = err
-		h.HTTPAsyncapiComDefinitions240ReferenceJSON = nil
+		oneOfErrors["Reference"] = err
+		c.Reference = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240SecuritySchemeJSON)
+	err = json.Unmarshal(data, &c.SecurityScheme)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240SecuritySchemeJSON"] = err
-		h.HTTPAsyncapiComDefinitions240SecuritySchemeJSON = nil
+		oneOfErrors["SecurityScheme"] = err
+		c.SecurityScheme = nil
 	} else {
 		oneOfValid++
 	}
 
 	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWD with %d valid results: %v", oneOfValid, oneOfErrors)
+		return fmt.Errorf("oneOf constraint failed for ComponentsSecuritySchemesWD with %d valid results: %v", oneOfValid, oneOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWD) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240ReferenceJSON, h.HTTPAsyncapiComDefinitions240SecuritySchemeJSON)
+func (c ComponentsSecuritySchemesWD) MarshalJSON() ([]byte, error) {
+	return marshalUnion(c.Reference, c.SecurityScheme)
 }
 
-// HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemes structure is generated from "http://asyncapi.com/definitions/2.4.0/components.json->securitySchemes".
-type HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemes struct {
-	MapOfHTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWDValues map[string]HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWD `json:"-"` // Key must match pattern: `^[\w\d\.\-_]+$`.
+// ComponentsSecuritySchemes structure is generated from "http://asyncapi.com/definitions/2.4.0/components.json->securitySchemes".
+type ComponentsSecuritySchemes struct {
+	MapOfComponentsSecuritySchemesWDValues map[string]ComponentsSecuritySchemesWD `json:"-"` // Key must match pattern: `^[\w\d\.\-_]+$`.
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemes) UnmarshalJSON(data []byte) error {
+func (c *ComponentsSecuritySchemes) UnmarshalJSON(data []byte) error {
 	var err error
 
 	var rawMap map[string]json.RawMessage
@@ -4440,18 +5055,18 @@ func (h *HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemes) UnmarshalJS
 		if regexWD.MatchString(key) {
 			matched = true
 
-			if h.MapOfHTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWDValues == nil {
-				h.MapOfHTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWDValues = make(map[string]HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWD, 1)
+			if c.MapOfComponentsSecuritySchemesWDValues == nil {
+				c.MapOfComponentsSecuritySchemesWDValues = make(map[string]ComponentsSecuritySchemesWD, 1)
 			}
 
-			var val HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWD
+			var val ComponentsSecuritySchemesWD
 
 			err = json.Unmarshal(rawValue, &val)
 			if err != nil {
 				return err
 			}
 
-			h.MapOfHTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWDValues[key] = val
+			c.MapOfComponentsSecuritySchemesWDValues[key] = val
 		}
 
 		if matched {
@@ -4463,58 +5078,58 @@ func (h *HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemes) UnmarshalJS
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemes) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.MapOfHTTPAsyncapiComDefinitions240ComponentsJSONSecuritySchemesWDValues)
+func (c ComponentsSecuritySchemes) MarshalJSON() ([]byte, error) {
+	return marshalUnion(c.MapOfComponentsSecuritySchemesWDValues)
 }
 
-// HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWD structure is generated from "http://asyncapi.com/definitions/2.4.0/components.json->correlationIds->^[\w\d\.\-_]+$".
-type HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWD struct {
-	HTTPAsyncapiComDefinitions240ReferenceJSON     *HTTPAsyncapiComDefinitions240ReferenceJSON     `json:"-"`
-	HTTPAsyncapiComDefinitions240CorrelationIDJSON *HTTPAsyncapiComDefinitions240CorrelationIDJSON `json:"-"`
+// ComponentsCorrelationIdsWD structure is generated from "http://asyncapi.com/definitions/2.4.0/components.json->correlationIds->^[\w\d\.\-_]+$".
+type ComponentsCorrelationIdsWD struct {
+	Reference     *Reference     `json:"-"`
+	CorrelationID *CorrelationID `json:"-"`
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWD) UnmarshalJSON(data []byte) error {
+func (c *ComponentsCorrelationIdsWD) UnmarshalJSON(data []byte) error {
 	var err error
 
 	oneOfErrors := make(map[string]error, 2)
 	oneOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240ReferenceJSON)
+	err = json.Unmarshal(data, &c.Reference)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240ReferenceJSON"] = err
-		h.HTTPAsyncapiComDefinitions240ReferenceJSON = nil
+		oneOfErrors["Reference"] = err
+		c.Reference = nil
 	} else {
 		oneOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240CorrelationIDJSON)
+	err = json.Unmarshal(data, &c.CorrelationID)
 	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240CorrelationIDJSON"] = err
-		h.HTTPAsyncapiComDefinitions240CorrelationIDJSON = nil
+		oneOfErrors["CorrelationID"] = err
+		c.CorrelationID = nil
 	} else {
 		oneOfValid++
 	}
 
 	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWD with %d valid results: %v", oneOfValid, oneOfErrors)
+		return fmt.Errorf("oneOf constraint failed for ComponentsCorrelationIdsWD with %d valid results: %v", oneOfValid, oneOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWD) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240ReferenceJSON, h.HTTPAsyncapiComDefinitions240CorrelationIDJSON)
+func (c ComponentsCorrelationIdsWD) MarshalJSON() ([]byte, error) {
+	return marshalUnion(c.Reference, c.CorrelationID)
 }
 
-// HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIds structure is generated from "http://asyncapi.com/definitions/2.4.0/components.json->correlationIds".
-type HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIds struct {
-	MapOfHTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWDValues map[string]HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWD `json:"-"` // Key must match pattern: `^[\w\d\.\-_]+$`.
+// ComponentsCorrelationIds structure is generated from "http://asyncapi.com/definitions/2.4.0/components.json->correlationIds".
+type ComponentsCorrelationIds struct {
+	MapOfComponentsCorrelationIdsWDValues map[string]ComponentsCorrelationIdsWD `json:"-"` // Key must match pattern: `^[\w\d\.\-_]+$`.
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIds) UnmarshalJSON(data []byte) error {
+func (c *ComponentsCorrelationIds) UnmarshalJSON(data []byte) error {
 	var err error
 
 	var rawMap map[string]json.RawMessage
@@ -4530,18 +5145,18 @@ func (h *HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIds) UnmarshalJSO
 		if regexWD.MatchString(key) {
 			matched = true
 
-			if h.MapOfHTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWDValues == nil {
-				h.MapOfHTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWDValues = make(map[string]HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWD, 1)
+			if c.MapOfComponentsCorrelationIdsWDValues == nil {
+				c.MapOfComponentsCorrelationIdsWDValues = make(map[string]ComponentsCorrelationIdsWD, 1)
 			}
 
-			var val HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWD
+			var val ComponentsCorrelationIdsWD
 
 			err = json.Unmarshal(rawValue, &val)
 			if err != nil {
 				return err
 			}
 
-			h.MapOfHTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWDValues[key] = val
+			c.MapOfComponentsCorrelationIdsWDValues[key] = val
 		}
 
 		if matched {
@@ -4553,8 +5168,8 @@ func (h *HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIds) UnmarshalJSO
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIds) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.MapOfHTTPAsyncapiComDefinitions240ComponentsJSONCorrelationIdsWDValues)
+func (c ComponentsCorrelationIds) MarshalJSON() ([]byte, error) {
+	return marshalUnion(c.MapOfComponentsCorrelationIdsWDValues)
 }
 
 // JSONSchemaTypeAnyOf0 is an enum type.
@@ -4679,30 +5294,30 @@ func (i *JSONSchemaTypeAnyOf1Items) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// HTTPAsyncapiComDefinitions240APIKeyJSONIn is an enum type.
-type HTTPAsyncapiComDefinitions240APIKeyJSONIn string
+// APIKeyIn is an enum type.
+type APIKeyIn string
 
-// HTTPAsyncapiComDefinitions240APIKeyJSONIn values enumeration.
+// APIKeyIn values enumeration.
 const (
-	HTTPAsyncapiComDefinitions240APIKeyJSONInUser     = HTTPAsyncapiComDefinitions240APIKeyJSONIn("user")
-	HTTPAsyncapiComDefinitions240APIKeyJSONInPassword = HTTPAsyncapiComDefinitions240APIKeyJSONIn("password")
+	APIKeyInUser     = APIKeyIn("user")
+	APIKeyInPassword = APIKeyIn("password")
 )
 
 // MarshalJSON encodes JSON.
-func (i HTTPAsyncapiComDefinitions240APIKeyJSONIn) MarshalJSON() ([]byte, error) {
+func (i APIKeyIn) MarshalJSON() ([]byte, error) {
 	switch i {
-	case HTTPAsyncapiComDefinitions240APIKeyJSONInUser:
-	case HTTPAsyncapiComDefinitions240APIKeyJSONInPassword:
+	case APIKeyInUser:
+	case APIKeyInPassword:
 
 	default:
-		return nil, fmt.Errorf("unexpected HTTPAsyncapiComDefinitions240APIKeyJSONIn value: %v", i)
+		return nil, fmt.Errorf("unexpected APIKeyIn value: %v", i)
 	}
 
 	return json.Marshal(string(i))
 }
 
 // UnmarshalJSON decodes JSON.
-func (i *HTTPAsyncapiComDefinitions240APIKeyJSONIn) UnmarshalJSON(data []byte) error {
+func (i *APIKeyIn) UnmarshalJSON(data []byte) error {
 	var ii string
 
 	err := json.Unmarshal(data, &ii)
@@ -4710,14 +5325,14 @@ func (i *HTTPAsyncapiComDefinitions240APIKeyJSONIn) UnmarshalJSON(data []byte) e
 		return err
 	}
 
-	v := HTTPAsyncapiComDefinitions240APIKeyJSONIn(ii)
+	v := APIKeyIn(ii)
 
 	switch v {
-	case HTTPAsyncapiComDefinitions240APIKeyJSONInUser:
-	case HTTPAsyncapiComDefinitions240APIKeyJSONInPassword:
+	case APIKeyInUser:
+	case APIKeyInPassword:
 
 	default:
-		return fmt.Errorf("unexpected HTTPAsyncapiComDefinitions240APIKeyJSONIn value: %v", v)
+		return fmt.Errorf("unexpected APIKeyIn value: %v", v)
 	}
 
 	*i = v
@@ -4725,32 +5340,32 @@ func (i *HTTPAsyncapiComDefinitions240APIKeyJSONIn) UnmarshalJSON(data []byte) e
 	return nil
 }
 
-// HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn is an enum type.
-type HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn string
+// APIKeyHTTPSecuritySchemeIn is an enum type.
+type APIKeyHTTPSecuritySchemeIn string
 
-// HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn values enumeration.
+// APIKeyHTTPSecuritySchemeIn values enumeration.
 const (
-	HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONInHeader = HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn("header")
-	HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONInQuery  = HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn("query")
-	HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONInCookie = HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn("cookie")
+	APIKeyHTTPSecuritySchemeInHeader = APIKeyHTTPSecuritySchemeIn("header")
+	APIKeyHTTPSecuritySchemeInQuery  = APIKeyHTTPSecuritySchemeIn("query")
+	APIKeyHTTPSecuritySchemeInCookie = APIKeyHTTPSecuritySchemeIn("cookie")
 )
 
 // MarshalJSON encodes JSON.
-func (i HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn) MarshalJSON() ([]byte, error) {
+func (i APIKeyHTTPSecuritySchemeIn) MarshalJSON() ([]byte, error) {
 	switch i {
-	case HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONInHeader:
-	case HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONInQuery:
-	case HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONInCookie:
+	case APIKeyHTTPSecuritySchemeInHeader:
+	case APIKeyHTTPSecuritySchemeInQuery:
+	case APIKeyHTTPSecuritySchemeInCookie:
 
 	default:
-		return nil, fmt.Errorf("unexpected HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn value: %v", i)
+		return nil, fmt.Errorf("unexpected APIKeyHTTPSecuritySchemeIn value: %v", i)
 	}
 
 	return json.Marshal(string(i))
 }
 
 // UnmarshalJSON decodes JSON.
-func (i *HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn) UnmarshalJSON(data []byte) error {
+func (i *APIKeyHTTPSecuritySchemeIn) UnmarshalJSON(data []byte) error {
 	var ii string
 
 	err := json.Unmarshal(data, &ii)
@@ -4758,15 +5373,15 @@ func (i *HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn) UnmarshalJ
 		return err
 	}
 
-	v := HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn(ii)
+	v := APIKeyHTTPSecuritySchemeIn(ii)
 
 	switch v {
-	case HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONInHeader:
-	case HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONInQuery:
-	case HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONInCookie:
+	case APIKeyHTTPSecuritySchemeInHeader:
+	case APIKeyHTTPSecuritySchemeInQuery:
+	case APIKeyHTTPSecuritySchemeInCookie:
 
 	default:
-		return fmt.Errorf("unexpected HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn value: %v", v)
+		return fmt.Errorf("unexpected APIKeyHTTPSecuritySchemeIn value: %v", v)
 	}
 
 	*i = v
@@ -4774,30 +5389,30 @@ func (i *HTTPAsyncapiComDefinitions240APIKeyHTTPSecuritySchemeJSONIn) UnmarshalJ
 	return nil
 }
 
-// HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONType is an enum type.
-type HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONType string
+// SaslScramSecuritySchemeType is an enum type.
+type SaslScramSecuritySchemeType string
 
-// HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONType values enumeration.
+// SaslScramSecuritySchemeType values enumeration.
 const (
-	HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONTypeScramSha256 = HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONType("scramSha256")
-	HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONTypeScramSha512 = HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONType("scramSha512")
+	SaslScramSecuritySchemeTypeScramSha256 = SaslScramSecuritySchemeType("scramSha256")
+	SaslScramSecuritySchemeTypeScramSha512 = SaslScramSecuritySchemeType("scramSha512")
 )
 
 // MarshalJSON encodes JSON.
-func (i HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONType) MarshalJSON() ([]byte, error) {
+func (i SaslScramSecuritySchemeType) MarshalJSON() ([]byte, error) {
 	switch i {
-	case HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONTypeScramSha256:
-	case HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONTypeScramSha512:
+	case SaslScramSecuritySchemeTypeScramSha256:
+	case SaslScramSecuritySchemeTypeScramSha512:
 
 	default:
-		return nil, fmt.Errorf("unexpected HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONType value: %v", i)
+		return nil, fmt.Errorf("unexpected SaslScramSecuritySchemeType value: %v", i)
 	}
 
 	return json.Marshal(string(i))
 }
 
 // UnmarshalJSON decodes JSON.
-func (i *HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONType) UnmarshalJSON(data []byte) error {
+func (i *SaslScramSecuritySchemeType) UnmarshalJSON(data []byte) error {
 	var ii string
 
 	err := json.Unmarshal(data, &ii)
@@ -4805,14 +5420,14 @@ func (i *HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONType) Unmarshal
 		return err
 	}
 
-	v := HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONType(ii)
+	v := SaslScramSecuritySchemeType(ii)
 
 	switch v {
-	case HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONTypeScramSha256:
-	case HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONTypeScramSha512:
+	case SaslScramSecuritySchemeTypeScramSha256:
+	case SaslScramSecuritySchemeTypeScramSha512:
 
 	default:
-		return fmt.Errorf("unexpected HTTPAsyncapiComDefinitions240SaslScramSecuritySchemeJSONType value: %v", v)
+		return fmt.Errorf("unexpected SaslScramSecuritySchemeType value: %v", v)
 	}
 
 	*i = v
