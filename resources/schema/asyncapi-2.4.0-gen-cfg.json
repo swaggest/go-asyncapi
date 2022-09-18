@@ -1,0 +1,14 @@
+{
+  "rewrietes": {
+    "/HTTPAsyncapiComDefinitions240([\\w\\d]+)JSON([\\w\\d]+)?/i": "${1}${2}"
+  },
+  "renames": {
+    "HTTPAsyncapiComDefinitions240ServerJSON": "Server",
+    "HTTPAsyncapiComDefinitions240MessageJSONOneOf1OneOf1": "MessageEntity",
+    "HTTPAsyncapiComDefinitions240ServerVariableJSON": "ServerVariable",
+    "HTTPAsyncapiComDefinitions240ChannelItemJSON": "ChannelItem",
+    "HTTPAsyncapiComDefinitions240BindingsObjectJSON": "ChannelBindingsObject"
+  },
+  "validateRequired": true,
+  "fluentSetters": true
+}
