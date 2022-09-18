@@ -2,7 +2,7 @@ package asyncapi_test
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"time"
 
 	"github.com/swaggest/go-asyncapi/reflector/asyncapi-2.1.0"
@@ -91,7 +91,7 @@ func ExampleReflector_AddChannel() {
 	mustNotFail(err)
 
 	fmt.Println(string(yaml))
-	mustNotFail(ioutil.WriteFile("sample.yaml", yaml, 0o600))
+	mustNotFail(os.WriteFile("sample.yaml", yaml, 0o600))
 	// output:
 	// asyncapi: 2.1.0
 	// info:

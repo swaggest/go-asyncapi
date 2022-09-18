@@ -1,4 +1,4 @@
-#GOLANGCI_LINT_VERSION := "v1.46.2" # Optional configuration to pinpoint golangci-lint version.
+#GOLANGCI_LINT_VERSION := "v1.49.0" # Optional configuration to pinpoint golangci-lint version.
 
 # The head of Makefile determines location of dev-go to include standard targets.
 GO ?= go
@@ -38,7 +38,15 @@ endif
 ## Run tests
 test: test-unit
 
-JSON_CLI_VERSION := v1.8.7
+JSON_CLI_VERSION := v1.11.0
+
+## Generate bindings for v2.4.0 spec.
+gen-2.4.0:
+	# TODO replace bindings "title" to "_title" for better names of generated entities.
+	@test -s $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) || (curl -sSfL https://github.com/swaggest/json-cli/releases/download/$(JSON_CLI_VERSION)/json-cli -o $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) && chmod +x $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION))
+	cd resources/schema/ && $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) gen-go asyncapi-2.4.0-fixed.json --output ../../spec-2.4.0/entities.go  --fluent-setters --package-name spec --root-name AsyncAPI --config ./asyncapi-2.4.0-gen-cfg.json --schema-resolver ./bindings-resolver.json
+	make fix-lint
+
 
 ## Generate bindings for v2.1.0 spec.
 gen-2.1.0:
