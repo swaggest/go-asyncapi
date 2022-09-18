@@ -27,21 +27,17 @@ func TestReflector_AddChannel(t *testing.T) {
 		Item    SubItem `json:"item" description:"Some item"`
 	}
 
-	r := asyncapi.Reflector{
-		Schema: &spec.AsyncAPI{
-			Servers: map[string]spec.Server{
-				"production": {
-					URL:             "api.lovely.com:{port}",
-					Protocol:        "amqp",
-					ProtocolVersion: "AMQP 0.9.1",
-				},
-			},
-			Info: spec.Info{
-				Version: "1.2.3", // required
-				Title:   "My Lovely Messaging API",
-			},
-		},
-	}
+	asyncAPI := spec.AsyncAPI{}
+	asyncAPI.AddServer("production", spec.Server{
+		URL:             "api.lovely.com:{port}",
+		Protocol:        "amqp",
+		ProtocolVersion: "AMQP 0.9.1",
+	})
+
+	asyncAPI.Info.Version = "1.2.3"
+	asyncAPI.Info.Title = "My Lovely Messaging API"
+
+	r := asyncapi.Reflector{Schema: &asyncAPI}
 	assert.NoError(t, r.AddChannel(asyncapi.ChannelInfo{
 		Name: "one.{name}.two",
 		Publish: &asyncapi.MessageSample{
@@ -65,123 +61,73 @@ func TestReflector_AddChannel(t *testing.T) {
 	}))
 
 	assertjson.EqualMarshal(t, []byte(`{
-	 "asyncapi": "2.1.0",
-	 "info": {
-	  "title": "My Lovely Messaging API",
-	  "version": "1.2.3"
-	 },
-	 "servers": {
-	  "production": {
-	   "url": "api.lovely.com:{port}",
-	   "protocol": "amqp",
-	   "protocolVersion": "AMQP 0.9.1"
-	  }
-	 },
-	 "channels": {
-	  "another.one": {
-	   "subscribe": {
-		"message": {
-		 "$ref": "#/components/messages/Asyncapi210TestMyAnotherMessage"
+	  "asyncapi":"2.4.0",
+	  "info":{"title":"My Lovely Messaging API","version":"1.2.3"},
+	  "servers":{
+		"production":{
+		  "url":"api.lovely.com:{port}","protocol":"amqp",
+		  "protocolVersion":"AMQP 0.9.1"
 		}
-	   }
 	  },
-	  "one.{name}.two": {
-	   "parameters": {
-		"name": {
-		 "schema": {
-		  "description": "Name",
-		  "type": "string"
-		 }
-		}
-	   },
-	   "publish": {
-		"message": {
-		 "$ref": "#/components/messages/Asyncapi210TestMyMessage"
-		}
-	   }
-	  }
-	 },
-	 "components": {
-	  "schemas": {
-	   "Asyncapi210TestMyAnotherMessage": {
-		"properties": {
-		 "item": {
-		  "$ref": "#/components/schemas/Asyncapi210TestSubItem",
-		  "description": "Some item"
-		 }
-		},
-		"type": "object"
-	   },
-	   "Asyncapi210TestMyMessage": {
-		"properties": {
-		 "createdAt": {
-		  "description": "Creation time",
-		  "format": "date-time",
-		  "type": "string"
-		 },
-		 "items": {
-		  "description": "List of items",
-		  "items": {
-		   "$ref": "#/components/schemas/Asyncapi210TestSubItem"
-		  },
-		  "type": [
-		   "array",
-		   "null"
-		  ]
-		 }
-		},
-		"type": "object"
-	   },
-	   "Asyncapi210TestSubItem": {
-		"properties": {
-		 "key": {
-		  "description": "Item key",
-		  "type": "string"
-		 },
-		 "values": {
-		  "description": "List of item values",
-		  "items": {
-		   "type": "integer"
-		  },
-		  "type": [
-		   "array",
-		   "null"
-		  ],
-		  "uniqueItems": true
-		 }
-		},
-		"type": "object"
-	   }
-	  },
-	  "messages": {
-	   "Asyncapi210TestMyAnotherMessage": {
-		"headers": {
-		 "properties": {
-		  "X-Trace-ID": {
-		   "description": "Tracing header",
-		   "type": "string"
+	  "channels":{
+		"another.one":{
+		  "subscribe":{
+			"message":{"$ref":"#/components/messages/Asyncapi240TestMyAnotherMessage"}
 		  }
-		 },
-		 "required": [
-		  "X-Trace-ID"
-		 ],
-		 "type": "object"
 		},
-		"payload": {
-		 "$ref": "#/components/schemas/Asyncapi210TestMyAnotherMessage"
+		"one.{name}.two":{
+		  "parameters":{"name":{"schema":{"description":"Name","type":"string"}}},
+		  "publish":{"message":{"$ref":"#/components/messages/Asyncapi240TestMyMessage"}}
+		}
+	  },
+	  "components":{
+		"schemas":{
+		  "Asyncapi240TestMyAnotherMessage":{
+			"properties":{
+			  "item":{
+				"$ref":"#/components/schemas/Asyncapi240TestSubItem",
+				"description":"Some item"
+			  }
+			},
+			"type":"object"
+		  },
+		  "Asyncapi240TestMyMessage":{
+			"properties":{
+			  "createdAt":{"description":"Creation time","format":"date-time","type":"string"},
+			  "items":{
+				"description":"List of items",
+				"items":{"$ref":"#/components/schemas/Asyncapi240TestSubItem"},
+				"type":["array","null"]
+			  }
+			},
+			"type":"object"
+		  },
+		  "Asyncapi240TestSubItem":{
+			"properties":{
+			  "key":{"description":"Item key","type":"string"},
+			  "values":{
+				"description":"List of item values","items":{"type":"integer"},
+				"type":["array","null"],"uniqueItems":true
+			  }
+			},
+			"type":"object"
+		  }
 		},
-		"summary": "Sample consumer",
-		"description": "This is another sample schema"
-	   },
-	   "Asyncapi210TestMyMessage": {
-		"payload": {
-		 "$ref": "#/components/schemas/Asyncapi210TestMyMessage"
-		},
-		"summary": "Sample publisher",
-		"description": "This is a sample schema"
-	   }
+		"messages":{
+		  "Asyncapi240TestMyAnotherMessage":{
+			"headers":{
+			  "properties":{"X-Trace-ID":{"description":"Tracing header","type":"string"}},
+			  "required":["X-Trace-ID"],"type":"object"
+			},
+			"payload":{"$ref":"#/components/schemas/Asyncapi240TestMyAnotherMessage"},
+			"summary":"Sample consumer",
+			"description":"This is another sample schema"
+		  },
+		  "Asyncapi240TestMyMessage":{
+			"payload":{"$ref":"#/components/schemas/Asyncapi240TestMyMessage"},
+			"summary":"Sample publisher","description":"This is a sample schema"
+		  }
+		}
 	  }
-	 }
-	}
-	`), r.Schema)
+	}`), r.Schema)
 }

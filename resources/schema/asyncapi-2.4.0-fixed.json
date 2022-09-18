@@ -280,22 +280,34 @@
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "http": {},
+        "http": {
+          "$ref": "http://asyncapi.com/bindings/http/operation.json"
+        },
         "ws": {},
-        "amqp": {},
+        "amqp": {
+          "$ref": "http://asyncapi.com/bindings/amqp/operation.json"
+        },
         "amqp1": {},
-        "mqtt": {},
+        "mqtt": {
+          "$ref": "http://asyncapi.com/bindings/mqtt/operation.json"
+        },
         "mqtt5": {},
-        "kafka": {},
+        "kafka": {
+          "$ref": "http://asyncapi.com/bindings/kafka/operation.json"
+        },
         "anypointmq": {},
-        "nats": {},
+        "nats": {
+          "$ref": "http://asyncapi.com/bindings/nats/operation.json"
+        },
         "jms": {},
         "sns": {},
         "sqs": {},
         "stomp": {},
         "redis": {},
         "ibmmq": {},
-        "solace": {}
+        "solace": {
+          "$ref": "http://asyncapi.com/bindings/solace/operation.json"
+        }
       }
     },
     "http://asyncapi.com/definitions/2.4.0/messageBindingsObject.json": {
@@ -303,21 +315,33 @@
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "http": {},
+        "http": {
+          "$ref": "http://asyncapi.com/bindings/http/message.json"
+        },
         "ws": {},
-        "amqp": {},
+        "amqp": {
+          "$ref": "http://asyncapi.com/bindings/amqp/message.json"
+        },
         "amqp1": {},
-        "mqtt": {},
+        "mqtt": {
+          "$ref": "http://asyncapi.com/bindings/mqtt/message.json"
+        },
         "mqtt5": {},
-        "kafka": {},
-        "anypointmq": {},
+        "kafka": {
+          "$ref": "http://asyncapi.com/bindings/kafka/message.json"
+        },
+        "anypointmq": {
+          "$ref": "http://asyncapi.com/bindings/anypointmq/message.json"
+        },
         "nats": {},
         "jms": {},
         "sns": {},
         "sqs": {},
         "stomp": {},
         "redis": {},
-        "ibmmq": {},
+        "ibmmq": {
+          "$ref": "http://asyncapi.com/bindings/ibmmq/message.json"
+        },
         "solace": {}
       }
     },
@@ -327,20 +351,28 @@
       "additionalProperties": true,
       "properties": {
         "http": {},
-        "ws": {},
-        "amqp": {},
+        "ws": {
+          "$ref": "http://asyncapi.com/bindings/websockets/channel.json"
+        },
+        "amqp": {
+          "$ref": "http://asyncapi.com/bindings/amqp/channel.json"
+        },
         "amqp1": {},
         "mqtt": {},
         "mqtt5": {},
         "kafka": {},
-        "anypointmq": {},
+        "anypointmq": {
+          "$ref": "http://asyncapi.com/bindings/anypointmq/channel.json"
+        },
         "nats": {},
         "jms": {},
         "sns": {},
         "sqs": {},
         "stomp": {},
         "redis": {},
-        "ibmmq": {},
+        "ibmmq": {
+          "$ref": "http://asyncapi.com/bindings/ibmmq/channel.json"
+        },
         "solace": {}
       }
     },
@@ -353,7 +385,9 @@
         "ws": {},
         "amqp": {},
         "amqp1": {},
-        "mqtt": {},
+        "mqtt": {
+          "$ref": "http://asyncapi.com/bindings/mqtt/server.json"
+        },
         "mqtt5": {},
         "kafka": {},
         "anypointmq": {},
@@ -363,8 +397,12 @@
         "sqs": {},
         "stomp": {},
         "redis": {},
-        "ibmmq": {},
-        "solace": {}
+        "ibmmq": {
+          "$ref": "http://asyncapi.com/bindings/ibmmq/server.json"
+        },
+        "solace": {
+          "$ref": "http://asyncapi.com/bindings/solace/server.json"
+        }
       }
     },
     "http://asyncapi.com/definitions/2.4.0/bindingsObject.json": {
@@ -475,6 +513,7 @@
       }
     },
     "http://asyncapi.com/definitions/2.4.0/schema.json": {
+      "x-go-type": "map[string]interface{}",
       "$id": "http://asyncapi.com/definitions/2.4.0/schema.json",
       "allOf": [
         {
@@ -1032,7 +1071,9 @@
                 "messageId": {
                   "type": "string"
                 },
-                "payload": {},
+                "payload": {
+                  "$ref": "http://asyncapi.com/definitions/2.4.0/schema.json"
+                },
                 "correlationId": {
                   "oneOf": [
                     {

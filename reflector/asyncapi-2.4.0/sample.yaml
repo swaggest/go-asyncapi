@@ -1,4 +1,4 @@
-asyncapi: 2.1.0
+asyncapi: 2.4.0
 info:
   title: My Lovely Messaging API
   version: 1.2.3
@@ -21,7 +21,7 @@ channels:
   another.one:
     subscribe:
       message:
-        $ref: '#/components/messages/Asyncapi210TestMyAnotherMessage'
+        $ref: '#/components/messages/Asyncapi240TestMyAnotherMessage'
   one.{name}.two:
     parameters:
       name:
@@ -30,21 +30,22 @@ channels:
           type: string
     publish:
       message:
-        $ref: '#/components/messages/Asyncapi210TestMyMessage'
+        $ref: '#/components/messages/Asyncapi240TestMyMessage'
     bindings:
       amqp:
+        bindingVersion: 0.2.0
         is: routingKey
         exchange:
           name: some-exchange
 components:
   schemas:
-    Asyncapi210TestMyAnotherMessage:
+    Asyncapi240TestMyAnotherMessage:
       properties:
         item:
-          $ref: '#/components/schemas/Asyncapi210TestSubItem'
+          $ref: '#/components/schemas/Asyncapi240TestSubItem'
           description: Some item
       type: object
-    Asyncapi210TestMyMessage:
+    Asyncapi240TestMyMessage:
       properties:
         createdAt:
           description: Creation time
@@ -53,12 +54,12 @@ components:
         items:
           description: List of items
           items:
-            $ref: '#/components/schemas/Asyncapi210TestSubItem'
+            $ref: '#/components/schemas/Asyncapi240TestSubItem'
           type:
           - array
           - "null"
       type: object
-    Asyncapi210TestSubItem:
+    Asyncapi240TestSubItem:
       properties:
         key:
           description: Item key
@@ -73,7 +74,7 @@ components:
           uniqueItems: true
       type: object
   messages:
-    Asyncapi210TestMyAnotherMessage:
+    Asyncapi240TestMyAnotherMessage:
       headers:
         properties:
           X-Trace-ID:
@@ -83,11 +84,11 @@ components:
         - X-Trace-ID
         type: object
       payload:
-        $ref: '#/components/schemas/Asyncapi210TestMyAnotherMessage'
+        $ref: '#/components/schemas/Asyncapi240TestMyAnotherMessage'
       summary: Sample consumer
       description: This is another sample schema.
-    Asyncapi210TestMyMessage:
+    Asyncapi240TestMyMessage:
       payload:
-        $ref: '#/components/schemas/Asyncapi210TestMyMessage'
+        $ref: '#/components/schemas/Asyncapi240TestMyMessage'
       summary: Sample publisher
       description: This is a sample schema.

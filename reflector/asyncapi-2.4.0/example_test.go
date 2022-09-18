@@ -2,7 +2,7 @@ package asyncapi_test
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"time"
 
 	"github.com/swaggest/go-asyncapi/reflector/asyncapi-2.4.0"
@@ -57,9 +57,9 @@ func ExampleReflector_AddChannel() {
 		Name: "one.{name}.two",
 		BaseChannelItem: &spec.ChannelItem{
 			Bindings: &spec.ChannelBindingsObject{
-				Amqp: &spec.AMQP091ChannelBindingObject{
-					Is: spec.AMQP091ChannelBindingObjectIsRoutingKey,
-					Exchange: &spec.Exchange{
+				Amqp: &spec.AmqpChannel{
+					Is: spec.AmqpChannelIsRoutingKey,
+					Exchange: &spec.AmqpChannelExchange{
 						Name: "some-exchange",
 					},
 				},
@@ -89,9 +89,9 @@ func ExampleReflector_AddChannel() {
 	mustNotFail(err)
 
 	fmt.Println(string(yaml))
-	mustNotFail(ioutil.WriteFile("sample.yaml", yaml, 0o600))
+	mustNotFail(os.WriteFile("sample.yaml", yaml, 0o600))
 	// output:
-	// asyncapi: 2.1.0
+	// asyncapi: 2.4.0
 	// info:
 	//   title: My Lovely Messaging API
 	//   version: 1.2.3
@@ -114,7 +114,7 @@ func ExampleReflector_AddChannel() {
 	//   another.one:
 	//     subscribe:
 	//       message:
-	//         $ref: '#/components/messages/Asyncapi210TestMyAnotherMessage'
+	//         $ref: '#/components/messages/Asyncapi240TestMyAnotherMessage'
 	//   one.{name}.two:
 	//     parameters:
 	//       name:
@@ -123,21 +123,22 @@ func ExampleReflector_AddChannel() {
 	//           type: string
 	//     publish:
 	//       message:
-	//         $ref: '#/components/messages/Asyncapi210TestMyMessage'
+	//         $ref: '#/components/messages/Asyncapi240TestMyMessage'
 	//     bindings:
 	//       amqp:
+	//         bindingVersion: 0.2.0
 	//         is: routingKey
 	//         exchange:
 	//           name: some-exchange
 	// components:
 	//   schemas:
-	//     Asyncapi210TestMyAnotherMessage:
+	//     Asyncapi240TestMyAnotherMessage:
 	//       properties:
 	//         item:
-	//           $ref: '#/components/schemas/Asyncapi210TestSubItem'
+	//           $ref: '#/components/schemas/Asyncapi240TestSubItem'
 	//           description: Some item
 	//       type: object
-	//     Asyncapi210TestMyMessage:
+	//     Asyncapi240TestMyMessage:
 	//       properties:
 	//         createdAt:
 	//           description: Creation time
@@ -146,12 +147,12 @@ func ExampleReflector_AddChannel() {
 	//         items:
 	//           description: List of items
 	//           items:
-	//             $ref: '#/components/schemas/Asyncapi210TestSubItem'
+	//             $ref: '#/components/schemas/Asyncapi240TestSubItem'
 	//           type:
 	//           - array
 	//           - "null"
 	//       type: object
-	//     Asyncapi210TestSubItem:
+	//     Asyncapi240TestSubItem:
 	//       properties:
 	//         key:
 	//           description: Item key
@@ -166,7 +167,7 @@ func ExampleReflector_AddChannel() {
 	//           uniqueItems: true
 	//       type: object
 	//   messages:
-	//     Asyncapi210TestMyAnotherMessage:
+	//     Asyncapi240TestMyAnotherMessage:
 	//       headers:
 	//         properties:
 	//           X-Trace-ID:
@@ -176,12 +177,12 @@ func ExampleReflector_AddChannel() {
 	//         - X-Trace-ID
 	//         type: object
 	//       payload:
-	//         $ref: '#/components/schemas/Asyncapi210TestMyAnotherMessage'
+	//         $ref: '#/components/schemas/Asyncapi240TestMyAnotherMessage'
 	//       summary: Sample consumer
 	//       description: This is another sample schema.
-	//     Asyncapi210TestMyMessage:
+	//     Asyncapi240TestMyMessage:
 	//       payload:
-	//         $ref: '#/components/schemas/Asyncapi210TestMyMessage'
+	//         $ref: '#/components/schemas/Asyncapi240TestMyMessage'
 	//       summary: Sample publisher
 	//       description: This is a sample schema.
 }

@@ -1,0 +1,23 @@
+{
+  "schemaFiles": {
+    "http://asyncapi.com/bindings/amqp/channel.json": "bindings/amqp/json_schemas/channel.json",
+    "http://asyncapi.com/bindings/amqp/message.json": "bindings/amqp/json_schemas/message.json",
+    "http://asyncapi.com/bindings/amqp/operation.json": "bindings/amqp/json_schemas/operation.json",
+    "http://asyncapi.com/bindings/anypointmq/channel.json": "bindings/anypointmq/json_schemas/channel.json",
+    "http://asyncapi.com/bindings/anypointmq/message.json": "bindings/anypointmq/json_schemas/message.json",
+    "http://asyncapi.com/bindings/http/message.json": "bindings/http/json_schemas/message.json",
+    "http://asyncapi.com/bindings/http/operation.json": "bindings/http/json_schemas/operation.json",
+    "http://asyncapi.com/bindings/ibmmq/channel.json": "bindings/ibmmq/json_schemas/channel.json",
+    "http://asyncapi.com/bindings/ibmmq/message.json": "bindings/ibmmq/json_schemas/message.json",
+    "http://asyncapi.com/bindings/ibmmq/server.json": "bindings/ibmmq/json_schemas/server.json",
+    "http://asyncapi.com/bindings/kafka/message.json": "bindings/kafka/json_schemas/message.json",
+    "http://asyncapi.com/bindings/kafka/operation.json": "bindings/kafka/json_schemas/operation.json",
+    "http://asyncapi.com/bindings/mqtt/operation.json": "bindings/mqtt/json_schemas/operation.json",
+    "http://asyncapi.com/bindings/mqtt/message.json": "bindings/mqtt/json_schemas/message.json",
+    "http://asyncapi.com/bindings/mqtt/server.json": "bindings/mqtt/json_schemas/server.json",
+    "http://asyncapi.com/bindings/nats/operation.json": "bindings/nats/json_schemas/operation.json",
+    "http://asyncapi.com/bindings/solace/operation.json": "bindings/solace/json_schemas/operation.json",
+    "http://asyncapi.com/bindings/solace/server.json": "bindings/solace/json_schemas/server.json",
+    "http://asyncapi.com/bindings/websockets/channel.json": "bindings/websockets/json_schemas/channel.json"
+  }
+}

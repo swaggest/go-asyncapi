@@ -2,7 +2,7 @@ package spec_test
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -47,7 +47,7 @@ func TestInfo_UnmarshalJSON(t *testing.T) {
 }
 
 func TestAsyncAPI_UnmarshalJSON_roundTrip(t *testing.T) {
-	data, err := ioutil.ReadFile("../resources/fixtures/streetlights-2.1.0-kafka.json")
+	data, err := os.ReadFile("../resources/fixtures/streetlights-2.1.0-kafka.json")
 	require.NoError(t, err)
 
 	var a spec.AsyncAPI
@@ -61,7 +61,7 @@ func TestAsyncAPI_UnmarshalJSON_roundTrip(t *testing.T) {
 }
 
 func TestAsyncAPI_UnmarshalYAML(t *testing.T) {
-	data, err := ioutil.ReadFile("../resources/fixtures/streetlights-2.1.0-kafka.yml")
+	data, err := os.ReadFile("../resources/fixtures/streetlights-2.1.0-kafka.yml")
 	require.NoError(t, err)
 
 	var a spec.AsyncAPI

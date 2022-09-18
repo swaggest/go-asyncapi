@@ -9,6 +9,7 @@
 This library helps to create [AsyncAPI](https://www.asyncapi.com/) spec from your Go message structures.
 
 Supported AsyncAPI versions:
+* `v2.4.0` 
 * `v2.1.0` 
 * `v2.0.0` (recommended for support in other tools)
 * `v1.2.0`
