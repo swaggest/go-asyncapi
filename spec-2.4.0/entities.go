@@ -3631,43 +3631,39 @@ func (m MqttOperation) MarshalJSON() ([]byte, error) {
 //
 // This object contains information about the operation representation in Kafka.
 type KafkaOperation struct {
-	GroupID       map[string]interface{} `json:"groupId,omitempty"`
-	ClientID      map[string]interface{} `json:"clientId,omitempty"`
-	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+	GroupID       *KafkaOperationGroupID  `json:"groupId,omitempty"`  // Id of the consumer group.
+	ClientID      *KafkaOperationClientID `json:"clientId,omitempty"` // Id of the consumer inside a consumer group.
+	MapOfAnything map[string]interface{}  `json:"-"`                  // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithGroupID sets GroupID value.
-func (k *KafkaOperation) WithGroupID(val map[string]interface{}) *KafkaOperation {
-	k.GroupID = val
+func (k *KafkaOperation) WithGroupID(val KafkaOperationGroupID) *KafkaOperation {
+	k.GroupID = &val
 	return k
 }
 
-// WithGroupIDItem sets GroupID item value.
-func (k *KafkaOperation) WithGroupIDItem(key string, val interface{}) *KafkaOperation {
+// GroupIDEns ensures returned GroupID is not nil.
+func (k *KafkaOperation) GroupIDEns() *KafkaOperationGroupID {
 	if k.GroupID == nil {
-		k.GroupID = make(map[string]interface{}, 1)
+		k.GroupID = new(KafkaOperationGroupID)
 	}
 
-	k.GroupID[key] = val
-
-	return k
+	return k.GroupID
 }
 
 // WithClientID sets ClientID value.
-func (k *KafkaOperation) WithClientID(val map[string]interface{}) *KafkaOperation {
-	k.ClientID = val
+func (k *KafkaOperation) WithClientID(val KafkaOperationClientID) *KafkaOperation {
+	k.ClientID = &val
 	return k
 }
 
-// WithClientIDItem sets ClientID item value.
-func (k *KafkaOperation) WithClientIDItem(key string, val interface{}) *KafkaOperation {
+// ClientIDEns ensures returned ClientID is not nil.
+func (k *KafkaOperation) ClientIDEns() *KafkaOperationClientID {
 	if k.ClientID == nil {
-		k.ClientID = make(map[string]interface{}, 1)
+		k.ClientID = new(KafkaOperationClientID)
 	}
 
-	k.ClientID[key] = val
-
-	return k
+	return k.ClientID
 }
 
 // WithMapOfAnything sets MapOfAnything value.
@@ -3713,8 +3709,8 @@ func (k *KafkaOperation) UnmarshalJSON(data []byte) error {
 		rawMap = nil
 	}
 
-	if v, exists := rawMap["bindingVersion"]; exists && string(v) != `"0.1.0"` {
-		return fmt.Errorf(`bad const value for "bindingVersion" ("0.1.0" expected, %s received)`, v)
+	if v, exists := rawMap["bindingVersion"]; exists && string(v) != `"0.3.0"` {
+		return fmt.Errorf(`bad const value for "bindingVersion" ("0.3.0" expected, %s received)`, v)
 	}
 
 	delete(rawMap, "bindingVersion")
@@ -3764,11 +3760,143 @@ func (k *KafkaOperation) UnmarshalJSON(data []byte) error {
 }
 
 // constKafkaOperation is unconditionally added to JSON.
-var constKafkaOperation = json.RawMessage(`{"bindingVersion":"0.1.0"}`)
+var constKafkaOperation = json.RawMessage(`{"bindingVersion":"0.3.0"}`)
 
 // MarshalJSON encodes JSON.
 func (k KafkaOperation) MarshalJSON() ([]byte, error) {
 	return marshalUnion(constKafkaOperation, marshalKafkaOperation(k), k.MapOfAnything)
+}
+
+// KafkaOperationGroupID structure is generated from "http://asyncapi.com/bindings/kafka/operation.json->groupId".
+//
+// Id of the consumer group.
+type KafkaOperationGroupID struct {
+	StringProperty *string                `json:"-"`
+	Schema         map[string]interface{} `json:"-"`
+}
+
+// WithStringProperty sets StringProperty value.
+func (k *KafkaOperationGroupID) WithStringProperty(val string) *KafkaOperationGroupID {
+	k.StringProperty = &val
+	return k
+}
+
+// WithSchema sets Schema value.
+func (k *KafkaOperationGroupID) WithSchema(val map[string]interface{}) *KafkaOperationGroupID {
+	k.Schema = val
+	return k
+}
+
+// WithSchemaItem sets Schema item value.
+func (k *KafkaOperationGroupID) WithSchemaItem(key string, val interface{}) *KafkaOperationGroupID {
+	if k.Schema == nil {
+		k.Schema = make(map[string]interface{}, 1)
+	}
+
+	k.Schema[key] = val
+
+	return k
+}
+
+// UnmarshalJSON decodes JSON.
+func (k *KafkaOperationGroupID) UnmarshalJSON(data []byte) error {
+	var err error
+
+	oneOfErrors := make(map[string]error, 2)
+	oneOfValid := 0
+
+	err = json.Unmarshal(data, &k.StringProperty)
+	if err != nil {
+		oneOfErrors["StringProperty"] = err
+		k.StringProperty = nil
+	} else {
+		oneOfValid++
+	}
+
+	err = json.Unmarshal(data, &k.Schema)
+	if err != nil {
+		oneOfErrors["Schema"] = err
+		k.Schema = nil
+	} else {
+		oneOfValid++
+	}
+
+	if oneOfValid != 1 {
+		return fmt.Errorf("oneOf constraint failed for KafkaOperationGroupID with %d valid results: %v", oneOfValid, oneOfErrors)
+	}
+
+	return nil
+}
+
+// MarshalJSON encodes JSON.
+func (k KafkaOperationGroupID) MarshalJSON() ([]byte, error) {
+	return marshalUnion(k.StringProperty, k.Schema)
+}
+
+// KafkaOperationClientID structure is generated from "http://asyncapi.com/bindings/kafka/operation.json->clientId".
+//
+// Id of the consumer inside a consumer group.
+type KafkaOperationClientID struct {
+	StringProperty *string                `json:"-"`
+	Schema         map[string]interface{} `json:"-"`
+}
+
+// WithStringProperty sets StringProperty value.
+func (k *KafkaOperationClientID) WithStringProperty(val string) *KafkaOperationClientID {
+	k.StringProperty = &val
+	return k
+}
+
+// WithSchema sets Schema value.
+func (k *KafkaOperationClientID) WithSchema(val map[string]interface{}) *KafkaOperationClientID {
+	k.Schema = val
+	return k
+}
+
+// WithSchemaItem sets Schema item value.
+func (k *KafkaOperationClientID) WithSchemaItem(key string, val interface{}) *KafkaOperationClientID {
+	if k.Schema == nil {
+		k.Schema = make(map[string]interface{}, 1)
+	}
+
+	k.Schema[key] = val
+
+	return k
+}
+
+// UnmarshalJSON decodes JSON.
+func (k *KafkaOperationClientID) UnmarshalJSON(data []byte) error {
+	var err error
+
+	oneOfErrors := make(map[string]error, 2)
+	oneOfValid := 0
+
+	err = json.Unmarshal(data, &k.StringProperty)
+	if err != nil {
+		oneOfErrors["StringProperty"] = err
+		k.StringProperty = nil
+	} else {
+		oneOfValid++
+	}
+
+	err = json.Unmarshal(data, &k.Schema)
+	if err != nil {
+		oneOfErrors["Schema"] = err
+		k.Schema = nil
+	} else {
+		oneOfValid++
+	}
+
+	if oneOfValid != 1 {
+		return fmt.Errorf("oneOf constraint failed for KafkaOperationClientID with %d valid results: %v", oneOfValid, oneOfErrors)
+	}
+
+	return nil
+}
+
+// MarshalJSON encodes JSON.
+func (k KafkaOperationClientID) MarshalJSON() ([]byte, error) {
+	return marshalUnion(k.StringProperty, k.Schema)
 }
 
 // NatsOperation structure is generated from "http://asyncapi.com/bindings/nats/operation.json".
@@ -5610,25 +5738,23 @@ func (m MqttMessage) MarshalJSON() ([]byte, error) {
 
 // KafkaMessage structure is generated from "http://asyncapi.com/bindings/kafka/message.json".
 type KafkaMessage struct {
-	Key           map[string]interface{} `json:"key,omitempty"`
-	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+	Key           *KafkaMessageKey       `json:"key,omitempty"` // The message key.
+	MapOfAnything map[string]interface{} `json:"-"`             // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithKey sets Key value.
-func (k *KafkaMessage) WithKey(val map[string]interface{}) *KafkaMessage {
-	k.Key = val
+func (k *KafkaMessage) WithKey(val KafkaMessageKey) *KafkaMessage {
+	k.Key = &val
 	return k
 }
 
-// WithKeyItem sets Key item value.
-func (k *KafkaMessage) WithKeyItem(key string, val interface{}) *KafkaMessage {
+// KeyEns ensures returned Key is not nil.
+func (k *KafkaMessage) KeyEns() *KafkaMessageKey {
 	if k.Key == nil {
-		k.Key = make(map[string]interface{}, 1)
+		k.Key = new(KafkaMessageKey)
 	}
 
-	k.Key[key] = val
-
-	return k
+	return k.Key
 }
 
 // WithMapOfAnything sets MapOfAnything value.
@@ -5673,8 +5799,8 @@ func (k *KafkaMessage) UnmarshalJSON(data []byte) error {
 		rawMap = nil
 	}
 
-	if v, exists := rawMap["bindingVersion"]; exists && string(v) != `"0.1.0"` {
-		return fmt.Errorf(`bad const value for "bindingVersion" ("0.1.0" expected, %s received)`, v)
+	if v, exists := rawMap["bindingVersion"]; exists && string(v) != `"0.3.0"` {
+		return fmt.Errorf(`bad const value for "bindingVersion" ("0.3.0" expected, %s received)`, v)
 	}
 
 	delete(rawMap, "bindingVersion")
@@ -5724,11 +5850,77 @@ func (k *KafkaMessage) UnmarshalJSON(data []byte) error {
 }
 
 // constKafkaMessage is unconditionally added to JSON.
-var constKafkaMessage = json.RawMessage(`{"bindingVersion":"0.1.0"}`)
+var constKafkaMessage = json.RawMessage(`{"bindingVersion":"0.3.0"}`)
 
 // MarshalJSON encodes JSON.
 func (k KafkaMessage) MarshalJSON() ([]byte, error) {
 	return marshalUnion(constKafkaMessage, marshalKafkaMessage(k), k.MapOfAnything)
+}
+
+// KafkaMessageKey structure is generated from "http://asyncapi.com/bindings/kafka/message.json->key".
+//
+// The message key.
+type KafkaMessageKey struct {
+	StringProperty *string                `json:"-"`
+	Schema         map[string]interface{} `json:"-"`
+}
+
+// WithStringProperty sets StringProperty value.
+func (k *KafkaMessageKey) WithStringProperty(val string) *KafkaMessageKey {
+	k.StringProperty = &val
+	return k
+}
+
+// WithSchema sets Schema value.
+func (k *KafkaMessageKey) WithSchema(val map[string]interface{}) *KafkaMessageKey {
+	k.Schema = val
+	return k
+}
+
+// WithSchemaItem sets Schema item value.
+func (k *KafkaMessageKey) WithSchemaItem(key string, val interface{}) *KafkaMessageKey {
+	if k.Schema == nil {
+		k.Schema = make(map[string]interface{}, 1)
+	}
+
+	k.Schema[key] = val
+
+	return k
+}
+
+// UnmarshalJSON decodes JSON.
+func (k *KafkaMessageKey) UnmarshalJSON(data []byte) error {
+	var err error
+
+	oneOfErrors := make(map[string]error, 2)
+	oneOfValid := 0
+
+	err = json.Unmarshal(data, &k.StringProperty)
+	if err != nil {
+		oneOfErrors["StringProperty"] = err
+		k.StringProperty = nil
+	} else {
+		oneOfValid++
+	}
+
+	err = json.Unmarshal(data, &k.Schema)
+	if err != nil {
+		oneOfErrors["Schema"] = err
+		k.Schema = nil
+	} else {
+		oneOfValid++
+	}
+
+	if oneOfValid != 1 {
+		return fmt.Errorf("oneOf constraint failed for KafkaMessageKey with %d valid results: %v", oneOfValid, oneOfErrors)
+	}
+
+	return nil
+}
+
+// MarshalJSON encodes JSON.
+func (k KafkaMessageKey) MarshalJSON() ([]byte, error) {
+	return marshalUnion(k.StringProperty, k.Schema)
 }
 
 // AnypointmqMessage structure is generated from "http://asyncapi.com/bindings/anypointmq/message.json".
