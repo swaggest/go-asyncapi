@@ -47,7 +47,8 @@ type ChannelInfo struct {
 	Name            string // event.{streetlightId}.lighting.measured
 	Publish         *MessageSample
 	Subscribe       *MessageSample
-	BaseChannelItem *spec.ChannelItem // Optional, if set is used as a base to fill with Message data
+	BaseChannelItem *spec.ChannelItem // Optional, if set is used as a base to fill with Message data.
+	BaseOperation   *spec.Operation   // Optional, if set is used as a base to fill Operation data.
 }
 
 // AddChannel adds user-defined channel to AsyncAPI definition.
@@ -58,6 +59,7 @@ func (r *Reflector) AddChannel(info ChannelInfo) error {
 
 	var (
 		channelItem = spec.ChannelItem{}
+		operation   = spec.Operation{}
 		err         error
 	)
 
@@ -65,15 +67,19 @@ func (r *Reflector) AddChannel(info ChannelInfo) error {
 		channelItem = *info.BaseChannelItem
 	}
 
+	if info.BaseOperation != nil {
+		operation = *info.BaseOperation
+	}
+
 	if info.Publish != nil {
-		channelItem.Publish, err = r.makeOperation(&channelItem, info.Publish)
+		channelItem.Publish, err = r.makeOperation(&channelItem, info.Publish, operation)
 		if err != nil {
 			return fmt.Errorf("failed process publish operation for channel %s: %w", info.Name, err)
 		}
 	}
 
 	if info.Subscribe != nil {
-		channelItem.Subscribe, err = r.makeOperation(&channelItem, info.Subscribe)
+		channelItem.Subscribe, err = r.makeOperation(&channelItem, info.Subscribe, operation)
 		if err != nil {
 			return fmt.Errorf("failed process subscribe operation for channel %s: %w", info.Name, err)
 		}
@@ -108,9 +114,8 @@ func (r *Reflector) collectDefinition(name string, schema jsonschema.Schema) {
 	r.SchemaEns().ComponentsEns().Schemas[name] = schemaToMap(schema)
 }
 
-func (r *Reflector) makeOperation(channelItem *spec.ChannelItem, m *MessageSample) (*spec.Operation, error) {
+func (r *Reflector) makeOperation(channelItem *spec.ChannelItem, m *MessageSample, op spec.Operation) (*spec.Operation, error) {
 	if m.MessageSample == nil {
-		op := spec.Operation{}
 		op.MessageEns().OneOf1Ens().WithMessageEntity(m.MessageEntity)
 
 		return &op, nil
@@ -174,17 +179,16 @@ func (r *Reflector) makeOperation(channelItem *spec.ChannelItem, m *MessageSampl
 
 		r.SchemaEns().ComponentsEns().WithMessagesItem(messageName, msg)
 
-		return &spec.Operation{
-			Message: &spec.Message{
-				Reference: &spec.Reference{Ref: "#/components/messages/" + messageName},
-			},
-		}, nil
+		op.Message = &spec.Message{
+			Reference: &spec.Reference{Ref: "#/components/messages/" + messageName},
+		}
+
+		return &op, nil
 	}
 
 	msg := spec.Message{}
 	msg.OneOf1Ens().WithMessageEntity(m.MessageEntity)
+	op.Message = &msg
 
-	return &spec.Operation{
-		Message: &msg,
-	}, nil
+	return &op, nil
 }

@@ -1,0 +1,102 @@
+asyncapi: 2.4.0
+info:
+  title: My Lovely Messaging API
+  version: 1.2.3
+servers:
+  live:
+    url: api.{country}.lovely.com:5672
+    description: Production instance.
+    protocol: kafka
+    protocolVersion: 1.0.0
+    variables:
+      country:
+        enum:
+        - RU
+        - US
+        - DE
+        - FR
+        default: US
+        description: Country code.
+channels:
+  another.one:
+    subscribe:
+      bindings:
+        kafka:
+          bindingVersion: 0.3.0
+          groupId: my-group-id-2
+          clientId: my-client-id
+      message:
+        $ref: '#/components/messages/Asyncapi240TestMyAnotherMessage'
+  one.{name}.two:
+    parameters:
+      name:
+        schema:
+          description: Name
+          type: string
+    publish:
+      bindings:
+        kafka:
+          bindingVersion: 0.3.0
+          groupId: my-group-id
+          clientId: my-client-id
+      message:
+        $ref: '#/components/messages/Asyncapi240TestMyMessage'
+components:
+  schemas:
+    Asyncapi240TestMyAnotherMessage:
+      properties:
+        item:
+          $ref: '#/components/schemas/Asyncapi240TestSubItem'
+          description: Some item
+      type: object
+    Asyncapi240TestMyMessage:
+      properties:
+        createdAt:
+          description: Creation time
+          format: date-time
+          type: string
+        items:
+          description: List of items
+          items:
+            $ref: '#/components/schemas/Asyncapi240TestSubItem'
+          type:
+          - array
+          - "null"
+      type: object
+    Asyncapi240TestSubItem:
+      properties:
+        key:
+          description: Item key
+          type: string
+        values:
+          description: List of item values
+          items:
+            type: integer
+          type:
+          - array
+          - "null"
+          uniqueItems: true
+      type: object
+  messages:
+    Asyncapi240TestMyAnotherMessage:
+      headers:
+        properties:
+          X-Trace-ID:
+            description: Tracing header
+            type: string
+        required:
+        - X-Trace-ID
+        type: object
+      payload:
+        $ref: '#/components/schemas/Asyncapi240TestMyAnotherMessage'
+      summary: Sample consumer
+      description: This is another sample schema.
+    Asyncapi240TestMyMessage:
+      payload:
+        $ref: '#/components/schemas/Asyncapi240TestMyMessage'
+      summary: Sample publisher
+      description: This is a sample schema.
+      bindings:
+        kafka:
+          bindingVersion: 0.3.0
+          key: my-key

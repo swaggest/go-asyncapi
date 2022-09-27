@@ -11,21 +11,21 @@ This library helps to create [AsyncAPI](https://www.asyncapi.com/) spec from you
 Supported AsyncAPI versions:
 * `v2.4.0` 
 * `v2.1.0` 
-* `v2.0.0` (recommended for support in other tools)
+* `v2.0.0`
 * `v1.2.0`
 
 ## Example
 
 ```go
-package main
+package asyncapi_test
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"time"
 
-	"github.com/swaggest/go-asyncapi/reflector/asyncapi-2.0.0"
-	"github.com/swaggest/go-asyncapi/spec-2.0.0"
+	"github.com/swaggest/go-asyncapi/reflector/asyncapi-2.4.0"
+	"github.com/swaggest/go-asyncapi/spec-2.4.0"
 )
 
 func main() {
@@ -45,29 +45,27 @@ func main() {
 		Item    SubItem `json:"item" description:"Some item"`
 	}
 
-	reflector := asyncapi.Reflector{
-		Schema: &spec.AsyncAPI{
-			Servers: map[string]spec.Server{
-				"live": {
-					URL:             "api.{country}.lovely.com:5672",
-					Description:     "Production instance.",
-					ProtocolVersion: "0.9.1",
-					Protocol:        "amqp",
-					Variables: map[string]spec.ServerVariable{
-						"country": {
-							Enum:        []string{"RU", "US", "DE", "FR"},
-							Default:     "US",
-							Description: "Country code.",
-						},
-					},
-				},
-			},
-			Info: &spec.Info{
-				Version: "1.2.3", // required
-				Title:   "My Lovely Messaging API",
+	asyncAPI := spec.AsyncAPI{}
+	asyncAPI.Info.Version = "1.2.3"
+	asyncAPI.Info.Title = "My Lovely Messaging API"
+
+	asyncAPI.AddServer("live", spec.Server{
+		URL:             "api.{country}.lovely.com:5672",
+		Description:     "Production instance.",
+		ProtocolVersion: "0.9.1",
+		Protocol:        "amqp",
+		Variables: map[string]spec.ServerVariable{
+			"country": {
+				Enum:        []string{"RU", "US", "DE", "FR"},
+				Default:     "US",
+				Description: "Country code.",
 			},
 		},
-	}
+	})
+
+	reflector := asyncapi.Reflector{}
+	reflector.Schema = &asyncAPI
+
 	mustNotFail := func(err error) {
 		if err != nil {
 			panic(err.Error())
@@ -78,9 +76,9 @@ func main() {
 		Name: "one.{name}.two",
 		BaseChannelItem: &spec.ChannelItem{
 			Bindings: &spec.ChannelBindingsObject{
-				Amqp: &spec.AMQP091ChannelBindingObject{
-					Is: spec.AMQP091ChannelBindingObjectIsRoutingKey,
-					Exchange: &spec.Exchange{
+				Amqp: &spec.AmqpChannel{
+					Is: spec.AmqpChannelIsRoutingKey,
+					Exchange: &spec.AmqpChannelExchange{
 						Name: "some-exchange",
 					},
 				},
@@ -110,9 +108,9 @@ func main() {
 	mustNotFail(err)
 
 	fmt.Println(string(yaml))
-	mustNotFail(ioutil.WriteFile("sample.yaml", yaml, 0644))
+	mustNotFail(os.WriteFile("sample.yaml", yaml, 0o600))
 	// output:
-	// asyncapi: 2.0.0
+	// asyncapi: 2.4.0
 	// info:
 	//   title: My Lovely Messaging API
 	//   version: 1.2.3
@@ -135,7 +133,7 @@ func main() {
 	//   another.one:
 	//     subscribe:
 	//       message:
-	//         $ref: '#/components/messages/Asyncapi200TestMyAnotherMessage'
+	//         $ref: '#/components/messages/Asyncapi240TestMyAnotherMessage'
 	//   one.{name}.two:
 	//     parameters:
 	//       name:
@@ -144,21 +142,22 @@ func main() {
 	//           type: string
 	//     publish:
 	//       message:
-	//         $ref: '#/components/messages/Asyncapi200TestMyMessage'
+	//         $ref: '#/components/messages/Asyncapi240TestMyMessage'
 	//     bindings:
 	//       amqp:
+	//         bindingVersion: 0.2.0
 	//         is: routingKey
 	//         exchange:
 	//           name: some-exchange
 	// components:
 	//   schemas:
-	//     Asyncapi200TestMyAnotherMessage:
+	//     Asyncapi240TestMyAnotherMessage:
 	//       properties:
 	//         item:
-	//           $ref: '#/components/schemas/Asyncapi200TestSubItem'
+	//           $ref: '#/components/schemas/Asyncapi240TestSubItem'
 	//           description: Some item
 	//       type: object
-	//     Asyncapi200TestMyMessage:
+	//     Asyncapi240TestMyMessage:
 	//       properties:
 	//         createdAt:
 	//           description: Creation time
@@ -167,10 +166,12 @@ func main() {
 	//         items:
 	//           description: List of items
 	//           items:
-	//             $ref: '#/components/schemas/Asyncapi200TestSubItem'
-	//           type: array
+	//             $ref: '#/components/schemas/Asyncapi240TestSubItem'
+	//           type:
+	//           - array
+	//           - "null"
 	//       type: object
-	//     Asyncapi200TestSubItem:
+	//     Asyncapi240TestSubItem:
 	//       properties:
 	//         key:
 	//           description: Item key
@@ -179,11 +180,13 @@ func main() {
 	//           description: List of item values
 	//           items:
 	//             type: integer
-	//           type: array
+	//           type:
+	//           - array
+	//           - "null"
 	//           uniqueItems: true
 	//       type: object
 	//   messages:
-	//     Asyncapi200TestMyAnotherMessage:
+	//     Asyncapi240TestMyAnotherMessage:
 	//       headers:
 	//         properties:
 	//           X-Trace-ID:
@@ -193,12 +196,12 @@ func main() {
 	//         - X-Trace-ID
 	//         type: object
 	//       payload:
-	//         $ref: '#/components/schemas/Asyncapi200TestMyAnotherMessage'
+	//         $ref: '#/components/schemas/Asyncapi240TestMyAnotherMessage'
 	//       summary: Sample consumer
 	//       description: This is another sample schema.
-	//     Asyncapi200TestMyMessage:
+	//     Asyncapi240TestMyMessage:
 	//       payload:
-	//         $ref: '#/components/schemas/Asyncapi200TestMyMessage'
+	//         $ref: '#/components/schemas/Asyncapi240TestMyMessage'
 	//       summary: Sample publisher
 	//       description: This is a sample schema.
 }
