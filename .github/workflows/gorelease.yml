@@ -9,14 +9,14 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GO_VERSION: 1.19.x
+  GO_VERSION: 1.21.x
 jobs:
   gorelease:
     runs-on: ubuntu-latest
     steps:
       - name: Install Go stable
         if: env.GO_VERSION != 'tip'
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version: ${{ env.GO_VERSION }}
       - name: Install Go tip
@@ -29,9 +29,9 @@ jobs:
           ~/sdk/gotip/bin/go version
           echo "PATH=$HOME/go/bin:$HOME/sdk/gotip/bin/:$PATH" >> $GITHUB_ENV
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Gorelease cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/go/bin/gorelease
@@ -42,9 +42,8 @@ jobs:
           test -e ~/go/bin/gorelease || go install golang.org/x/exp/cmd/gorelease@latest
           OUTPUT=$(gorelease 2>&1 || exit 0)
           echo "${OUTPUT}"
-          OUTPUT="${OUTPUT//$'\n'/%0A}"
-          echo "::set-output name=report::$OUTPUT"
-      - name: Comment Report
+          echo "report<<EOF" >> $GITHUB_OUTPUT && echo "$OUTPUT" >> $GITHUB_OUTPUT && echo "EOF" >> $GITHUB_OUTPUT
+      - name: Comment report
         continue-on-error: true
         uses: marocchino/sticky-pull-request-comment@v2
         with:
