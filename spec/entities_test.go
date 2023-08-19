@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/swaggest/go-asyncapi/spec" //nolint:staticcheck // Deprecated.
+	"github.com/swaggest/go-asyncapi/spec"
 )
 
 func TestInfo_MarshalJSON(t *testing.T) {

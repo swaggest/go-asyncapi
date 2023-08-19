@@ -47,6 +47,10 @@ linters:
     - structcheck
     - varcheck
     - deadcode
+    - testableexamples
+    - dupword
+    - depguard
+    - tagalign
 
 issues:
   exclude-use-default: false
@@ -65,5 +69,6 @@ issues:
       path: "_test.go"
     - linters:
         - errcheck # Error checking omitted for brevity.
+        - gosec
       path: "example_"
 
