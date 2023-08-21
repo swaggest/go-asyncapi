@@ -38,7 +38,22 @@ endif
 ## Run tests
 test: test-unit
 
-JSON_CLI_VERSION := v1.11.0
+JSON_CLI_VERSION := v1.11.2
+
+## Generate bindings for v2.6.0 spec.
+gen-2.6.0:
+	#@test -s $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) || (curl -sSfL https://github.com/swaggest/json-cli/releases/download/$(JSON_CLI_VERSION)/json-cli -o $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) && chmod +x $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION))
+	#cd resources/schema/ && ./prepare_bindings.sh && $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) gen-go asyncapi-2.5.0-fixed.json --output ../../spec-2.5.0/entities.go  --fluent-setters --package-name spec --root-name AsyncAPI --config ./asyncapi-2.5.0-gen-cfg.json --schema-resolver ./bindings-resolver.json
+	cd resources/schema/ && ./prepare_bindings-2.6.0.sh && json-cli gen-go asyncapi-2.6.0-fixed.json --output ../../spec-2.6.0/entities.go  --fluent-setters --package-name spec --root-name AsyncAPI --config ./asyncapi-2.6.0-gen-cfg.json --schema-resolver ./bindings-resolver.json
+	make fix-lint
+
+## Generate bindings for v2.5.0 spec.
+gen-2.5.0:
+	#@test -s $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) || (curl -sSfL https://github.com/swaggest/json-cli/releases/download/$(JSON_CLI_VERSION)/json-cli -o $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) && chmod +x $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION))
+	#cd resources/schema/ && ./prepare_bindings.sh && $(GOPATH)/bin/json-cli-$(JSON_CLI_VERSION) gen-go asyncapi-2.5.0-fixed.json --output ../../spec-2.5.0/entities.go  --fluent-setters --package-name spec --root-name AsyncAPI --config ./asyncapi-2.5.0-gen-cfg.json --schema-resolver ./bindings-resolver.json
+	cd resources/schema/ && ./prepare_bindings-2.5.0.sh && json-cli gen-go asyncapi-2.5.0-fixed.json --output ../../spec-2.5.0/entities.go  --fluent-setters --package-name spec --root-name AsyncAPI --config ./asyncapi-2.5.0-gen-cfg.json --schema-resolver ./bindings-resolver.json
+	make fix-lint
+
 
 ## Generate bindings for v2.4.0 spec.
 gen-2.4.0:
