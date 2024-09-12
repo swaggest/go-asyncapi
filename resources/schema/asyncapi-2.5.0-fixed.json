@@ -716,7 +716,7 @@
   },
   "http://asyncapi.com/definitions/2.5.0/schemas.json":{
    "$id":"http://asyncapi.com/definitions/2.5.0/schemas.json","type":"object",
-   "additionalProperties":{"$ref":"http://asyncapi.com/definitions/2.5.0/schema.json"},
+   "additionalProperties":{"x-go-type":"map[string]interface{}"},
    "description":"JSON objects describing schemas the API uses."
   },
   "http://asyncapi.com/definitions/2.5.0/messages.json":{

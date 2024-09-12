@@ -3201,12 +3201,12 @@ func (o OperationBindingsObject) MarshalJSON() ([]byte, error) {
 type HTTPOperation struct {
 	// Required. Type of operation. Its value MUST be either 'request' or 'response'.
 	// Required.
-	Type          HTTPOperationType                        `json:"type"`
-	Method        HTTPOperationMethod                      `json:"method,omitempty"` // When 'type' is 'request', this is the HTTP method, otherwise it MUST be ignored. Its value MUST be one of 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS', 'CONNECT', and 'TRACE'.
-	Query         *HTTPAsyncapiComDefinitions240SchemaJSON `json:"query,omitempty"`
-	OneOf0        *HTTPOperationOneOf0                     `json:"-"`
-	OneOf1        *HTTPOperationOneOf1                     `json:"-"`
-	MapOfAnything map[string]interface{}                   `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+	Type          HTTPOperationType      `json:"type"`
+	Method        HTTPOperationMethod    `json:"method,omitempty"` // When 'type' is 'request', this is the HTTP method, otherwise it MUST be ignored. Its value MUST be one of 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS', 'CONNECT', and 'TRACE'.
+	Query         *Schema                `json:"query,omitempty"`
+	OneOf0        *HTTPOperationOneOf0   `json:"-"`
+	OneOf1        *HTTPOperationOneOf1   `json:"-"`
+	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithType sets Type value.
@@ -3222,15 +3222,15 @@ func (h *HTTPOperation) WithMethod(val HTTPOperationMethod) *HTTPOperation {
 }
 
 // WithQuery sets Query value.
-func (h *HTTPOperation) WithQuery(val HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPOperation {
+func (h *HTTPOperation) WithQuery(val Schema) *HTTPOperation {
 	h.Query = &val
 	return h
 }
 
 // QueryEns ensures returned Query is not nil.
-func (h *HTTPOperation) QueryEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
+func (h *HTTPOperation) QueryEns() *Schema {
 	if h.Query == nil {
-		h.Query = new(HTTPAsyncapiComDefinitions240SchemaJSON)
+		h.Query = new(Schema)
 	}
 
 	return h.Query
@@ -4247,198 +4247,198 @@ func (j JSONSchemaType) MarshalJSON() ([]byte, error) {
 	return marshalUnion(j.AnyOf0, j.SliceOfJSONSchemaTypeAnyOf1ItemsValues)
 }
 
-// HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 structure is generated from "http://asyncapi.com/definitions/2.4.0/schema.json/allOf/1".
-type HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 struct {
-	AdditionalProperties *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties `json:"additionalProperties,omitempty"`
-	Items                *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items                `json:"items,omitempty"`
-	AllOf                []HTTPAsyncapiComDefinitions240SchemaJSON                          `json:"allOf,omitempty"`
-	OneOf                []HTTPAsyncapiComDefinitions240SchemaJSON                          `json:"oneOf,omitempty"`
-	AnyOf                []HTTPAsyncapiComDefinitions240SchemaJSON                          `json:"anyOf,omitempty"`
-	Not                  *HTTPAsyncapiComDefinitions240SchemaJSON                           `json:"not,omitempty"`
-	Properties           map[string]HTTPAsyncapiComDefinitions240SchemaJSON                 `json:"properties,omitempty"`
-	PatternProperties    map[string]HTTPAsyncapiComDefinitions240SchemaJSON                 `json:"patternProperties,omitempty"`
-	PropertyNames        *HTTPAsyncapiComDefinitions240SchemaJSON                           `json:"propertyNames,omitempty"`
-	Contains             *HTTPAsyncapiComDefinitions240SchemaJSON                           `json:"contains,omitempty"`
-	Discriminator        string                                                             `json:"discriminator,omitempty"`
-	ExternalDocs         *HTTPAsyncapiComDefinitions240ExternalDocsJSON                     `json:"externalDocs,omitempty"` // Information about external documentation.
-	Deprecated           bool                                                               `json:"deprecated,omitempty"`
-	MapOfAnything        map[string]interface{}                                             `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
+// SchemaAllOf1 structure is generated from "http://asyncapi.com/definitions/2.5.0/schema.json/allOf/1".
+type SchemaAllOf1 struct {
+	AdditionalProperties *SchemaAllOf1AdditionalProperties `json:"additionalProperties,omitempty"`
+	Items                *SchemaAllOf1Items                `json:"items,omitempty"`
+	AllOf                []Schema                          `json:"allOf,omitempty"`
+	OneOf                []Schema                          `json:"oneOf,omitempty"`
+	AnyOf                []Schema                          `json:"anyOf,omitempty"`
+	Not                  *Schema                           `json:"not,omitempty"`
+	Properties           map[string]Schema                 `json:"properties,omitempty"`
+	PatternProperties    map[string]Schema                 `json:"patternProperties,omitempty"`
+	PropertyNames        *Schema                           `json:"propertyNames,omitempty"`
+	Contains             *Schema                           `json:"contains,omitempty"`
+	Discriminator        string                            `json:"discriminator,omitempty"`
+	ExternalDocs         *ExternalDocs                     `json:"externalDocs,omitempty"` // Information about external documentation.
+	Deprecated           bool                              `json:"deprecated,omitempty"`
+	MapOfAnything        map[string]interface{}            `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
 }
 
 // WithAdditionalProperties sets AdditionalProperties value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithAdditionalProperties(val HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.AdditionalProperties = &val
-	return h
+func (s *SchemaAllOf1) WithAdditionalProperties(val SchemaAllOf1AdditionalProperties) *SchemaAllOf1 {
+	s.AdditionalProperties = &val
+	return s
 }
 
 // AdditionalPropertiesEns ensures returned AdditionalProperties is not nil.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) AdditionalPropertiesEns() *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties {
-	if h.AdditionalProperties == nil {
-		h.AdditionalProperties = new(HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties)
+func (s *SchemaAllOf1) AdditionalPropertiesEns() *SchemaAllOf1AdditionalProperties {
+	if s.AdditionalProperties == nil {
+		s.AdditionalProperties = new(SchemaAllOf1AdditionalProperties)
 	}
 
-	return h.AdditionalProperties
+	return s.AdditionalProperties
 }
 
 // WithItems sets Items value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithItems(val HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.Items = &val
-	return h
+func (s *SchemaAllOf1) WithItems(val SchemaAllOf1Items) *SchemaAllOf1 {
+	s.Items = &val
+	return s
 }
 
 // ItemsEns ensures returned Items is not nil.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) ItemsEns() *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items {
-	if h.Items == nil {
-		h.Items = new(HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items)
+func (s *SchemaAllOf1) ItemsEns() *SchemaAllOf1Items {
+	if s.Items == nil {
+		s.Items = new(SchemaAllOf1Items)
 	}
 
-	return h.Items
+	return s.Items
 }
 
 // WithAllOf sets AllOf value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithAllOf(val ...HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.AllOf = val
-	return h
+func (s *SchemaAllOf1) WithAllOf(val ...Schema) *SchemaAllOf1 {
+	s.AllOf = val
+	return s
 }
 
 // WithOneOf sets OneOf value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithOneOf(val ...HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.OneOf = val
-	return h
+func (s *SchemaAllOf1) WithOneOf(val ...Schema) *SchemaAllOf1 {
+	s.OneOf = val
+	return s
 }
 
 // WithAnyOf sets AnyOf value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithAnyOf(val ...HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.AnyOf = val
-	return h
+func (s *SchemaAllOf1) WithAnyOf(val ...Schema) *SchemaAllOf1 {
+	s.AnyOf = val
+	return s
 }
 
 // WithNot sets Not value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithNot(val HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.Not = &val
-	return h
+func (s *SchemaAllOf1) WithNot(val Schema) *SchemaAllOf1 {
+	s.Not = &val
+	return s
 }
 
 // NotEns ensures returned Not is not nil.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) NotEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
-	if h.Not == nil {
-		h.Not = new(HTTPAsyncapiComDefinitions240SchemaJSON)
+func (s *SchemaAllOf1) NotEns() *Schema {
+	if s.Not == nil {
+		s.Not = new(Schema)
 	}
 
-	return h.Not
+	return s.Not
 }
 
 // WithProperties sets Properties value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithProperties(val map[string]HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.Properties = val
-	return h
+func (s *SchemaAllOf1) WithProperties(val map[string]Schema) *SchemaAllOf1 {
+	s.Properties = val
+	return s
 }
 
 // WithPropertiesItem sets Properties item value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithPropertiesItem(key string, val HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	if h.Properties == nil {
-		h.Properties = make(map[string]HTTPAsyncapiComDefinitions240SchemaJSON, 1)
+func (s *SchemaAllOf1) WithPropertiesItem(key string, val Schema) *SchemaAllOf1 {
+	if s.Properties == nil {
+		s.Properties = make(map[string]Schema, 1)
 	}
 
-	h.Properties[key] = val
+	s.Properties[key] = val
 
-	return h
+	return s
 }
 
 // WithPatternProperties sets PatternProperties value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithPatternProperties(val map[string]HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.PatternProperties = val
-	return h
+func (s *SchemaAllOf1) WithPatternProperties(val map[string]Schema) *SchemaAllOf1 {
+	s.PatternProperties = val
+	return s
 }
 
 // WithPatternPropertiesItem sets PatternProperties item value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithPatternPropertiesItem(key string, val HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	if h.PatternProperties == nil {
-		h.PatternProperties = make(map[string]HTTPAsyncapiComDefinitions240SchemaJSON, 1)
+func (s *SchemaAllOf1) WithPatternPropertiesItem(key string, val Schema) *SchemaAllOf1 {
+	if s.PatternProperties == nil {
+		s.PatternProperties = make(map[string]Schema, 1)
 	}
 
-	h.PatternProperties[key] = val
+	s.PatternProperties[key] = val
 
-	return h
+	return s
 }
 
 // WithPropertyNames sets PropertyNames value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithPropertyNames(val HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.PropertyNames = &val
-	return h
+func (s *SchemaAllOf1) WithPropertyNames(val Schema) *SchemaAllOf1 {
+	s.PropertyNames = &val
+	return s
 }
 
 // PropertyNamesEns ensures returned PropertyNames is not nil.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) PropertyNamesEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
-	if h.PropertyNames == nil {
-		h.PropertyNames = new(HTTPAsyncapiComDefinitions240SchemaJSON)
+func (s *SchemaAllOf1) PropertyNamesEns() *Schema {
+	if s.PropertyNames == nil {
+		s.PropertyNames = new(Schema)
 	}
 
-	return h.PropertyNames
+	return s.PropertyNames
 }
 
 // WithContains sets Contains value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithContains(val HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.Contains = &val
-	return h
+func (s *SchemaAllOf1) WithContains(val Schema) *SchemaAllOf1 {
+	s.Contains = &val
+	return s
 }
 
 // ContainsEns ensures returned Contains is not nil.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) ContainsEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
-	if h.Contains == nil {
-		h.Contains = new(HTTPAsyncapiComDefinitions240SchemaJSON)
+func (s *SchemaAllOf1) ContainsEns() *Schema {
+	if s.Contains == nil {
+		s.Contains = new(Schema)
 	}
 
-	return h.Contains
+	return s.Contains
 }
 
 // WithDiscriminator sets Discriminator value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithDiscriminator(val string) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.Discriminator = val
-	return h
+func (s *SchemaAllOf1) WithDiscriminator(val string) *SchemaAllOf1 {
+	s.Discriminator = val
+	return s
 }
 
 // WithExternalDocs sets ExternalDocs value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithExternalDocs(val HTTPAsyncapiComDefinitions240ExternalDocsJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.ExternalDocs = &val
-	return h
+func (s *SchemaAllOf1) WithExternalDocs(val ExternalDocs) *SchemaAllOf1 {
+	s.ExternalDocs = &val
+	return s
 }
 
 // ExternalDocsEns ensures returned ExternalDocs is not nil.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) ExternalDocsEns() *HTTPAsyncapiComDefinitions240ExternalDocsJSON {
-	if h.ExternalDocs == nil {
-		h.ExternalDocs = new(HTTPAsyncapiComDefinitions240ExternalDocsJSON)
+func (s *SchemaAllOf1) ExternalDocsEns() *ExternalDocs {
+	if s.ExternalDocs == nil {
+		s.ExternalDocs = new(ExternalDocs)
 	}
 
-	return h.ExternalDocs
+	return s.ExternalDocs
 }
 
 // WithDeprecated sets Deprecated value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithDeprecated(val bool) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.Deprecated = val
-	return h
+func (s *SchemaAllOf1) WithDeprecated(val bool) *SchemaAllOf1 {
+	s.Deprecated = val
+	return s
 }
 
 // WithMapOfAnything sets MapOfAnything value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithMapOfAnything(val map[string]interface{}) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	h.MapOfAnything = val
-	return h
+func (s *SchemaAllOf1) WithMapOfAnything(val map[string]interface{}) *SchemaAllOf1 {
+	s.MapOfAnything = val
+	return s
 }
 
 // WithMapOfAnythingItem sets MapOfAnything item value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) WithMapOfAnythingItem(key string, val interface{}) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	if h.MapOfAnything == nil {
-		h.MapOfAnything = make(map[string]interface{}, 1)
+func (s *SchemaAllOf1) WithMapOfAnythingItem(key string, val interface{}) *SchemaAllOf1 {
+	if s.MapOfAnything == nil {
+		s.MapOfAnything = make(map[string]interface{}, 1)
 	}
 
-	h.MapOfAnything[key] = val
+	s.MapOfAnything[key] = val
 
-	return h
+	return s
 }
 
-type marshalHTTPAsyncapiComDefinitions240SchemaJSONAllOf1 HTTPAsyncapiComDefinitions240SchemaJSONAllOf1
+type marshalSchemaAllOf1 SchemaAllOf1
 
-var knownKeysHTTPAsyncapiComDefinitions240SchemaJSONAllOf1 = []string{
+var knownKeysSchemaAllOf1 = []string{
 	"additionalProperties",
 	"items",
 	"allOf",
@@ -4455,12 +4455,12 @@ var knownKeysHTTPAsyncapiComDefinitions240SchemaJSONAllOf1 = []string{
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) UnmarshalJSON(data []byte) error {
+func (s *SchemaAllOf1) UnmarshalJSON(data []byte) error {
 	var err error
 
-	mh := marshalHTTPAsyncapiComDefinitions240SchemaJSONAllOf1(*h)
+	ms := marshalSchemaAllOf1(*s)
 
-	err = json.Unmarshal(data, &mh)
+	err = json.Unmarshal(data, &ms)
 	if err != nil {
 		return err
 	}
@@ -4472,7 +4472,7 @@ func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) UnmarshalJSON(data []byt
 		rawMap = nil
 	}
 
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
+	for _, key := range knownKeysSchemaAllOf1 {
 		delete(rawMap, key)
 	}
 
@@ -4482,8 +4482,8 @@ func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) UnmarshalJSON(data []byt
 		if regexXWDX2D.MatchString(key) {
 			matched = true
 
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
+			if ms.MapOfAnything == nil {
+				ms.MapOfAnything = make(map[string]interface{}, 1)
 			}
 
 			var val interface{}
@@ -4493,7 +4493,7 @@ func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) UnmarshalJSON(data []byt
 				return err
 			}
 
-			mh.MapOfAnything[key] = val
+			ms.MapOfAnything[key] = val
 		}
 
 		if matched {
@@ -4501,41 +4501,41 @@ func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) UnmarshalJSON(data []byt
 		}
 	}
 
-	*h = HTTPAsyncapiComDefinitions240SchemaJSONAllOf1(mh)
+	*s = SchemaAllOf1(ms)
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240SchemaJSONAllOf1(h), h.MapOfAnything)
+func (s SchemaAllOf1) MarshalJSON() ([]byte, error) {
+	return marshalUnion(marshalSchemaAllOf1(s), s.MapOfAnything)
 }
 
-// HTTPAsyncapiComDefinitions240SchemaJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/schema.json".
-type HTTPAsyncapiComDefinitions240SchemaJSON struct {
-	AllOf1 *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 `json:"-"`
+// Schema structure is generated from "http://asyncapi.com/definitions/2.5.0/schema.json".
+type Schema struct {
+	AllOf1 *SchemaAllOf1 `json:"-"`
 }
 
 // WithAllOf1 sets AllOf1 value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSON) WithAllOf1(val HTTPAsyncapiComDefinitions240SchemaJSONAllOf1) *HTTPAsyncapiComDefinitions240SchemaJSON {
-	h.AllOf1 = &val
-	return h
+func (s *Schema) WithAllOf1(val SchemaAllOf1) *Schema {
+	s.AllOf1 = &val
+	return s
 }
 
 // AllOf1Ens ensures returned AllOf1 is not nil.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSON) AllOf1Ens() *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1 {
-	if h.AllOf1 == nil {
-		h.AllOf1 = new(HTTPAsyncapiComDefinitions240SchemaJSONAllOf1)
+func (s *Schema) AllOf1Ens() *SchemaAllOf1 {
+	if s.AllOf1 == nil {
+		s.AllOf1 = new(SchemaAllOf1)
 	}
 
-	return h.AllOf1
+	return s.AllOf1
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSON) UnmarshalJSON(data []byte) error {
+func (s *Schema) UnmarshalJSON(data []byte) error {
 	var err error
 
-	err = json.Unmarshal(data, &h.AllOf1)
+	err = json.Unmarshal(data, &s.AllOf1)
 	if err != nil {
 		return err
 	}
@@ -4544,246 +4544,132 @@ func (h *HTTPAsyncapiComDefinitions240SchemaJSON) UnmarshalJSON(data []byte) err
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SchemaJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.AllOf1)
+func (s Schema) MarshalJSON() ([]byte, error) {
+	return marshalUnion(s.AllOf1)
 }
 
-// HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties structure is generated from "http://asyncapi.com/definitions/2.4.0/schema.json/allOf/1->additionalProperties".
-type HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties struct {
-	HTTPAsyncapiComDefinitions240SchemaJSON *HTTPAsyncapiComDefinitions240SchemaJSON `json:"-"`
-	Bool                                    *bool                                    `json:"-"`
+// SchemaAllOf1AdditionalProperties structure is generated from "http://asyncapi.com/definitions/2.5.0/schema.json/allOf/1->additionalProperties".
+type SchemaAllOf1AdditionalProperties struct {
+	Schema *Schema `json:"-"`
+	Bool   *bool   `json:"-"`
 }
 
-// WithHTTPAsyncapiComDefinitions240SchemaJSON sets HTTPAsyncapiComDefinitions240SchemaJSON value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties) WithHTTPAsyncapiComDefinitions240SchemaJSON(val HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties {
-	h.HTTPAsyncapiComDefinitions240SchemaJSON = &val
-	return h
+// WithSchema sets Schema value.
+func (s *SchemaAllOf1AdditionalProperties) WithSchema(val Schema) *SchemaAllOf1AdditionalProperties {
+	s.Schema = &val
+	return s
 }
 
-// HTTPAsyncapiComDefinitions240SchemaJSONEns ensures returned HTTPAsyncapiComDefinitions240SchemaJSON is not nil.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties) HTTPAsyncapiComDefinitions240SchemaJSONEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
-	if h.HTTPAsyncapiComDefinitions240SchemaJSON == nil {
-		h.HTTPAsyncapiComDefinitions240SchemaJSON = new(HTTPAsyncapiComDefinitions240SchemaJSON)
+// SchemaEns ensures returned Schema is not nil.
+func (s *SchemaAllOf1AdditionalProperties) SchemaEns() *Schema {
+	if s.Schema == nil {
+		s.Schema = new(Schema)
 	}
 
-	return h.HTTPAsyncapiComDefinitions240SchemaJSON
+	return s.Schema
 }
 
 // WithBool sets Bool value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties) WithBool(val bool) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties {
-	h.Bool = &val
-	return h
+func (s *SchemaAllOf1AdditionalProperties) WithBool(val bool) *SchemaAllOf1AdditionalProperties {
+	s.Bool = &val
+	return s
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties) UnmarshalJSON(data []byte) error {
+func (s *SchemaAllOf1AdditionalProperties) UnmarshalJSON(data []byte) error {
 	var err error
 
 	anyOfErrors := make(map[string]error, 2)
 	anyOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240SchemaJSON)
+	err = json.Unmarshal(data, &s.Schema)
 	if err != nil {
-		anyOfErrors["HTTPAsyncapiComDefinitions240SchemaJSON"] = err
-		h.HTTPAsyncapiComDefinitions240SchemaJSON = nil
+		anyOfErrors["Schema"] = err
+		s.Schema = nil
 	} else {
 		anyOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.Bool)
+	err = json.Unmarshal(data, &s.Bool)
 	if err != nil {
 		anyOfErrors["Bool"] = err
-		h.Bool = nil
+		s.Bool = nil
 	} else {
 		anyOfValid++
 	}
 
 	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties failed with %d valid results: %v", anyOfValid, anyOfErrors)
+		return fmt.Errorf("anyOf constraint for SchemaAllOf1AdditionalProperties failed with %d valid results: %v", anyOfValid, anyOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SchemaJSONAllOf1AdditionalProperties) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240SchemaJSON, h.Bool)
+func (s SchemaAllOf1AdditionalProperties) MarshalJSON() ([]byte, error) {
+	return marshalUnion(s.Schema, s.Bool)
 }
 
-// HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items structure is generated from "http://asyncapi.com/definitions/2.4.0/schema.json/allOf/1->items".
-type HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items struct {
-	HTTPAsyncapiComDefinitions240SchemaJSON              *HTTPAsyncapiComDefinitions240SchemaJSON  `json:"-"`
-	SliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues []HTTPAsyncapiComDefinitions240SchemaJSON `json:"-"`
+// SchemaAllOf1Items structure is generated from "http://asyncapi.com/definitions/2.5.0/schema.json/allOf/1->items".
+type SchemaAllOf1Items struct {
+	Schema              *Schema  `json:"-"`
+	SliceOfSchemaValues []Schema `json:"-"`
 }
 
-// WithHTTPAsyncapiComDefinitions240SchemaJSON sets HTTPAsyncapiComDefinitions240SchemaJSON value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items) WithHTTPAsyncapiComDefinitions240SchemaJSON(val HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items {
-	h.HTTPAsyncapiComDefinitions240SchemaJSON = &val
-	return h
+// WithSchema sets Schema value.
+func (s *SchemaAllOf1Items) WithSchema(val Schema) *SchemaAllOf1Items {
+	s.Schema = &val
+	return s
 }
 
-// HTTPAsyncapiComDefinitions240SchemaJSONEns ensures returned HTTPAsyncapiComDefinitions240SchemaJSON is not nil.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items) HTTPAsyncapiComDefinitions240SchemaJSONEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
-	if h.HTTPAsyncapiComDefinitions240SchemaJSON == nil {
-		h.HTTPAsyncapiComDefinitions240SchemaJSON = new(HTTPAsyncapiComDefinitions240SchemaJSON)
+// SchemaEns ensures returned Schema is not nil.
+func (s *SchemaAllOf1Items) SchemaEns() *Schema {
+	if s.Schema == nil {
+		s.Schema = new(Schema)
 	}
 
-	return h.HTTPAsyncapiComDefinitions240SchemaJSON
+	return s.Schema
 }
 
-// WithSliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues sets SliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues value.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items) WithSliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues(val ...HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items {
-	h.SliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues = val
-	return h
+// WithSliceOfSchemaValues sets SliceOfSchemaValues value.
+func (s *SchemaAllOf1Items) WithSliceOfSchemaValues(val ...Schema) *SchemaAllOf1Items {
+	s.SliceOfSchemaValues = val
+	return s
 }
 
 // UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items) UnmarshalJSON(data []byte) error {
+func (s *SchemaAllOf1Items) UnmarshalJSON(data []byte) error {
 	var err error
 
 	anyOfErrors := make(map[string]error, 2)
 	anyOfValid := 0
 
-	err = json.Unmarshal(data, &h.HTTPAsyncapiComDefinitions240SchemaJSON)
+	err = json.Unmarshal(data, &s.Schema)
 	if err != nil {
-		anyOfErrors["HTTPAsyncapiComDefinitions240SchemaJSON"] = err
-		h.HTTPAsyncapiComDefinitions240SchemaJSON = nil
+		anyOfErrors["Schema"] = err
+		s.Schema = nil
 	} else {
 		anyOfValid++
 	}
 
-	err = json.Unmarshal(data, &h.SliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues)
+	err = json.Unmarshal(data, &s.SliceOfSchemaValues)
 	if err != nil {
-		anyOfErrors["SliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues"] = err
-		h.SliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues = nil
+		anyOfErrors["SliceOfSchemaValues"] = err
+		s.SliceOfSchemaValues = nil
 	} else {
 		anyOfValid++
 	}
 
 	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items failed with %d valid results: %v", anyOfValid, anyOfErrors)
+		return fmt.Errorf("anyOf constraint for SchemaAllOf1Items failed with %d valid results: %v", anyOfValid, anyOfErrors)
 	}
 
 	return nil
 }
 
 // MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240SchemaJSONAllOf1Items) MarshalJSON() ([]byte, error) {
-	return marshalUnion(h.HTTPAsyncapiComDefinitions240SchemaJSON, h.SliceOfHTTPAsyncapiComDefinitions240SchemaJSONValues)
-}
-
-// HTTPAsyncapiComDefinitions240ExternalDocsJSON structure is generated from "http://asyncapi.com/definitions/2.4.0/externalDocs.json".
-//
-// information about external documentation.
-type HTTPAsyncapiComDefinitions240ExternalDocsJSON struct {
-	Description string `json:"description,omitempty"`
-	// Format: uri.
-	// Required.
-	URL           string                 `json:"url"`
-	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
-}
-
-// WithDescription sets Description value.
-func (h *HTTPAsyncapiComDefinitions240ExternalDocsJSON) WithDescription(val string) *HTTPAsyncapiComDefinitions240ExternalDocsJSON {
-	h.Description = val
-	return h
-}
-
-// WithURL sets URL value.
-func (h *HTTPAsyncapiComDefinitions240ExternalDocsJSON) WithURL(val string) *HTTPAsyncapiComDefinitions240ExternalDocsJSON {
-	h.URL = val
-	return h
-}
-
-// WithMapOfAnything sets MapOfAnything value.
-func (h *HTTPAsyncapiComDefinitions240ExternalDocsJSON) WithMapOfAnything(val map[string]interface{}) *HTTPAsyncapiComDefinitions240ExternalDocsJSON {
-	h.MapOfAnything = val
-	return h
-}
-
-// WithMapOfAnythingItem sets MapOfAnything item value.
-func (h *HTTPAsyncapiComDefinitions240ExternalDocsJSON) WithMapOfAnythingItem(key string, val interface{}) *HTTPAsyncapiComDefinitions240ExternalDocsJSON {
-	if h.MapOfAnything == nil {
-		h.MapOfAnything = make(map[string]interface{}, 1)
-	}
-
-	h.MapOfAnything[key] = val
-
-	return h
-}
-
-type marshalHTTPAsyncapiComDefinitions240ExternalDocsJSON HTTPAsyncapiComDefinitions240ExternalDocsJSON
-
-var knownKeysHTTPAsyncapiComDefinitions240ExternalDocsJSON = []string{
-	"description",
-	"url",
-}
-
-// UnmarshalJSON decodes JSON.
-func (h *HTTPAsyncapiComDefinitions240ExternalDocsJSON) UnmarshalJSON(data []byte) error {
-	var err error
-
-	mh := marshalHTTPAsyncapiComDefinitions240ExternalDocsJSON(*h)
-
-	err = json.Unmarshal(data, &mh)
-	if err != nil {
-		return err
-	}
-
-	var rawMap map[string]json.RawMessage
-
-	err = json.Unmarshal(data, &rawMap)
-	if err != nil {
-		rawMap = nil
-	}
-
-	for _, key := range knownKeysHTTPAsyncapiComDefinitions240ExternalDocsJSON {
-		delete(rawMap, key)
-	}
-
-	for key, rawValue := range rawMap {
-		matched := false
-
-		if regexXWDX2D.MatchString(key) {
-			matched = true
-
-			if mh.MapOfAnything == nil {
-				mh.MapOfAnything = make(map[string]interface{}, 1)
-			}
-
-			var val interface{}
-
-			err = json.Unmarshal(rawValue, &val)
-			if err != nil {
-				return err
-			}
-
-			mh.MapOfAnything[key] = val
-		}
-
-		if matched {
-			delete(rawMap, key)
-		}
-	}
-
-	if len(rawMap) != 0 {
-		offendingKeys := make([]string, 0, len(rawMap))
-
-		for key := range rawMap {
-			offendingKeys = append(offendingKeys, key)
-		}
-
-		return fmt.Errorf("additional properties not allowed in HTTPAsyncapiComDefinitions240ExternalDocsJSON: %v", offendingKeys)
-	}
-
-	*h = HTTPAsyncapiComDefinitions240ExternalDocsJSON(mh)
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (h HTTPAsyncapiComDefinitions240ExternalDocsJSON) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalHTTPAsyncapiComDefinitions240ExternalDocsJSON(h), h.MapOfAnything)
+func (s SchemaAllOf1Items) MarshalJSON() ([]byte, error) {
+	return marshalUnion(s.Schema, s.SliceOfSchemaValues)
 }
 
 // HTTPOperationOneOf0 structure is generated from "http://asyncapi.com/bindings/http/operation.json/oneOf/0".
@@ -5166,36 +5052,36 @@ func (m MqttOperation) MarshalJSON() ([]byte, error) {
 //
 // This object contains information about the operation representation in Kafka.
 type KafkaOperation struct {
-	GroupID       *KafkaOperationGroupID  `json:"groupId,omitempty"`  // Id of the consumer group.
-	ClientID      *KafkaOperationClientID `json:"clientId,omitempty"` // Id of the consumer inside a consumer group.
-	MapOfAnything map[string]interface{}  `json:"-"`                  // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+	GroupID       *Schema                `json:"groupId,omitempty"`
+	ClientID      *Schema                `json:"clientId,omitempty"`
+	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithGroupID sets GroupID value.
-func (k *KafkaOperation) WithGroupID(val KafkaOperationGroupID) *KafkaOperation {
+func (k *KafkaOperation) WithGroupID(val Schema) *KafkaOperation {
 	k.GroupID = &val
 	return k
 }
 
 // GroupIDEns ensures returned GroupID is not nil.
-func (k *KafkaOperation) GroupIDEns() *KafkaOperationGroupID {
+func (k *KafkaOperation) GroupIDEns() *Schema {
 	if k.GroupID == nil {
-		k.GroupID = new(KafkaOperationGroupID)
+		k.GroupID = new(Schema)
 	}
 
 	return k.GroupID
 }
 
 // WithClientID sets ClientID value.
-func (k *KafkaOperation) WithClientID(val KafkaOperationClientID) *KafkaOperation {
+func (k *KafkaOperation) WithClientID(val Schema) *KafkaOperation {
 	k.ClientID = &val
 	return k
 }
 
 // ClientIDEns ensures returned ClientID is not nil.
-func (k *KafkaOperation) ClientIDEns() *KafkaOperationClientID {
+func (k *KafkaOperation) ClientIDEns() *Schema {
 	if k.ClientID == nil {
-		k.ClientID = new(KafkaOperationClientID)
+		k.ClientID = new(Schema)
 	}
 
 	return k.ClientID
@@ -5244,8 +5130,8 @@ func (k *KafkaOperation) UnmarshalJSON(data []byte) error {
 		rawMap = nil
 	}
 
-	if v, exists := rawMap["bindingVersion"]; exists && string(v) != `"0.3.0"` {
-		return fmt.Errorf(`bad const value for "bindingVersion" ("0.3.0" expected, %s received)`, v)
+	if v, exists := rawMap["bindingVersion"]; exists && string(v) != `"0.1.0"` {
+		return fmt.Errorf(`bad const value for "bindingVersion" ("0.1.0" expected, %s received)`, v)
 	}
 
 	delete(rawMap, "bindingVersion")
@@ -5295,139 +5181,11 @@ func (k *KafkaOperation) UnmarshalJSON(data []byte) error {
 }
 
 // constKafkaOperation is unconditionally added to JSON.
-var constKafkaOperation = json.RawMessage(`{"bindingVersion":"0.3.0"}`)
+var constKafkaOperation = json.RawMessage(`{"bindingVersion":"0.1.0"}`)
 
 // MarshalJSON encodes JSON.
 func (k KafkaOperation) MarshalJSON() ([]byte, error) {
 	return marshalUnion(constKafkaOperation, marshalKafkaOperation(k), k.MapOfAnything)
-}
-
-// KafkaOperationGroupID structure is generated from "http://asyncapi.com/bindings/kafka/operation.json->groupId".
-//
-// Id of the consumer group.
-type KafkaOperationGroupID struct {
-	StringProperty                          *string                                  `json:"-"`
-	HTTPAsyncapiComDefinitions240SchemaJSON *HTTPAsyncapiComDefinitions240SchemaJSON `json:"-"`
-}
-
-// WithStringProperty sets StringProperty value.
-func (k *KafkaOperationGroupID) WithStringProperty(val string) *KafkaOperationGroupID {
-	k.StringProperty = &val
-	return k
-}
-
-// WithHTTPAsyncapiComDefinitions240SchemaJSON sets HTTPAsyncapiComDefinitions240SchemaJSON value.
-func (k *KafkaOperationGroupID) WithHTTPAsyncapiComDefinitions240SchemaJSON(val HTTPAsyncapiComDefinitions240SchemaJSON) *KafkaOperationGroupID {
-	k.HTTPAsyncapiComDefinitions240SchemaJSON = &val
-	return k
-}
-
-// HTTPAsyncapiComDefinitions240SchemaJSONEns ensures returned HTTPAsyncapiComDefinitions240SchemaJSON is not nil.
-func (k *KafkaOperationGroupID) HTTPAsyncapiComDefinitions240SchemaJSONEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
-	if k.HTTPAsyncapiComDefinitions240SchemaJSON == nil {
-		k.HTTPAsyncapiComDefinitions240SchemaJSON = new(HTTPAsyncapiComDefinitions240SchemaJSON)
-	}
-
-	return k.HTTPAsyncapiComDefinitions240SchemaJSON
-}
-
-// UnmarshalJSON decodes JSON.
-func (k *KafkaOperationGroupID) UnmarshalJSON(data []byte) error {
-	var err error
-
-	oneOfErrors := make(map[string]error, 2)
-	oneOfValid := 0
-
-	err = json.Unmarshal(data, &k.StringProperty)
-	if err != nil {
-		oneOfErrors["StringProperty"] = err
-		k.StringProperty = nil
-	} else {
-		oneOfValid++
-	}
-
-	err = json.Unmarshal(data, &k.HTTPAsyncapiComDefinitions240SchemaJSON)
-	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240SchemaJSON"] = err
-		k.HTTPAsyncapiComDefinitions240SchemaJSON = nil
-	} else {
-		oneOfValid++
-	}
-
-	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for KafkaOperationGroupID with %d valid results: %v", oneOfValid, oneOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (k KafkaOperationGroupID) MarshalJSON() ([]byte, error) {
-	return marshalUnion(k.StringProperty, k.HTTPAsyncapiComDefinitions240SchemaJSON)
-}
-
-// KafkaOperationClientID structure is generated from "http://asyncapi.com/bindings/kafka/operation.json->clientId".
-//
-// Id of the consumer inside a consumer group.
-type KafkaOperationClientID struct {
-	StringProperty                          *string                                  `json:"-"`
-	HTTPAsyncapiComDefinitions240SchemaJSON *HTTPAsyncapiComDefinitions240SchemaJSON `json:"-"`
-}
-
-// WithStringProperty sets StringProperty value.
-func (k *KafkaOperationClientID) WithStringProperty(val string) *KafkaOperationClientID {
-	k.StringProperty = &val
-	return k
-}
-
-// WithHTTPAsyncapiComDefinitions240SchemaJSON sets HTTPAsyncapiComDefinitions240SchemaJSON value.
-func (k *KafkaOperationClientID) WithHTTPAsyncapiComDefinitions240SchemaJSON(val HTTPAsyncapiComDefinitions240SchemaJSON) *KafkaOperationClientID {
-	k.HTTPAsyncapiComDefinitions240SchemaJSON = &val
-	return k
-}
-
-// HTTPAsyncapiComDefinitions240SchemaJSONEns ensures returned HTTPAsyncapiComDefinitions240SchemaJSON is not nil.
-func (k *KafkaOperationClientID) HTTPAsyncapiComDefinitions240SchemaJSONEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
-	if k.HTTPAsyncapiComDefinitions240SchemaJSON == nil {
-		k.HTTPAsyncapiComDefinitions240SchemaJSON = new(HTTPAsyncapiComDefinitions240SchemaJSON)
-	}
-
-	return k.HTTPAsyncapiComDefinitions240SchemaJSON
-}
-
-// UnmarshalJSON decodes JSON.
-func (k *KafkaOperationClientID) UnmarshalJSON(data []byte) error {
-	var err error
-
-	oneOfErrors := make(map[string]error, 2)
-	oneOfValid := 0
-
-	err = json.Unmarshal(data, &k.StringProperty)
-	if err != nil {
-		oneOfErrors["StringProperty"] = err
-		k.StringProperty = nil
-	} else {
-		oneOfValid++
-	}
-
-	err = json.Unmarshal(data, &k.HTTPAsyncapiComDefinitions240SchemaJSON)
-	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240SchemaJSON"] = err
-		k.HTTPAsyncapiComDefinitions240SchemaJSON = nil
-	} else {
-		oneOfValid++
-	}
-
-	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for KafkaOperationClientID with %d valid results: %v", oneOfValid, oneOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (k KafkaOperationClientID) MarshalJSON() ([]byte, error) {
-	return marshalUnion(k.StringProperty, k.HTTPAsyncapiComDefinitions240SchemaJSON)
 }
 
 // NatsOperation structure is generated from "http://asyncapi.com/bindings/nats/operation.json".
@@ -6215,431 +5973,6 @@ func (m MessageEntity) MarshalJSON() ([]byte, error) {
 	return marshalUnion(marshalMessageEntity(m), m.MapOfAnything)
 }
 
-// SchemaAllOf1 structure is generated from "http://asyncapi.com/definitions/2.5.0/schema.json/allOf/1".
-type SchemaAllOf1 struct {
-	AdditionalProperties *SchemaAllOf1AdditionalProperties `json:"additionalProperties,omitempty"`
-	Items                *SchemaAllOf1Items                `json:"items,omitempty"`
-	AllOf                []Schema                          `json:"allOf,omitempty"`
-	OneOf                []Schema                          `json:"oneOf,omitempty"`
-	AnyOf                []Schema                          `json:"anyOf,omitempty"`
-	Not                  *Schema                           `json:"not,omitempty"`
-	Properties           map[string]Schema                 `json:"properties,omitempty"`
-	PatternProperties    map[string]Schema                 `json:"patternProperties,omitempty"`
-	PropertyNames        *Schema                           `json:"propertyNames,omitempty"`
-	Contains             *Schema                           `json:"contains,omitempty"`
-	Discriminator        string                            `json:"discriminator,omitempty"`
-	ExternalDocs         *ExternalDocs                     `json:"externalDocs,omitempty"` // Information about external documentation.
-	Deprecated           bool                              `json:"deprecated,omitempty"`
-	MapOfAnything        map[string]interface{}            `json:"-"` // Key must match pattern: `^x-[\w\d\.\x2d_]+$`.
-}
-
-// WithAdditionalProperties sets AdditionalProperties value.
-func (s *SchemaAllOf1) WithAdditionalProperties(val SchemaAllOf1AdditionalProperties) *SchemaAllOf1 {
-	s.AdditionalProperties = &val
-	return s
-}
-
-// AdditionalPropertiesEns ensures returned AdditionalProperties is not nil.
-func (s *SchemaAllOf1) AdditionalPropertiesEns() *SchemaAllOf1AdditionalProperties {
-	if s.AdditionalProperties == nil {
-		s.AdditionalProperties = new(SchemaAllOf1AdditionalProperties)
-	}
-
-	return s.AdditionalProperties
-}
-
-// WithItems sets Items value.
-func (s *SchemaAllOf1) WithItems(val SchemaAllOf1Items) *SchemaAllOf1 {
-	s.Items = &val
-	return s
-}
-
-// ItemsEns ensures returned Items is not nil.
-func (s *SchemaAllOf1) ItemsEns() *SchemaAllOf1Items {
-	if s.Items == nil {
-		s.Items = new(SchemaAllOf1Items)
-	}
-
-	return s.Items
-}
-
-// WithAllOf sets AllOf value.
-func (s *SchemaAllOf1) WithAllOf(val ...Schema) *SchemaAllOf1 {
-	s.AllOf = val
-	return s
-}
-
-// WithOneOf sets OneOf value.
-func (s *SchemaAllOf1) WithOneOf(val ...Schema) *SchemaAllOf1 {
-	s.OneOf = val
-	return s
-}
-
-// WithAnyOf sets AnyOf value.
-func (s *SchemaAllOf1) WithAnyOf(val ...Schema) *SchemaAllOf1 {
-	s.AnyOf = val
-	return s
-}
-
-// WithNot sets Not value.
-func (s *SchemaAllOf1) WithNot(val Schema) *SchemaAllOf1 {
-	s.Not = &val
-	return s
-}
-
-// NotEns ensures returned Not is not nil.
-func (s *SchemaAllOf1) NotEns() *Schema {
-	if s.Not == nil {
-		s.Not = new(Schema)
-	}
-
-	return s.Not
-}
-
-// WithProperties sets Properties value.
-func (s *SchemaAllOf1) WithProperties(val map[string]Schema) *SchemaAllOf1 {
-	s.Properties = val
-	return s
-}
-
-// WithPropertiesItem sets Properties item value.
-func (s *SchemaAllOf1) WithPropertiesItem(key string, val Schema) *SchemaAllOf1 {
-	if s.Properties == nil {
-		s.Properties = make(map[string]Schema, 1)
-	}
-
-	s.Properties[key] = val
-
-	return s
-}
-
-// WithPatternProperties sets PatternProperties value.
-func (s *SchemaAllOf1) WithPatternProperties(val map[string]Schema) *SchemaAllOf1 {
-	s.PatternProperties = val
-	return s
-}
-
-// WithPatternPropertiesItem sets PatternProperties item value.
-func (s *SchemaAllOf1) WithPatternPropertiesItem(key string, val Schema) *SchemaAllOf1 {
-	if s.PatternProperties == nil {
-		s.PatternProperties = make(map[string]Schema, 1)
-	}
-
-	s.PatternProperties[key] = val
-
-	return s
-}
-
-// WithPropertyNames sets PropertyNames value.
-func (s *SchemaAllOf1) WithPropertyNames(val Schema) *SchemaAllOf1 {
-	s.PropertyNames = &val
-	return s
-}
-
-// PropertyNamesEns ensures returned PropertyNames is not nil.
-func (s *SchemaAllOf1) PropertyNamesEns() *Schema {
-	if s.PropertyNames == nil {
-		s.PropertyNames = new(Schema)
-	}
-
-	return s.PropertyNames
-}
-
-// WithContains sets Contains value.
-func (s *SchemaAllOf1) WithContains(val Schema) *SchemaAllOf1 {
-	s.Contains = &val
-	return s
-}
-
-// ContainsEns ensures returned Contains is not nil.
-func (s *SchemaAllOf1) ContainsEns() *Schema {
-	if s.Contains == nil {
-		s.Contains = new(Schema)
-	}
-
-	return s.Contains
-}
-
-// WithDiscriminator sets Discriminator value.
-func (s *SchemaAllOf1) WithDiscriminator(val string) *SchemaAllOf1 {
-	s.Discriminator = val
-	return s
-}
-
-// WithExternalDocs sets ExternalDocs value.
-func (s *SchemaAllOf1) WithExternalDocs(val ExternalDocs) *SchemaAllOf1 {
-	s.ExternalDocs = &val
-	return s
-}
-
-// ExternalDocsEns ensures returned ExternalDocs is not nil.
-func (s *SchemaAllOf1) ExternalDocsEns() *ExternalDocs {
-	if s.ExternalDocs == nil {
-		s.ExternalDocs = new(ExternalDocs)
-	}
-
-	return s.ExternalDocs
-}
-
-// WithDeprecated sets Deprecated value.
-func (s *SchemaAllOf1) WithDeprecated(val bool) *SchemaAllOf1 {
-	s.Deprecated = val
-	return s
-}
-
-// WithMapOfAnything sets MapOfAnything value.
-func (s *SchemaAllOf1) WithMapOfAnything(val map[string]interface{}) *SchemaAllOf1 {
-	s.MapOfAnything = val
-	return s
-}
-
-// WithMapOfAnythingItem sets MapOfAnything item value.
-func (s *SchemaAllOf1) WithMapOfAnythingItem(key string, val interface{}) *SchemaAllOf1 {
-	if s.MapOfAnything == nil {
-		s.MapOfAnything = make(map[string]interface{}, 1)
-	}
-
-	s.MapOfAnything[key] = val
-
-	return s
-}
-
-type marshalSchemaAllOf1 SchemaAllOf1
-
-var knownKeysSchemaAllOf1 = []string{
-	"additionalProperties",
-	"items",
-	"allOf",
-	"oneOf",
-	"anyOf",
-	"not",
-	"properties",
-	"patternProperties",
-	"propertyNames",
-	"contains",
-	"discriminator",
-	"externalDocs",
-	"deprecated",
-}
-
-// UnmarshalJSON decodes JSON.
-func (s *SchemaAllOf1) UnmarshalJSON(data []byte) error {
-	var err error
-
-	ms := marshalSchemaAllOf1(*s)
-
-	err = json.Unmarshal(data, &ms)
-	if err != nil {
-		return err
-	}
-
-	var rawMap map[string]json.RawMessage
-
-	err = json.Unmarshal(data, &rawMap)
-	if err != nil {
-		rawMap = nil
-	}
-
-	for _, key := range knownKeysSchemaAllOf1 {
-		delete(rawMap, key)
-	}
-
-	for key, rawValue := range rawMap {
-		matched := false
-
-		if regexXWDX2D.MatchString(key) {
-			matched = true
-
-			if ms.MapOfAnything == nil {
-				ms.MapOfAnything = make(map[string]interface{}, 1)
-			}
-
-			var val interface{}
-
-			err = json.Unmarshal(rawValue, &val)
-			if err != nil {
-				return err
-			}
-
-			ms.MapOfAnything[key] = val
-		}
-
-		if matched {
-			delete(rawMap, key)
-		}
-	}
-
-	*s = SchemaAllOf1(ms)
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (s SchemaAllOf1) MarshalJSON() ([]byte, error) {
-	return marshalUnion(marshalSchemaAllOf1(s), s.MapOfAnything)
-}
-
-// Schema structure is generated from "http://asyncapi.com/definitions/2.5.0/schema.json".
-type Schema struct {
-	AllOf1 *SchemaAllOf1 `json:"-"`
-}
-
-// WithAllOf1 sets AllOf1 value.
-func (s *Schema) WithAllOf1(val SchemaAllOf1) *Schema {
-	s.AllOf1 = &val
-	return s
-}
-
-// AllOf1Ens ensures returned AllOf1 is not nil.
-func (s *Schema) AllOf1Ens() *SchemaAllOf1 {
-	if s.AllOf1 == nil {
-		s.AllOf1 = new(SchemaAllOf1)
-	}
-
-	return s.AllOf1
-}
-
-// UnmarshalJSON decodes JSON.
-func (s *Schema) UnmarshalJSON(data []byte) error {
-	var err error
-
-	err = json.Unmarshal(data, &s.AllOf1)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (s Schema) MarshalJSON() ([]byte, error) {
-	return marshalUnion(s.AllOf1)
-}
-
-// SchemaAllOf1AdditionalProperties structure is generated from "http://asyncapi.com/definitions/2.5.0/schema.json/allOf/1->additionalProperties".
-type SchemaAllOf1AdditionalProperties struct {
-	Schema *Schema `json:"-"`
-	Bool   *bool   `json:"-"`
-}
-
-// WithSchema sets Schema value.
-func (s *SchemaAllOf1AdditionalProperties) WithSchema(val Schema) *SchemaAllOf1AdditionalProperties {
-	s.Schema = &val
-	return s
-}
-
-// SchemaEns ensures returned Schema is not nil.
-func (s *SchemaAllOf1AdditionalProperties) SchemaEns() *Schema {
-	if s.Schema == nil {
-		s.Schema = new(Schema)
-	}
-
-	return s.Schema
-}
-
-// WithBool sets Bool value.
-func (s *SchemaAllOf1AdditionalProperties) WithBool(val bool) *SchemaAllOf1AdditionalProperties {
-	s.Bool = &val
-	return s
-}
-
-// UnmarshalJSON decodes JSON.
-func (s *SchemaAllOf1AdditionalProperties) UnmarshalJSON(data []byte) error {
-	var err error
-
-	anyOfErrors := make(map[string]error, 2)
-	anyOfValid := 0
-
-	err = json.Unmarshal(data, &s.Schema)
-	if err != nil {
-		anyOfErrors["Schema"] = err
-		s.Schema = nil
-	} else {
-		anyOfValid++
-	}
-
-	err = json.Unmarshal(data, &s.Bool)
-	if err != nil {
-		anyOfErrors["Bool"] = err
-		s.Bool = nil
-	} else {
-		anyOfValid++
-	}
-
-	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for SchemaAllOf1AdditionalProperties failed with %d valid results: %v", anyOfValid, anyOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (s SchemaAllOf1AdditionalProperties) MarshalJSON() ([]byte, error) {
-	return marshalUnion(s.Schema, s.Bool)
-}
-
-// SchemaAllOf1Items structure is generated from "http://asyncapi.com/definitions/2.5.0/schema.json/allOf/1->items".
-type SchemaAllOf1Items struct {
-	Schema              *Schema  `json:"-"`
-	SliceOfSchemaValues []Schema `json:"-"`
-}
-
-// WithSchema sets Schema value.
-func (s *SchemaAllOf1Items) WithSchema(val Schema) *SchemaAllOf1Items {
-	s.Schema = &val
-	return s
-}
-
-// SchemaEns ensures returned Schema is not nil.
-func (s *SchemaAllOf1Items) SchemaEns() *Schema {
-	if s.Schema == nil {
-		s.Schema = new(Schema)
-	}
-
-	return s.Schema
-}
-
-// WithSliceOfSchemaValues sets SliceOfSchemaValues value.
-func (s *SchemaAllOf1Items) WithSliceOfSchemaValues(val ...Schema) *SchemaAllOf1Items {
-	s.SliceOfSchemaValues = val
-	return s
-}
-
-// UnmarshalJSON decodes JSON.
-func (s *SchemaAllOf1Items) UnmarshalJSON(data []byte) error {
-	var err error
-
-	anyOfErrors := make(map[string]error, 2)
-	anyOfValid := 0
-
-	err = json.Unmarshal(data, &s.Schema)
-	if err != nil {
-		anyOfErrors["Schema"] = err
-		s.Schema = nil
-	} else {
-		anyOfValid++
-	}
-
-	err = json.Unmarshal(data, &s.SliceOfSchemaValues)
-	if err != nil {
-		anyOfErrors["SliceOfSchemaValues"] = err
-		s.SliceOfSchemaValues = nil
-	} else {
-		anyOfValid++
-	}
-
-	if anyOfValid == 0 {
-		return fmt.Errorf("anyOf constraint for SchemaAllOf1Items failed with %d valid results: %v", anyOfValid, anyOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (s SchemaAllOf1Items) MarshalJSON() ([]byte, error) {
-	return marshalUnion(s.Schema, s.SliceOfSchemaValues)
-}
-
 // MessageOneOf1OneOf1HeadersAllOf1 structure is generated from "http://asyncapi.com/definitions/2.5.0/message.json/oneOf/1/oneOf/1->headers/allOf/1".
 type MessageOneOf1OneOf1HeadersAllOf1 struct{}
 
@@ -7343,20 +6676,20 @@ func (m MessageBindingsObject) MarshalJSON() ([]byte, error) {
 //
 // This object contains information about the message representation in HTTP.
 type HTTPMessage struct {
-	Headers       *HTTPAsyncapiComDefinitions240SchemaJSON `json:"headers,omitempty"`
-	MapOfAnything map[string]interface{}                   `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+	Headers       *Schema                `json:"headers,omitempty"`
+	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithHeaders sets Headers value.
-func (h *HTTPMessage) WithHeaders(val HTTPAsyncapiComDefinitions240SchemaJSON) *HTTPMessage {
+func (h *HTTPMessage) WithHeaders(val Schema) *HTTPMessage {
 	h.Headers = &val
 	return h
 }
 
 // HeadersEns ensures returned Headers is not nil.
-func (h *HTTPMessage) HeadersEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
+func (h *HTTPMessage) HeadersEns() *Schema {
 	if h.Headers == nil {
-		h.Headers = new(HTTPAsyncapiComDefinitions240SchemaJSON)
+		h.Headers = new(Schema)
 	}
 
 	return h.Headers
@@ -7673,20 +7006,20 @@ func (m MqttMessage) MarshalJSON() ([]byte, error) {
 
 // KafkaMessage structure is generated from "http://asyncapi.com/bindings/kafka/message.json".
 type KafkaMessage struct {
-	Key           *KafkaMessageKey       `json:"key,omitempty"` // The message key.
-	MapOfAnything map[string]interface{} `json:"-"`             // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+	Key           *Schema                `json:"key,omitempty"`
+	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithKey sets Key value.
-func (k *KafkaMessage) WithKey(val KafkaMessageKey) *KafkaMessage {
+func (k *KafkaMessage) WithKey(val Schema) *KafkaMessage {
 	k.Key = &val
 	return k
 }
 
 // KeyEns ensures returned Key is not nil.
-func (k *KafkaMessage) KeyEns() *KafkaMessageKey {
+func (k *KafkaMessage) KeyEns() *Schema {
 	if k.Key == nil {
-		k.Key = new(KafkaMessageKey)
+		k.Key = new(Schema)
 	}
 
 	return k.Key
@@ -7734,8 +7067,8 @@ func (k *KafkaMessage) UnmarshalJSON(data []byte) error {
 		rawMap = nil
 	}
 
-	if v, exists := rawMap["bindingVersion"]; exists && string(v) != `"0.3.0"` {
-		return fmt.Errorf(`bad const value for "bindingVersion" ("0.3.0" expected, %s received)`, v)
+	if v, exists := rawMap["bindingVersion"]; exists && string(v) != `"0.1.0"` {
+		return fmt.Errorf(`bad const value for "bindingVersion" ("0.1.0" expected, %s received)`, v)
 	}
 
 	delete(rawMap, "bindingVersion")
@@ -7785,95 +7118,31 @@ func (k *KafkaMessage) UnmarshalJSON(data []byte) error {
 }
 
 // constKafkaMessage is unconditionally added to JSON.
-var constKafkaMessage = json.RawMessage(`{"bindingVersion":"0.3.0"}`)
+var constKafkaMessage = json.RawMessage(`{"bindingVersion":"0.1.0"}`)
 
 // MarshalJSON encodes JSON.
 func (k KafkaMessage) MarshalJSON() ([]byte, error) {
 	return marshalUnion(constKafkaMessage, marshalKafkaMessage(k), k.MapOfAnything)
 }
 
-// KafkaMessageKey structure is generated from "http://asyncapi.com/bindings/kafka/message.json->key".
-//
-// The message key.
-type KafkaMessageKey struct {
-	StringProperty                          *string                                  `json:"-"`
-	HTTPAsyncapiComDefinitions240SchemaJSON *HTTPAsyncapiComDefinitions240SchemaJSON `json:"-"`
-}
-
-// WithStringProperty sets StringProperty value.
-func (k *KafkaMessageKey) WithStringProperty(val string) *KafkaMessageKey {
-	k.StringProperty = &val
-	return k
-}
-
-// WithHTTPAsyncapiComDefinitions240SchemaJSON sets HTTPAsyncapiComDefinitions240SchemaJSON value.
-func (k *KafkaMessageKey) WithHTTPAsyncapiComDefinitions240SchemaJSON(val HTTPAsyncapiComDefinitions240SchemaJSON) *KafkaMessageKey {
-	k.HTTPAsyncapiComDefinitions240SchemaJSON = &val
-	return k
-}
-
-// HTTPAsyncapiComDefinitions240SchemaJSONEns ensures returned HTTPAsyncapiComDefinitions240SchemaJSON is not nil.
-func (k *KafkaMessageKey) HTTPAsyncapiComDefinitions240SchemaJSONEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
-	if k.HTTPAsyncapiComDefinitions240SchemaJSON == nil {
-		k.HTTPAsyncapiComDefinitions240SchemaJSON = new(HTTPAsyncapiComDefinitions240SchemaJSON)
-	}
-
-	return k.HTTPAsyncapiComDefinitions240SchemaJSON
-}
-
-// UnmarshalJSON decodes JSON.
-func (k *KafkaMessageKey) UnmarshalJSON(data []byte) error {
-	var err error
-
-	oneOfErrors := make(map[string]error, 2)
-	oneOfValid := 0
-
-	err = json.Unmarshal(data, &k.StringProperty)
-	if err != nil {
-		oneOfErrors["StringProperty"] = err
-		k.StringProperty = nil
-	} else {
-		oneOfValid++
-	}
-
-	err = json.Unmarshal(data, &k.HTTPAsyncapiComDefinitions240SchemaJSON)
-	if err != nil {
-		oneOfErrors["HTTPAsyncapiComDefinitions240SchemaJSON"] = err
-		k.HTTPAsyncapiComDefinitions240SchemaJSON = nil
-	} else {
-		oneOfValid++
-	}
-
-	if oneOfValid != 1 {
-		return fmt.Errorf("oneOf constraint failed for KafkaMessageKey with %d valid results: %v", oneOfValid, oneOfErrors)
-	}
-
-	return nil
-}
-
-// MarshalJSON encodes JSON.
-func (k KafkaMessageKey) MarshalJSON() ([]byte, error) {
-	return marshalUnion(k.StringProperty, k.HTTPAsyncapiComDefinitions240SchemaJSON)
-}
-
 // AnypointmqMessage structure is generated from "http://asyncapi.com/bindings/anypointmq/message.json".
 //
 // This object contains configuration for describing an Anypoint MQ message as an AsyncAPI message. This objects only contains configuration that can not be provided in the AsyncAPI standard message object.
 type AnypointmqMessage struct {
-	Headers       *HTTPAsyncapiComDefinitions240SchemaJSON `json:"headers,omitempty"`
-	MapOfAnything map[string]interface{}                   `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+	Headers       *Schema                `json:"headers,omitempty"`
+	MapOfAnything map[string]interface{} `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithHeaders sets Headers value.
-func (a *AnypointmqMessage) WithHeaders(val HTTPAsyncapiComDefinitions240SchemaJSON) *AnypointmqMessage {
+func (a *AnypointmqMessage) WithHeaders(val Schema) *AnypointmqMessage {
 	a.Headers = &val
 	return a
 }
 
 // HeadersEns ensures returned Headers is not nil.
-func (a *AnypointmqMessage) HeadersEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
+func (a *AnypointmqMessage) HeadersEns() *Schema {
 	if a.Headers == nil {
-		a.Headers = new(HTTPAsyncapiComDefinitions240SchemaJSON)
+		a.Headers = new(Schema)
 	}
 
 	return a.Headers
@@ -9246,10 +8515,10 @@ func (c ChannelBindingsObject) MarshalJSON() ([]byte, error) {
 //
 // When using WebSockets, the channel represents the connection. Unlike other protocols that support multiple virtual channels (topics, routing keys, etc.) per connection, WebSockets doesn't support virtual channels or, put it another way, there's only one channel and its characteristics are strongly related to the protocol used for the handshake, i.e., HTTP.
 type WebsocketsChannel struct {
-	Method        WebsocketsChannelMethod                  `json:"method,omitempty"` // The HTTP method to use when establishing the connection. Its value MUST be either 'GET' or 'POST'.
-	Query         *HTTPAsyncapiComDefinitions240SchemaJSON `json:"query,omitempty"`
-	Headers       *HTTPAsyncapiComDefinitions240SchemaJSON `json:"headers,omitempty"`
-	MapOfAnything map[string]interface{}                   `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+	Method        WebsocketsChannelMethod `json:"method,omitempty"` // The HTTP method to use when establishing the connection. Its value MUST be either 'GET' or 'POST'.
+	Query         *Schema                 `json:"query,omitempty"`
+	Headers       *Schema                 `json:"headers,omitempty"`
+	MapOfAnything map[string]interface{}  `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
 }
 
 // WithMethod sets Method value.
@@ -9259,30 +8528,30 @@ func (w *WebsocketsChannel) WithMethod(val WebsocketsChannelMethod) *WebsocketsC
 }
 
 // WithQuery sets Query value.
-func (w *WebsocketsChannel) WithQuery(val HTTPAsyncapiComDefinitions240SchemaJSON) *WebsocketsChannel {
+func (w *WebsocketsChannel) WithQuery(val Schema) *WebsocketsChannel {
 	w.Query = &val
 	return w
 }
 
 // QueryEns ensures returned Query is not nil.
-func (w *WebsocketsChannel) QueryEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
+func (w *WebsocketsChannel) QueryEns() *Schema {
 	if w.Query == nil {
-		w.Query = new(HTTPAsyncapiComDefinitions240SchemaJSON)
+		w.Query = new(Schema)
 	}
 
 	return w.Query
 }
 
 // WithHeaders sets Headers value.
-func (w *WebsocketsChannel) WithHeaders(val HTTPAsyncapiComDefinitions240SchemaJSON) *WebsocketsChannel {
+func (w *WebsocketsChannel) WithHeaders(val Schema) *WebsocketsChannel {
 	w.Headers = &val
 	return w
 }
 
 // HeadersEns ensures returned Headers is not nil.
-func (w *WebsocketsChannel) HeadersEns() *HTTPAsyncapiComDefinitions240SchemaJSON {
+func (w *WebsocketsChannel) HeadersEns() *Schema {
 	if w.Headers == nil {
-		w.Headers = new(HTTPAsyncapiComDefinitions240SchemaJSON)
+		w.Headers = new(Schema)
 	}
 
 	return w.Headers
@@ -10223,7 +9492,7 @@ func (i IbmmqChannelOneOf1) MarshalJSON() ([]byte, error) {
 //
 // An object to hold a set of reusable objects for different aspects of the AsyncAPI Specification.
 type Components struct {
-	Schemas           map[string]Schema                  `json:"schemas,omitempty"` // JSON objects describing schemas the API uses.
+	Schemas           map[string]map[string]interface{}  `json:"schemas,omitempty"` // JSON objects describing schemas the API uses.
 	Servers           map[string]ServerOrRef             `json:"servers,omitempty"` // An object representing multiple servers.
 	Channels          map[string]ChannelItem             `json:"channels,omitempty"`
 	ServerVariables   map[string]ServerVariableOrRef     `json:"serverVariables,omitempty"`
@@ -10241,15 +9510,15 @@ type Components struct {
 }
 
 // WithSchemas sets Schemas value.
-func (c *Components) WithSchemas(val map[string]Schema) *Components {
+func (c *Components) WithSchemas(val map[string]map[string]interface{}) *Components {
 	c.Schemas = val
 	return c
 }
 
 // WithSchemasItem sets Schemas item value.
-func (c *Components) WithSchemasItem(key string, val Schema) *Components {
+func (c *Components) WithSchemasItem(key string, val map[string]interface{}) *Components {
 	if c.Schemas == nil {
-		c.Schemas = make(map[string]Schema, 1)
+		c.Schemas = make(map[string]map[string]interface{}, 1)
 	}
 
 	c.Schemas[key] = val
