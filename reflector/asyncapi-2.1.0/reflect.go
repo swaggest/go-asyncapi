@@ -14,6 +14,7 @@ import (
 // Reflector generates AsyncAPI definitions from provided message samples.
 type Reflector struct {
 	jsonschema.Reflector
+
 	Schema *spec.AsyncAPI
 }
 
@@ -125,7 +126,7 @@ func (r *Reflector) makeOperation(channelItem *spec.ChannelItem, m *MessageSampl
 		return nil, err
 	}
 
-	m.MessageEntity.Payload = schemaToMap(payloadSchema)
+	m.Payload = schemaToMap(payloadSchema)
 
 	headerSchema, err := r.Reflect(m.MessageSample,
 		jsonschema.PropertyNameTag("header"),

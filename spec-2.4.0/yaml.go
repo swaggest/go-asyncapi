@@ -115,7 +115,12 @@ func objectKeys(b []byte) ([]string, error) {
 			return keys, nil
 		}
 
-		keys = append(keys, t.(string))
+		s, ok := t.(string)
+		if !ok {
+			return nil, fmt.Errorf("expected string, got %T", t)
+		}
+
+		keys = append(keys, s)
 
 		if err := skipValue(d); err != nil {
 			return nil, err

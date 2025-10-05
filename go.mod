@@ -3,7 +3,7 @@ module github.com/swaggest/go-asyncapi
 go 1.17
 
 require (
-	github.com/bool64/dev v0.2.36
+	github.com/bool64/dev v0.2.43
 	github.com/stretchr/testify v1.8.2
 	github.com/swaggest/assertjson v1.9.0
 	github.com/swaggest/jsonschema-go v0.3.72
