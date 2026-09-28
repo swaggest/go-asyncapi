@@ -1,0 +1,115 @@
+asyncapi: 3.0.0
+info:
+  title: My Lovely Messaging API
+  version: 1.2.3
+servers:
+  live:
+    host: api.{country}.lovely.com:5672
+    description: Production instance.
+    protocol: kafka
+    protocolVersion: 1.0.0
+    variables:
+      country:
+        enum:
+        - RU
+        - US
+        - DE
+        - FR
+        default: US
+        description: Country code.
+channels:
+  another.one:
+    address: another.one
+    messages:
+      Asyncapi300TestMyAnotherMessage:
+        headers:
+          properties:
+            X-Trace-ID:
+              description: Tracing header
+              type: string
+          required:
+          - X-Trace-ID
+          type: object
+        payload:
+          $ref: '#/components/schemas/Asyncapi300TestMyAnotherMessage'
+        title: Sample consumer
+        description: This is another sample schema.
+  one.{name}.two:
+    address: one.{name}.two
+    messages:
+      Asyncapi300TestMyMessage:
+        payload:
+          $ref: '#/components/schemas/Asyncapi300TestMyMessage'
+        title: Sample publisher
+        description: This is a sample schema.
+        bindings:
+          kafka:
+            bindingVersion: 0.5.0
+            key:
+              const: my-key
+    parameters:
+      name:
+        description: Name
+    bindings:
+      kafka:
+        bindingVersion: 0.5.0
+        topic: one.{name}.two
+operations:
+  receive:another.one:
+    action: receive
+    channel:
+      $ref: '#/channels/another.one'
+    messages:
+    - $ref: '#/channels/another.one/messages/Asyncapi300TestMyAnotherMessage'
+    bindings:
+      kafka:
+        bindingVersion: 0.5.0
+        groupId:
+          const: my-group-id-2
+  send:one.{name}.two:
+    action: send
+    channel:
+      $ref: '#/channels/one.{name}.two'
+    messages:
+    - $ref: '#/channels/one.{name}.two/messages/Asyncapi300TestMyMessage'
+    bindings:
+      kafka:
+        bindingVersion: 0.5.0
+        groupId:
+          const: my-group-id
+components:
+  schemas:
+    Asyncapi300TestMyAnotherMessage:
+      properties:
+        item:
+          $ref: '#/components/schemas/Asyncapi300TestSubItem'
+          description: Some item
+      type: object
+    Asyncapi300TestMyMessage:
+      properties:
+        createdAt:
+          description: Creation time
+          format: date-time
+          type: string
+        items:
+          description: List of items
+          items:
+            $ref: '#/components/schemas/Asyncapi300TestSubItem'
+          type:
+          - array
+          - "null"
+      type: object
+    Asyncapi300TestSubItem:
+      properties:
+        key:
+          description: Item key
+          type: string
+        values:
+          description: List of item values
+          items:
+            type: integer
+          type:
+          - array
+          - "null"
+          uniqueItems: true
+      type: object

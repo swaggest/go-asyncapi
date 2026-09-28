@@ -1,4 +1,4 @@
-#GOLANGCI_LINT_VERSION := "v2.5.0" # Optional configuration to pinpoint golangci-lint version.
+#GOLANGCI_LINT_VERSION := "v2.11.3" # Optional configuration to pinpoint golangci-lint version.
 
 # The head of Makefile determines location of dev-go to include standard targets.
 GO ?= go
@@ -39,6 +39,12 @@ endif
 test: test-unit
 
 JSON_CLI_VERSION := v1.11.0
+
+## Generate bindings for v3.0.0 spec.
+gen-3.0.0:
+	cd resources/schema/ && ./prepare_bindings.sh && cd ../.. && docker run --rm -v .:/code swaggest/json-cli:v1.11.2 json-cli gen-go ./resources/schema/asyncapi-3.0.0-fixed.json --output ./spec-3.0.0/entities.go  --fluent-setters --package-name spec --root-name AsyncAPI --config ./resources/schema/asyncapi-3.0.0-gen-cfg.json --schema-resolver ./resources/schema/bindings-resolver.json
+	make fix-lint
+
 
 ## Generate bindings for v2.4.0 spec.
 gen-2.4.0:
