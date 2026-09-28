@@ -1,0 +1,39 @@
+{
+  "rewrites": {
+    "/HTTPxAsyncapiComDefinitions300([\\w\\d]+)JSON([\\w\\d]+)?/i": "${1}${2}",
+    "/HTTPxAsyncapiComBindings([\\w\\d]+)JSON/i": "${1}"
+  },
+  "renames": {
+    "HTTPxAsyncapiComDefinitions300ServerJSON": "Server",
+    "HTTPxAsyncapiComDefinitions300ServerVariableJSON": "ServerVariable",
+    "ChanxnelsAdditionalProperties": "ChannelOrRef",
+    "ServxersAdditionalProperties": "ServerOrRef",
+    "OperaxtionsAdditionalProperties": "OperationOrRef",
+    "InfoAllOf0": "Info",
+    "InfoAxllOf0TagsItems": "TagItem",
+    "InfoAxllOf0ExternalDocs": "ExternalDocsOrRef",
+
+    "BindingsSolace020OperationDestinationsItems": "BindingsSolace020Destination",
+    "BindingsSolace020OperationDestinationsItemsDeliveryMode": "BindingsSolace020DestinationDeliveryMode",
+    "BindingsSolace020OperationDestinationsItemsOneOf0": "BindingsSolace020DestinationQueue",
+    "BindingsSolace020OperationDestinationsItemsOneOf0Queue": "BindingsSolace020QueueDetails",
+    "BindingsSolace020OperationDestinationsItemsOneOf0QueueAccessType": "BindingsSolace020QueueAccessType",
+    "BindingsSolace020OperationDestinationsItemsOneOf1": "BindingsSolace020DestinationTopic",
+
+    "BindingsSolace030OperationDestinationsItems": "BindingsSolace030Destination",
+    "BindingsSolace030OperationDestinationsItemsDeliveryMode": "BindingsSolace030DestinationDeliveryMode",
+    "BindingsSolace030OperationDestinationsItemsOneOf0": "BindingsSolace030DestinationQueue",
+    "BindingsSolace030OperationDestinationsItemsOneOf0Queue": "BindingsSolace030QueueDetails",
+    "BindingsSolace030OperationDestinationsItemsOneOf0QueueAccessType": "BindingsSolace030QueueAccessType",
+    "BindingsSolace030OperationDestinationsItemsOneOf1": "BindingsSolace030DestinationTopic",
+
+    "BindingsSolace040OperationDestinationsItems": "BindingsSolace040Destination",
+    "BindingsSolace040OperationDestinationsItemsDeliveryMode": "BindingsSolace040DestinationDeliveryMode",
+    "BindingsSolace040OperationDestinationsItemsOneOf0": "BindingsSolace040DestinationQueue",
+    "BindingsSolace040OperationDestinationsItemsOneOf0Queue": "BindingsSolace040QueueDetails",
+    "BindingsSolace040OperationDestinationsItemsOneOf0QueueAccessType": "BindingsSolace040QueueAccessType",
+    "BindingsSolace040OperationDestinationsItemsOneOf1": "BindingsSolace040DestinationTopic"
+  },
+  "validateRequired": true,
+  "fluentSetters": true
+}

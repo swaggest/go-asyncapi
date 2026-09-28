@@ -1,0 +1,40 @@
+asyncapi: 3.0.0
+info:
+  title: My Private SQLite Queue
+  version: 1.0.0
+servers:
+  local:
+    host: file:./queue.db
+    description: Local SQLite-backed queue.
+    protocol: sqlite
+channels:
+  jobs:
+    address: jobs
+    messages:
+      Asyncapi300TestJob:
+        payload:
+          $ref: '#/components/schemas/Asyncapi300TestJob'
+        title: Job
+        description: A job row inserted into the queue table.
+    bindings:
+      x-sqlite:
+        pollingMode: poll
+        table: jobs_queue
+operations:
+  send:jobs:
+    action: send
+    channel:
+      $ref: '#/channels/jobs'
+    messages:
+    - $ref: '#/channels/jobs/messages/Asyncapi300TestJob'
+components:
+  schemas:
+    Asyncapi300TestJob:
+      properties:
+        body:
+          description: Job payload
+          type: string
+        id:
+          description: Row id
+          type: integer
+      type: object
