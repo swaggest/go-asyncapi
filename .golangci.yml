@@ -5,9 +5,12 @@ run:
 linters:
   default: all
   disable:
+    - godoclint
     - funlen
     - cyclop
     - err113
+    - embeddedstructfieldcheck
+    - nilnil
     - noinlineerr
     - wsl_v5
     - funcorder

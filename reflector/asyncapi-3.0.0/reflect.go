@@ -84,63 +84,9 @@ func (r *Reflector) AddOperation(channel spec.Reference, action spec.OperationAc
 
 	prepareMessage(&m)
 
-	messageName := m.Name
-
-	if m.Sample != nil {
-		payloadSchema, err := r.Reflect(m.Sample,
-			jsonschema.RootRef,
-			jsonschema.DefinitionsPrefix("#/components/schemas/"),
-			jsonschema.CollectDefinitions(r.collectDefinition),
-		)
-		if err != nil {
-			return fmt.Errorf("reflecting payload schema: %w", err)
-		}
-
-		payload := interface{}(schemaToMap(payloadSchema))
-		m.Payload = &payload
-
-		if messageName == "" && payloadSchema.Ref != nil {
-			messageName = strings.TrimPrefix(*payloadSchema.Ref, "#/components/schemas/")
-		}
-
-		headerSchema, err := r.Reflect(m.Sample,
-			jsonschema.PropertyNameTag("header"),
-			jsonschema.DefinitionsPrefix("#/components/schemas/"),
-			jsonschema.CollectDefinitions(r.collectDefinition),
-		)
-		if err != nil {
-			return fmt.Errorf("reflecting headers schema: %w", err)
-		}
-
-		if len(headerSchema.Properties) > 0 {
-			headers := interface{}(schemaToMap(headerSchema))
-			m.Headers = &headers
-		}
-
-		pathSchema, err := r.Reflect(m.Sample,
-			jsonschema.PropertyNameTag("path"),
-			jsonschema.DefinitionsPrefix("#/components/schemas/"),
-			jsonschema.CollectDefinitions(r.collectDefinition),
-		)
-		if err != nil {
-			return fmt.Errorf("reflecting path parameters schema: %w", err)
-		}
-
-		if len(pathSchema.Properties) > 0 {
-			if ch.Parameters == nil {
-				ch.Parameters = make(map[string]spec.ParameterOrRef, len(pathSchema.Properties))
-			}
-
-			for name, paramSchema := range pathSchema.Properties {
-				param := spec.Parameter{}
-
-				if d := paramSchema.TypeObjectEns().Description; d != nil {
-					param.Description = *d
-				}
-
-				ch.Parameters[name] = spec.ParameterOrRef{Parameter: &param}
-			}
-		}
+	messageName, err := r.reflectMessageSample(&m, ch)
+	if err != nil {
+		return err
 	}
 
 	if messageName == "" {
@@ -165,6 +111,80 @@ func (r *Reflector) AddOperation(channel spec.Reference, action spec.OperationAc
 	r.SchemaEns().WithOperationsItem(string(action)+":"+channelName, spec.OperationOrRef{Operation: &op})
 
 	return nil
+}
+
+// reflectMessageSample reflects m.Sample, if set, into payload, headers and channel path
+// parameters, and returns the message name derived from the payload schema, if available.
+func (r *Reflector) reflectMessageSample(m *MessageSample, ch *spec.Channel) (string, error) {
+	if m.Sample == nil {
+		return m.Name, nil
+	}
+
+	payloadSchema, err := r.Reflect(m.Sample,
+		jsonschema.RootRef,
+		jsonschema.DefinitionsPrefix("#/components/schemas/"),
+		jsonschema.CollectDefinitions(r.collectDefinition),
+	)
+	if err != nil {
+		return "", fmt.Errorf("reflecting payload schema: %w", err)
+	}
+
+	payload := interface{}(schemaToMap(payloadSchema))
+	m.Payload = &payload
+
+	messageName := m.Name
+	if messageName == "" && payloadSchema.Ref != nil {
+		messageName = strings.TrimPrefix(*payloadSchema.Ref, "#/components/schemas/")
+	}
+
+	headerSchema, err := r.Reflect(m.Sample,
+		jsonschema.PropertyNameTag("header"),
+		jsonschema.DefinitionsPrefix("#/components/schemas/"),
+		jsonschema.CollectDefinitions(r.collectDefinition),
+	)
+	if err != nil {
+		return "", fmt.Errorf("reflecting headers schema: %w", err)
+	}
+
+	if len(headerSchema.Properties) > 0 {
+		headers := interface{}(schemaToMap(headerSchema))
+		m.Headers = &headers
+	}
+
+	pathSchema, err := r.Reflect(m.Sample,
+		jsonschema.PropertyNameTag("path"),
+		jsonschema.DefinitionsPrefix("#/components/schemas/"),
+		jsonschema.CollectDefinitions(r.collectDefinition),
+	)
+	if err != nil {
+		return "", fmt.Errorf("reflecting path parameters schema: %w", err)
+	}
+
+	addPathParameters(ch, pathSchema)
+
+	return messageName, nil
+}
+
+// addPathParameters fills channel parameters from properties of a schema reflected
+// with the "path" property name tag.
+func addPathParameters(ch *spec.Channel, pathSchema jsonschema.Schema) {
+	if len(pathSchema.Properties) == 0 {
+		return
+	}
+
+	if ch.Parameters == nil {
+		ch.Parameters = make(map[string]spec.ParameterOrRef, len(pathSchema.Properties))
+	}
+
+	for name, paramSchema := range pathSchema.Properties {
+		param := spec.Parameter{}
+
+		if d := paramSchema.TypeObjectEns().Description; d != nil {
+			param.Description = *d
+		}
+
+		ch.Parameters[name] = spec.ParameterOrRef{Parameter: &param}
+	}
 }
 
 func capitalize(s string) string {
